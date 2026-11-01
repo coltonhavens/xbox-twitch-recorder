@@ -1,0 +1,93 @@
+name: Deploy Firebase Hosting
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-hosting-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # This repository variable must remain unset until cloud permissions are approved.
+    if: github.ref == 'refs/heads/main' && vars.FIREBASE_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: firebase-production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out reviewed main commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+
+      - name: Validate deployment configuration
+        env:
+          WIF_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          DEPLOY_SA: ${{ vars.GCP_DEPLOY_SERVICE_ACCOUNT }}
+        run: |
+          test -n "$WIF_PROVIDER"
+          test "$DEPLOY_SA" = "github-hosting-deploy@xbox-twitch-recorder.iam.gserviceaccount.com"
+          test -f public/index.html
+          test -f public/privacy.html
+          node -e 'const c = require("./firebase.json"); if (c.hosting.site !== "xbox-twitch-recorder" || c.hosting.public !== "public") process.exit(1)'
+
+      - name: Install pinned Firebase CLI
+        run: npm install --global firebase-tools@15.14.0
+
+      - name: Authenticate through GitHub OIDC
+        uses: google-github-actions/auth@ba79af03959ebeac9769e648f473a284504d9193 # v2.1.10
+        with:
+          project_id: xbox-twitch-recorder
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SERVICE_ACCOUNT }}
+          create_credentials_file: true
+          export_environment_variables: true
+
+      - name: Deploy existing Hosting configuration
+        env:
+          CI: 'true'
+        run: firebase deploy --only hosting --project xbox-twitch-recorder --non-interactive
+
+      - name: Verify deployed pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          for origin in https://xbox-twitch-recorder.web.app https://xbox.mrhype420.com; do
+            for route in / /privacy; do
+              case "$route" in
+                /) expected=public/index.html ;;
+                /privacy) expected=public/privacy.html ;;
+              esac
+              verified=false
+              for attempt in {1..12}; do
+                body="$(mktemp)"
+                status="$(curl --silent --show-error --proto '=https' --connect-timeout 10 --max-time 30 --output "$body" --write-out '%{http_code}' "$origin$route")" || status=000
+                if [ "$status" = 200 ] && cmp --silent "$expected" "$body"; then
+                  verified=true
+                  rm -f "$body"
+                  break
+                fi
+                rm -f "$body"
+                sleep 10
+              done
+              if [ "$verified" != true ]; then
+                echo "::error::Expected HTTP 200 and deployed page contents at $origin$route"
+                exit 1
+              fi
+              echo "Verified $origin$route"
+            done
+          done
+          echo "Deployment and all four page checks passed." >> "$GITHUB_STEP_SUMMARY"
