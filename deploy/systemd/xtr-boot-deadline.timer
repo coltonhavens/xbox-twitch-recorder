@@ -1,0 +1,8 @@
+[Unit]
+Description=Stop boot failures that never reach the archive supervisor
+[Timer]
+OnBootSec=5m
+AccuracySec=1s
+Unit=xtr-boot-deadline.service
+[Install]
+WantedBy=timers.target

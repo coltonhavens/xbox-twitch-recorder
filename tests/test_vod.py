@@ -154,3 +154,28 @@ class VodTests(unittest.TestCase):
             self.assertEqual({s['codec_type'] for s in info['streams']}, {'video', 'audio'})
             self.assertAlmostEqual(float(info['format']['duration']), 8, delta=0.5)
             self.assertEqual(len(list(root.glob('*.mp4'))), 1)
+
+    def test_last_ambiguous_attempt_can_reconcile_without_spending_another_attempt(self):
+        state, store, drive = {'drive_id': 'stable-id', 'media': dict(MEDIA), 'attempts': 5}, Store(), FakeDrive()
+        drive.remote = {'id': 'stable-id', 'parents': [FOLDER], 'appProperties': {
+            'twitch_vod_id': VIDEO['id'], 'twitch_channel': CHANNEL}, 'size': 100, 'md5Checksum': 'known-hash'}
+        from unittest.mock import Mock
+        budget = Mock()
+        budget.begin_attempt.side_effect = AssertionError('Reconciliation must not spend an attempt')
+        archive(VIDEO, state, store, drive, budget)
+        self.assertTrue(state['done'])
+        self.assertEqual(drive.uploads, 0)
+
+    def test_oversized_output_stops_before_writing_and_reaps_children(self):
+        from unittest.mock import Mock
+        from recorder.worker import stage_video
+        from recorder.guards import GuardStop
+        source, target = Mock(), Mock()
+        source.poll.return_value = target.poll.return_value = 0
+        target.stdout = io.BytesIO(b'too much video')
+        sink = io.BytesIO()
+        with patch('recorder.worker.subprocess.Popen', side_effect=[source, target]), patch('recorder.worker.FILE_BYTES', 1):
+            with self.assertRaises(GuardStop):
+                stage_video(VIDEO, sink)
+        self.assertEqual(sink.getvalue(), b'')
+        self.assertTrue(target.stdout.closed)

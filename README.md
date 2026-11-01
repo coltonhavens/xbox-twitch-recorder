@@ -1,12 +1,12 @@
 # Xbox Twitch Recorder
 
-Phase 1 is a public, static application website and privacy policy for a personal project. **Recording automation is planned, not operational.** The static website has no login or OAuth flow. A scheduled VOD archive worker is prepared for review but is not operational; Drive authorization/bootstrap and cloud provisioning remain pending.
+Phase 1 is a public, static application website and privacy policy for a personal project. **Recording automation is planned, not operational.** The static website has no login or OAuth flow. A scheduled, self-stopping e2-small VM VOD archive worker is prepared for review but is not operational; Drive authorization/bootstrap and cloud provisioning remain pending.
 
 The design detects completed saved broadcasts on **MrHype420**, downloads the full VOD with available audio, temporarily stages **one MP4**, then uploads it to the existing Google Drive folder with checksum verification and durable duplicate prevention. The owner confirmed microphone audio in VOD 2917078189; actual download compatibility is still unverified here. No always-on live server is proposed.
 
 See [architecture, costs and exact authorizations](docs/RECORDING.md) and [current test evidence](docs/SESSION-RESULTS.md).
 
-Offline tests: `python -m unittest discover -s tests -v` (requires ffmpeg/ffprobe). Explicit no-upload VOD test: `python -m recorder.check_vod --vod-id 2917078189` after installing `recorder/requirements.txt`. Cloud job: `python -m recorder.worker`; disabled by default. `deploy/Dockerfile` and `deploy/archive.env.example` are review-only installation inputs, not deployed resources.
+Offline tests: `python -m unittest discover -s tests -v` (requires ffmpeg/ffprobe). Explicit no-upload VOD test: `python -m recorder.check_vod --vod-id 2917078189` after installing `recorder/requirements.txt`. VM service invokes `python -m recorder.supervisor`; archive defaults disabled. See [VM installation, shutdown controls, alerts, USD10 plan and exact approvals](docs/VM-DEPLOYMENT.md). The deployment templates are review-only, not installed resources. Never start the power-off service on a development host.
 
 ## Website
 

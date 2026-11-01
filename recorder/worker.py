@@ -14,12 +14,14 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import uuid
+from .events import emit
+from .guards import Budget, GuardStop, FILE_BYTES
 
 LOG = logging.getLogger('vod-archive')
 CHANNEL = 'mrhype420'
 FOLDER = '1X9VfSes_byvkygreHfdvGNHzVXjvAYBG'
 CHUNK = 8 * 1024 * 1024
-LEASE_SECONDS = 7 * 3600  # Must exceed Cloud Run's approved six-hour task timeout.
+LEASE_SECONDS = 7 * 3600  # Exceeds the native six-hour GCE STOP limit.
 
 
 def seconds(value):
@@ -117,6 +119,8 @@ def stage_video(video, sink):
                                       stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
             source.stdout.close()
             while block := target.stdout.read(CHUNK):
+                if size + len(block) > FILE_BYTES:
+                    raise GuardStop('VOD exceeds 40 GiB file limit; preserve source and review')
                 sink.write(block)
                 md5.update(block)
                 size += len(block)
@@ -169,7 +173,10 @@ class Twitch:
 class Bucket:
     def __init__(self, name):
         from google.cloud import storage
-        self.bucket = storage.Client().bucket(name)
+        client = storage.Client()
+        self.bucket = client.bucket(name)
+        self.media_bucket = client.bucket(os.environ['STAGING_BUCKET'])
+        self.budget = None
         self.owner = uuid.uuid4().hex
         self.lock_generation = None
         self.deadline = 0
@@ -218,15 +225,17 @@ class Bucket:
 
     def stage(self, video):
         self.assert_lease()
-        blob = self.bucket.blob('staging/' + video['id'] + '.mp4')
+        self.budget.admit_stage()
+        blob = self.media_bucket.blob('staging/' + video['id'] + '.mp4')
         with blob.open('wb', chunk_size=CHUNK, ignore_flush=True) as sink:
             metadata = stage_video(video, sink)
         blob.reload()
         metadata['generation'] = int(blob.generation)
+        self.budget.downloaded(metadata['size'])
         return metadata
 
     def open_stage(self, vod_id, generation):
-        blob = self.bucket.blob('staging/' + vod_id + '.mp4', generation=generation)
+        blob = self.media_bucket.blob('staging/' + vod_id + '.mp4', generation=generation)
         blob.reload()
         return blob.open('rb', chunk_size=CHUNK)
 
@@ -235,9 +244,16 @@ class Bucket:
         if generation:
             self.assert_lease()
             try:
-                self.bucket.blob('staging/' + vod_id + '.mp4').delete(if_generation_match=generation)
+                self.media_bucket.blob('staging/' + vod_id + '.mp4').delete(if_generation_match=generation)
             except NotFound:
                 pass  # Crash after successful cleanup must be idempotent.
+
+
+    def staging_usage(self):
+        blobs = list(self.media_bucket.list_blobs())
+        total = sum(blob.size or 0 for blob in blobs)
+        oldest = min((blob.time_created.timestamp() for blob in blobs if blob.time_created), default=None)
+        return total, oldest
 
 
 class Drive:
@@ -287,7 +303,7 @@ class Drive:
         return result
 
 
-def archive(video, state, store, drive):
+def archive(video, state, store, drive, budget=None):
     """Stable ID persisted before create: retries and ambiguous success cannot duplicate."""
     if state.get('done'):
         if state.get('media', {}).get('generation'):
@@ -304,6 +320,8 @@ def archive(video, state, store, drive):
             raise ValueError('Remote exists without expected checksum; manual review')
         drive.verify(remote, video, state['media'])
     else:
+        if budget is not None and not budget.begin_attempt(state, video['id']):
+            return
         if not state.get('media'):
             validate_info(vod_info(video['id']), video)
             state['media'] = store.stage(video)
@@ -332,7 +350,12 @@ def main():
         LOG.info('overlapping_job_skipped')
         return
     errors = 0
+    budget = None
     try:
+        budget = Budget(store)
+        budget.reserve_run()
+        store.budget = budget
+        budget.check_staging()
         twitch = Twitch(os.environ['TWITCH_CLIENT_ID'], Path(os.environ['TWITCH_CLIENT_SECRET_FILE']).read_text().strip())
         offline, videos = twitch.scan()
         drive = None
@@ -351,14 +374,24 @@ def main():
                         continue
                 if drive is None:
                     drive = Drive(os.environ['DRIVE_OAUTH_FILE'])
-                archive(video, state, store, drive)
+                archive(video, state, store, drive, budget)
             except Exception as exc:
                 errors += 1
-                LOG.error('vod_pending id=%s error_type=%s', video['id'], type(exc).__name__)
+                emit('vod_pending', 'ERROR', vod_id=video['id'], error_type=type(exc).__name__)
+                if isinstance(exc, GuardStop):
+                    emit('cost_guard_paused', 'WARNING', vod_id=video['id'])
+                    break
         if errors:
             raise RuntimeError('Pending VOD failures; inspect logs and retry next schedule')
+    except GuardStop:
+        emit('cost_guard_paused', 'WARNING')
+        raise
     finally:
-        store.release()
+        try:
+            if budget is not None:
+                budget.finish_run()
+        finally:
+            store.release()
 
 
 if __name__ == '__main__':

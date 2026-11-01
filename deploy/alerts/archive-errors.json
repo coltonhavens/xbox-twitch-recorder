@@ -1,0 +1,14 @@
+{
+  "displayName": "Xbox VOD archive errors, runtime limits and safeguards",
+  "enabled": false,
+  "combiner": "OR",
+  "notificationChannels": [],
+  "conditions": [{
+    "displayName": "Archive redacted error or guard event",
+    "conditionMatchedLog": {
+      "filter": "logName=\"projects/xbox-twitch-recorder/logs/vod-archive\" AND (severity>=ERROR OR jsonPayload.event=\"cost_guard_paused\" OR jsonPayload.event=\"staging_backlog\")"
+    }
+  }],
+  "alertStrategy": {"notificationRateLimit": {"period": "3600s"}, "autoClose": "86400s"},
+  "documentation": {"mimeType": "text/markdown", "content": "Inspect redacted archive events and retained state/staging. Verify the VM stopped. Do not clear deduplication state, lift allowances or change OAuth scopes without owner approval. Never paste tokens or signed playback URLs into incidents."}
+}

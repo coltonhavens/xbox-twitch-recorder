@@ -1,39 +1,38 @@
-# Revised VOD archive evidence — November 1, 2026
+# Self-stopping VM revision evidence — November 1, 2026
 
-This supersedes the initial PR's live-recording design/results. The always-on worker, systemd service template, segmented archive output and SQLite journal were replaced by scheduled completed-VOD processing, one-file MP4 staging, Cloud Storage state/lease and owner-Drive upload. Nothing is deployed or enabled.
+This supersedes the Cloud Run design in PR #3. Before revision the branch head was fea5afa2af2c75f0a489be5e71260258d4ac8fb9. Only the existing PR branch/source and description are updated; no merge or deployment is performed.
 
-## Repository and compatibility inspection
+## What changed
 
-- PR #3 was open/draft at head bfa7e8ceb1d39c9027f7abbc5f3098adc4a003f5 before revision; the changes update that branch, not main.
-- Channel is MrHype420 and destination folder is the owner's existing 1X9VfSes_byvkygreHfdvGNHzVXjvAYBG. Owner confirmed microphone audio in VOD 2917078189. No independent listening claim is made.
-- GitHub release API returned yt-dlp **2026.10.26**, published 2026-10-26. Read the pinned release's Twitch extractor: https://github.com/yt-dlp/yt-dlp/blob/2026.10.26/yt_dlp/extractor/twitch.py . TwitchVodIE matches `/videos/<id>` and uses metadata/token requests plus Twitch HLS extraction. Pinned options.py also defines the strict-fragment and HLS-MPEGTS options; downloader selection source was inspected and native HLS selection made explicit so the fragment policy is not delegated to a generic FFmpeg download. This is source-level support, not a successful VOD download test.
-- Official Get Videos documentation provides metadata with app/user token authorization, not a general VOD download URL API. https://dev.twitch.tv/docs/api/reference/#get-videos . Cloud Run, Scheduler and Storage pricing were read through the web tool; formulas/sources are in RECORDING.md. No price guarantee or free-egress assumption.
+- Scheduled non-Spot e2-small Compute Engine VM plan replaces Cloud Run/container/job inputs. Keep regional GCS full-MP4 staging, stable Drive IDs, checksum verification and recovery.
+- Separate state and media buckets allow durable state retention while avoiding continued charges for soft-deleted temporary video; retention changes are proposals, not applied settings.
+- Supervisor controls child process group and 5h30 runtime. Systemd templates add poweroff on every archive-service exit, 5h45 runtime, independent 5h50 boot watchdog, and a five-minute startup failure stop check. VM intent adds native six-hour GCE STOP and no automatic restart. No systemctl poweroff command was executed.
+- Conservative GCS budget reservations enforce monthly work/download allowances, output/live-staging caps, backoff and five expensive VOD attempts. Remote reconciliation can still complete after a fifth ambiguous upload response. Full validated media and deduplication state survive errors.
+- Root boot helper prepares two Secret Manager credentials in tmpfs with attached identity, no keys. Redacted Cloud Logging event writer and disabled error/absence/budget policy templates prepare alerts; no channels or policies are created.
+- VM-DEPLOYMENT.md is the authoritative approval/install/runbook. Plan targets USD10 with a conservative USD9 model and normal estimated USD1–4 range; no hard invoice-cap claim.
 
-## Tests actually executed
+## Verification executed locally
 
-`python -m unittest discover -s tests -v`: **15 passed** on Python 3.12.14 with installed FFmpeg/ffprobe.
+`python -m unittest discover -s tests -v`: **31 tests passed** on Python 3.12.14.
 
-- Stable-duration observations, offline gating, cutoff, owner and archive-type filters.
-- Extractor ID/owner/completion/duration validation; full-video/audio selection and strict fragment failure configuration.
-- Duration validation rejecting truncated output.
-- Failed upload retains validated staging; retry does not re-download.
-- Ambiguous Drive success followed by restart reuses one persisted ID, verifies remote completion, and does not upload again; subsequent completed run is a no-op.
-- Conflicting remote metadata is rejected with no completion or staging deletion.
-- Simulated GCS generation-conditioned lease rejects overlap; stale holder cannot delete a replacement lease; expired worker cannot proceed.
-- Homepage/privacy/404 local link checks and Hosting scope/security checks.
-- **Actual FFmpeg test:** generated eight seconds of H.264 video and AAC audio, remuxed via the same non-seekable-output command as production, and ffprobe verified one MP4, both audio/video tracks, and full duration. This initially failed due to AAC framing; adding the AAC ADTS-to-ASC bitstream filter fixed it. No audio transcoding is used by the worker.
+Actual local operations include FFmpeg synthetic H.264/AAC remux to one complete eight-second MP4 and ffprobe audio/video/duration checks; SQLite is no longer used. Actual supervised child processes tested successful exit, exit code 7, and a real timeout/termination. No cloud credentials or video download are used by these tests.
 
-`python -m compileall -q recorder` and `bash -n scripts/audit-deployment.sh` passed. Disabled invocation refuses execution before accessing credentials/cloud. The cloud/API portions of the tests use fakes; no actual GCS generation precondition, Drive upload, Scheduler trigger, container build or OAuth flow has been tested.
+Other tests use fake cloud responses/stores to verify completion/owner/cutoff checks, fragment policy and truncation rejection, unchanged duplicate prevention/upload recovery, lease exclusion, monthly reservations and crash overcounting, UTC month rollover, corrupt ledger rejection, storage/download limits, five-attempt exponential backoff, stale staging warnings without deletion, file-size stop before write, final-attempt remote reconciliation, alert transport failure containment, VM/alert template gates, and static homepage/privacy/404/security checks. These do not validate actual GCP IAM, API schemas, generated services, billing or notification delivery.
 
-## Supplied VOD test: blocked, NOT passed
+`python -m compileall -q recorder` and `bash -n scripts/audit-deployment.sh` passed. Disabled worker invocation refused before cloud access. Disabled boot secret loader returned without credentials or network calls.
 
-- Web-tool open of https://www.twitch.tv/videos/2917078189 returned “not accessible via this tool.” This says nothing definitive about whether Twitch itself still serves the VOD.
-- yt-dlp package installation attempted through the configured proxy failed: connection to proxy port 8080 was denied/unavailable. The initial attempted package version could not be resolved; it was not treated as a compatibility result. The PR now pins the release verified through GitHub, 2026.10.26.
-- `python -m recorder.check_vod --vod-id 2917078189` was actually invoked and failed with `FileNotFoundError: yt-dlp`. No metadata, media bytes, full-file checksum, or playback sample was retrieved from that VOD. The implementation includes metadata-only and full-file no-upload test commands for the authorized environment.
-- Managed network policy is enforced and does not include Twitch playback/API/CDN or Google API destinations. No outbound GCP identity or secrets are configured. No proxy bypass, cookie extraction, account login, paid-resource creation or token exposure was attempted.
+`systemd-analyze verify` was attempted on all five units but the sandbox returned `SO_PASSCRED failed: Operation not permitted`. Full unit validation and actual boot, secret loading, group termination under systemd, guest/native shutdown and ephemeral-IP release remain mandatory approved-VM checks. No host poweroff, service enablement, sudo operation or resource creation was tested.
 
-## Not changed / remaining launch verification
+Official native VM runtime-limit documentation was consulted: https://docs.cloud.google.com/compute/docs/instances/limit-vm-runtime . It documents maxRunDuration and STOP for standard VMs. Pricing sources from the preceding read-only review are cited with calculations in VM-DEPLOYMENT.md; no invoice or real transfer-speed measurement exists.
 
-No merge, Firebase deployment, FIREBASE_DEPLOY_ENABLED change, paid API enablement, IAM grant, cloud resource, credential key or OAuth permission change. Existing Hosting workflow and WIF intent/audit are preserved. Earlier GitHub observation that main was unprotected remains a hardening item, not a new settings change. GitHub environment/variable configuration remains unverified through the available connector.
+## Supplied VOD compatibility remains blocked
 
-Before unattended operation: restore permitted test access; install/build pinned dependencies; run actual full VOD test; inspect existing OAuth client and implement secure folder selection/consent bootstrap; obtain the exact owner grants listed in RECORDING.md; approve job/bucket/secrets/scheduler/monitoring cost and IAM plan; then test actual Drive final checksum/parent/audio, duplicate rerun, network/auth/quota errors, killed-job recovery and a long VOD. Homepage/privacy have source checks only; emulator, browser visual and production checks remain pending. Actual transfer throughput, RAM use, Google Drive preview behavior and network charge classification remain unknown.
+Owner confirmed microphone audio in VOD 2917078189 on MrHype420. The pinned yt-dlp 2026.10.26 Twitch extractor and native downloader/strict fragment options were inspected through GitHub in the preceding revision. The official Twitch metadata API is not assumed to be a VOD download endpoint.
+
+Prior actual attempts: web open could not access the Twitch VOD; pip install failed through the configured proxy; `python -m recorder.check_vod --vod-id 2917078189` failed because yt-dlp was unavailable. No actual media, checksum or listening sample was retrieved from that VOD. This revision does not repeat those failures or relabel them as a successful download test. Public VOD test commands remain in RECORDING.md for an authorized environment.
+
+## Explicitly not performed
+
+No provisioning, service/billing API enablement, IAM grant, OAuth change, notification send, bucket/VM/Scheduler/budget/alert creation, deployment, Firebase enable variable change, DNS change or merge. No service-account key or credential value was created/read/exposed. No outbound Google Cloud identity or secrets are configured in this execution environment; the network remains restricted. Dependencies, real Twitch/Drive/GCS, root secret helper, actual service stop and cloud alert delivery remain unverified.
+
+Existing homepage/privacy source checks passed; no emulator, browser visual or production check was repeated. Exact required approvals are listed in VM-DEPLOYMENT.md, including resources/install/IAM, retention/budget/alerts/channel, owner Drive/Twitch credentials, network access, controlled acceptance and later hourly enablement. No approval is inferred from the prior $10 budget or acknowledgment.
