@@ -17,3 +17,6 @@ worker.env
 *authorized-user*.json
 *.sqlite3*
 *.ts
+
+archive.env
+*.mp4

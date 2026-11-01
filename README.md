@@ -1,10 +1,12 @@
 # Xbox Twitch Recorder
 
-Phase 1 is a public, static application website and privacy policy for a personal project. **Recording automation is planned, not operational.** The static website has no login or OAuth flow. A live recording worker is now prepared for review, but is not installed or operational; owner OAuth bootstrap and cloud provisioning remain blocked.
+Phase 1 is a public, static application website and privacy policy for a personal project. **Recording automation is planned, not operational.** The static website has no login or OAuth flow. A scheduled VOD archive worker is prepared for review but is not operational; Drive authorization/bootstrap and cloud provisioning remain pending.
 
-The recording design captures Twitch live playback, rather than depending on VOD audio, and uploads verified segments to the owner’s Google Drive. Missing or excluded microphone audio cannot be recovered. See [recording design and rollout](docs/RECORDING.md) for implementation, limitations, approvals and acceptance checks.
+The design detects completed saved broadcasts on **MrHype420**, downloads the full VOD with available audio, temporarily stages **one MP4**, then uploads it to the existing Google Drive folder with checksum verification and durable duplicate prevention. The owner confirmed microphone audio in VOD 2917078189; actual download compatibility is still unverified here. No always-on live server is proposed.
 
-Offline tests: `python -m unittest discover -s tests -v` (requires local ffmpeg/ffprobe). Cloud worker: `python -m recorder.worker` after approved installation and configuration; disabled by default.
+See [architecture, costs and exact authorizations](docs/RECORDING.md) and [current test evidence](docs/SESSION-RESULTS.md).
+
+Offline tests: `python -m unittest discover -s tests -v` (requires ffmpeg/ffprobe). Explicit no-upload VOD test: `python -m recorder.check_vod --vod-id 2917078189` after installing `recorder/requirements.txt`. Cloud job: `python -m recorder.worker`; disabled by default. `deploy/Dockerfile` and `deploy/archive.env.example` are review-only installation inputs, not deployed resources.
 
 ## Website
 

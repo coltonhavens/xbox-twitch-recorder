@@ -1,46 +1,39 @@
-# Engineering evidence — November 1, 2026
+# Revised VOD archive evidence — November 1, 2026
 
-## Independently observed
+This supersedes the initial PR's live-recording design/results. The always-on worker, systemd service template, segmented archive output and SQLite journal were replaced by scheduled completed-VOD processing, one-file MP4 staging, Cloud Storage state/lease and owner-Drive upload. Nothing is deployed or enabled.
 
-- GitHub repository ID 1442216654, owner ID 230064597, default branch main, admin/push access through connector.
-- Main commit e4c2985888c11fa39e7d979117d1ab932578f12d contains merged PR #2 and the static site/deployment documentation.
-- Workflow run https://github.com/coltonhavens/xbox-twitch-recorder/actions/runs/41353511592 concluded skipped. No deployment claimed.
-- GitHub branch endpoint reports main protected=false. Branch review protection is a missing hardening item; no settings were changed.
-- Deployment workflow restricts main, opts in only with FIREBASE_DEPLOY_ENABLED=true, uses firebase-production, job-scoped OIDC, pinned Actions and CLI, exact site/public directory, and verifies four live page responses after deployment.
-- Existing provider condition in documentation already checks repository ID, owner ID, repository name, main ref, workflow_ref and environment subject. Added reviewable intent JSON and read-only audit; no WIF resource was created.
+## Repository and compatibility inspection
 
-## Executed locally
+- PR #3 was open/draft at head bfa7e8ceb1d39c9027f7abbc5f3098adc4a003f5 before revision; the changes update that branch, not main.
+- Channel is MrHype420 and destination folder is the owner's existing 1X9VfSes_byvkygreHfdvGNHzVXjvAYBG. Owner confirmed microphone audio in VOD 2917078189. No independent listening claim is made.
+- GitHub release API returned yt-dlp **2026.10.26**, published 2026-10-26. Read the pinned release's Twitch extractor: https://github.com/yt-dlp/yt-dlp/blob/2026.10.26/yt_dlp/extractor/twitch.py . TwitchVodIE matches `/videos/<id>` and uses metadata/token requests plus Twitch HLS extraction. Pinned options.py also defines the strict-fragment and HLS-MPEGTS options; downloader selection source was inspected and native HLS selection made explicit so the fragment policy is not delegated to a generic FFmpeg download. This is source-level support, not a successful VOD download test.
+- Official Get Videos documentation provides metadata with app/user token authorization, not a general VOD download URL API. https://dev.twitch.tv/docs/api/reference/#get-videos . Cloud Run, Scheduler and Storage pricing were read through the web tool; formulas/sources are in RECORDING.md. No price guarantee or free-egress assumption.
 
-`python -m unittest discover -s tests -v`: **9 tests passed** with Python 3.12.14 and installed FFmpeg/ffprobe.
+## Tests actually executed
 
-1. Local homepage/privacy/404 links and assets resolve; no script tags.
-2. Hosting public directory/site/security/clean URL settings checked; no SPA rewrite and no folder ID in policy.
-3. Invalid video is quarantined without deleting its bytes.
-4. Changed immutable chunk is rejected by journal.
-5. Completed-upload restart does not call uploader again.
-6. Remote verification requires size, MD5, SHA property and destination parent.
-7. Failed upload retains bytes and reuses its durable Drive ID after reopening SQLite.
-8. Publisher excludes the currently open last segment, then recovers it on finalization.
-9. **Actual FFmpeg** generated four seconds of synthetic video plus sine-wave audio, remuxed it using the worker's stream-copy/segment settings, and ffprobe confirmed video and audio in at least three output segments.
+`python -m unittest discover -s tests -v`: **15 passed** on Python 3.12.14 with installed FFmpeg/ffprobe.
 
-`python -m compileall -q recorder` and `bash -n scripts/audit-deployment.sh` passed. Disabled worker invocation exited with `Recording disabled; explicit rollout required` before credentials/network access.
+- Stable-duration observations, offline gating, cutoff, owner and archive-type filters.
+- Extractor ID/owner/completion/duration validation; full-video/audio selection and strict fragment failure configuration.
+- Duration validation rejecting truncated output.
+- Failed upload retains validated staging; retry does not re-download.
+- Ambiguous Drive success followed by restart reuses one persisted ID, verifies remote completion, and does not upload again; subsequent completed run is a no-op.
+- Conflicting remote metadata is rejected with no completion or staging deletion.
+- Simulated GCS generation-conditioned lease rejects overlap; stale holder cannot delete a replacement lease; expired worker cannot proceed.
+- Homepage/privacy/404 local link checks and Hosting scope/security checks.
+- **Actual FFmpeg test:** generated eight seconds of H.264 video and AAC audio, remuxed via the same non-seekable-output command as production, and ffprobe verified one MP4, both audio/video tracks, and full duration. This initially failed due to AAC framing; adding the AAC ADTS-to-ASC bitstream filter fixed it. No audio transcoding is used by the worker.
 
-These tests use fake Drive responses, except for actual SQLite/filesystem/FFmpeg operations. They do not prove live Twitch or Drive compatibility, actual microphone speech, cloud durability, or gapless capture.
+`python -m compileall -q recorder` and `bash -n scripts/audit-deployment.sh` passed. Disabled invocation refuses execution before accessing credentials/cloud. The cloud/API portions of the tests use fakes; no actual GCS generation precondition, Drive upload, Scheduler trigger, container build or OAuth flow has been tested.
 
-## Access and verification limits
+## Supplied VOD test: blocked, NOT passed
 
-Local checkout was stale (README-only initial commit); current source was retrieved through GitHub connector into an isolated working copy. Git fetch failed because the configured proxy was unreachable. No proxy bypass was attempted. No GCP outbound identity or secrets are configured; gcloud and Firebase CLI are absent. Network policy does not permit Google Cloud/Twitch/Drive/custom domain destinations. Dependency install was not attempted through a broken proxy. systemd-analyze verify failed with `SO_PASSCRED failed: Operation not permitted`; service runtime validation is pending.
+- Web-tool open of https://www.twitch.tv/videos/2917078189 returned “not accessible via this tool.” This says nothing definitive about whether Twitch itself still serves the VOD.
+- yt-dlp package installation attempted through the configured proxy failed: connection to proxy port 8080 was denied/unavailable. The initial attempted package version could not be resolved; it was not treated as a compatibility result. The PR now pins the release verified through GitHub, 2026.10.26.
+- `python -m recorder.check_vod --vod-id 2917078189` was actually invoked and failed with `FileNotFoundError: yt-dlp`. No metadata, media bytes, full-file checksum, or playback sample was retrieved from that VOD. The implementation includes metadata-only and full-file no-upload test commands for the authorized environment.
+- Managed network policy is enforced and does not include Twitch playback/API/CDN or Google API destinations. No outbound GCP identity or secrets are configured. No proxy bypass, cookie extraction, account login, paid-resource creation or token exposure was attempted.
 
-No Firebase emulator or browser visual test was run in this session. Static source checks are not HTTP checks. Existing historical local results remain historical; they do not certify these edited pages. Homepage and privacy production responses, TLS, clean URL behavior, security headers, desktop/mobile rendering, and missing-route status remain pending emulator and approved deployment validation.
+## Not changed / remaining launch verification
 
-Environment branch restrictions and unset enable variable are owner-reported, not independently verified: connector lacks those settings APIs. No IAM, WIF, API enablement, secret, OAuth, billing, DNS, Hosting release, or deployment variable has been changed. No service account key was created or read.
+No merge, Firebase deployment, FIREBASE_DEPLOY_ENABLED change, paid API enablement, IAM grant, cloud resource, credential key or OAuth permission change. Existing Hosting workflow and WIF intent/audit are preserved. Earlier GitHub observation that main was unprotected remains a hardening item, not a new settings change. GitHub environment/variable configuration remains unverified through the available connector.
 
-## Remaining work and required owner input
-
-- Connect an authorized Google Cloud identity for xbox-twitch-recorder and restore the managed environment's supported proxy/network access. Permit the specific GCP/Firebase/Twitch/Drive endpoints needed by the inspected configuration. No raw credentials in chat.
-- Provide supported GitHub administration access, or run scripts/audit-deployment.sh in an already authorized environment and supply non-secret results. This verifies environment main-only rule, repository/environment variable precedence, Actions settings, branch/ruleset protection, SA roles/keys, project number and actual WIF state.
-- Approve only the missing WIF/provider/SA impersonation binding after inspection. Dedicated Hosting SA needs only Hosting Admin, Service Usage Consumer; no SA recreation, extra broad roles, or keys.
-- Approve first Hosting enable/deploy separately after page emulation and review. Main remains unchanged by this draft.
-- Choose cloud region and a maximum monthly budget; approve proposed single non-Spot e2-small VM, 100 GiB persistent disk, outbound network, scoped worker IAM, secrets and monitoring. No cloud apply until a concrete priced plan is approved.
-- Supply the owner's Twitch channel/login (to resolve immutable numeric ID) and approved app identity through secure configuration. Select/authorize the existing Drive folder through drive.file using the existing OAuth client. OAuth bootstrap/Picker UI is still missing and requires inspecting the existing client/consent settings before implementation and explicit approval before settings changes.
-- Approve segmented TS archive output, or request a reviewed merge/remux addition. Production cannot be marked complete until worker dependency installation, actual Drive upload/revocation/retry, restart/disk/network/long-stream checks, monitoring, and short Xbox microphone test pass.
+Before unattended operation: restore permitted test access; install/build pinned dependencies; run actual full VOD test; inspect existing OAuth client and implement secure folder selection/consent bootstrap; obtain the exact owner grants listed in RECORDING.md; approve job/bucket/secrets/scheduler/monitoring cost and IAM plan; then test actual Drive final checksum/parent/audio, duplicate rerun, network/auth/quota errors, killed-job recovery and a long VOD. Homepage/privacy have source checks only; emulator, browser visual and production checks remain pending. Actual transfer throughput, RAM use, Google Drive preview behavior and network charge classification remain unknown.

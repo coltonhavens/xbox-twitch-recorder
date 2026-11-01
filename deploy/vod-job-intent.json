@@ -1,0 +1,15 @@
+{
+  "status": "review-only; no resource created",
+  "project_id": "xbox-twitch-recorder",
+  "region_proposal": "us-central1",
+  "scheduler": {"schedule": "0 * * * *", "time_zone": "Etc/UTC", "target": "Cloud Run Jobs v2 :run endpoint", "authentication": "OAuth service-account token", "enabled": false},
+  "job": {"name_proposal": "twitch-vod-archive", "cpu": "1", "memory": "1Gi", "task_count": 1, "parallelism": 1, "task_timeout_seconds": 21600, "max_retries": 0, "archive_enabled": false},
+  "state": {"bucket": null, "private": true, "uniform_bucket_level_access": true, "public_access_prevention": "enforced", "region": "same as job", "lock_seconds": 25200, "preserve_prefix": "state/", "temporary_prefix": "staging/", "automatic_lifecycle_delete": false, "soft_delete_retention": "inspect and obtain owner approval"},
+  "worker_roles": [{"role": "roles/storage.objectUser", "scope": "dedicated bucket only"}, {"role": "roles/secretmanager.secretAccessor", "scope": "Twitch secret and Drive OAuth secret only"}],
+  "scheduler_role": {"role": "roles/run.invoker", "scope": "archive job only"},
+  "drive_scope": "https://www.googleapis.com/auth/drive.file",
+  "twitch_channel": "MrHype420",
+  "test_vod_id": "2917078189",
+  "drive_folder_id": "1X9VfSes_byvkygreHfdvGNHzVXjvAYBG",
+  "required_before_enable": ["owner budget approval", "actual VOD compatibility test", "existing-folder OAuth grant", "full Drive checksum and audio test", "runtime and long-transfer sizing", "failed-job and staging/cost alerts"]
+}
