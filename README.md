@@ -5,7 +5,7 @@ Find completed saved Twitch broadcasts from **MrHype420**, stream each full vide
 **Prepared in PR #3, not activated.** Drive authorization and actual source-to-Drive acceptance are pending. The owner confirmed microphone audio in VOD 2917078189; this environment's attempted Twitch download was blocked by network policy. No success is claimed for that VOD.
 
 - [Existing OAuth app production readiness](docs/OAUTH-PRODUCTION.md)
-- [One-time owner Drive authorization](docs/DRIVE-AUTHORIZATION.md)
+- [One-time Mac Drive authorization: exact commands](docs/DRIVE-AUTHORIZATION.md)
 - [Recorder behavior, runner limits and recovery](docs/RECORDING.md)
 - [Actual test results and limits](docs/SESSION-RESULTS.md)
 

@@ -4,7 +4,7 @@ Project `xbox-twitch-recorder`; existing Web OAuth client **Xbox Twitch Recorder
 
 ## Known state and limits
 
-Owner reports: **External / Testing**, owner account already a test user, Drive/Picker APIs enabled, localhost origin/callback saved. These are owner-provided facts, not an independent Console inspection. No Google Cloud outbound identity is configured in this environment; actual Branding/Data Access fields, developer/support email, domain ownership, branding review state and live page availability remain unverified. Never infer the OAuth app name from its client name, or infer scope grants from the source request.
+Latest owner report: **External / In production**, drive.file configured, Drive/Picker APIs enabled, localhost origin/callback saved. The prior Testing status is historical; do not ask the owner to publish or reconfigure it again. These are owner-provided facts, not an independent Console inspection. No Google Cloud outbound identity is configured in this environment; actual Branding/Data Access fields, developer/support email, domain ownership, branding review state and live page availability remain unverified. Never infer the OAuth app name from its client name, or infer scope grants from the source request.
 
 The source now provides the app description, a same-domain linked privacy policy, precise requested scope, owner Picker consent flow, Google-data use/storage/sharing/retention/revocation disclosures, and a Limited Use policy commitment. The website is still explicitly inactive. The existing URLs were attempted through the web tool but could not be accessed; this is not proof of an HTTP status, deployment or domain failure. Source preparation does not make a URL public. No new website or alternative paid hosting is proposed.
 
@@ -43,8 +43,6 @@ Moving the app to In production requires **separate owner approval** and does no
 
 Production readiness is not a request to create a parallel project/client, remove the saved callback, submit a review, bypass warnings, or change DNS. Follow any actual Console prompt in the context of this owner-only app and ask before an approval boundary, rather than copying generic public-app checklists blindly.
 
-## Next single owner interaction
+## Current owner interaction
 
-Open the existing Branding page and confirm **Application home page = https://xbox.mrhype420.com/**. Enter/save that exact value only if missing or different, preserving other settings and leaving publication untouched. This is a prepared value, not a claim that the field is currently empty. Remaining fields have their exact reusable values above, so later interactions can address one observed missing item at a time rather than recreating setup.
-
-Before any eventual publishing decision, independently confirm both existing URLs serve the intended app/policy publicly. If the existing website is not live, deployment remains a separate approval blocker; this work cannot silently deploy it. The recorder itself needs no paid hosting or Firebase deployment to execute. The one-time owner Drive approval process stays in DRIVE-AUTHORIZATION.md and does not activate the workflow.
+Production is now owner-confirmed. Do not repeat the completed origin, callback, scope or publishing setup. Obtain a fresh owner Drive grant using the [Mac authorization launcher](DRIVE-AUTHORIZATION.md). No Google Cloud setting is changed by that launcher, and no recording workflow is activated. Branding field values above remain reference values, not a claim that the actual Console was independently inspected or that live website URLs were verified.

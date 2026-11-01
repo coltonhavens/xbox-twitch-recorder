@@ -16,6 +16,23 @@ SCOPE = 'https://www.googleapis.com/auth/drive.file'
 REDIRECT = 'http://localhost:8765/callback'
 
 
+def load_web_client(path):
+    config = json.loads(Path(path).read_text())
+    web = config.get('web', {})
+    if web.get('project_id') != 'xbox-twitch-recorder':
+        raise ValueError('Select the existing xbox-twitch-recorder Web client JSON')
+    if REDIRECT not in web.get('redirect_uris', []):
+        raise ValueError('Client download does not include the configured callback')
+    origins = web.get('javascript_origins')
+    if origins is not None and 'http://localhost:8765' not in origins:
+        raise ValueError('Client download does not include the configured localhost origin')
+    if not all(web.get(field) for field in ('client_id', 'client_secret', 'auth_uri', 'token_uri')):
+        raise ValueError('Incomplete Web client JSON')
+    if web['auth_uri'] not in ('https://accounts.google.com/o/oauth2/auth', 'https://accounts.google.com/o/oauth2/v2/auth') or web['token_uri'] != 'https://oauth2.googleapis.com/token':
+        raise ValueError('Unexpected OAuth endpoints')
+    return config
+
+
 def make_config(credentials, api):
     from googleapiclient.http import MediaIoBaseUpload
     if not credentials.refresh_token:
@@ -66,14 +83,13 @@ def main():
     parser.add_argument('--client-file', required=True, type=Path)
     parser.add_argument('--picker-key-file', required=True, type=Path)
     parser.add_argument('--project-number', required=True)
+    parser.add_argument('--open-browser', action='store_true', help='Open the local consent start page after binding')
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--github-secret', action='store_true')
     group.add_argument('--output', type=Path, help='New mode-0600 file; never commit it')
     args = parser.parse_args()
     os.umask(0o077)
-    config = json.loads(args.client_file.read_text())
-    if 'web' not in config or REDIRECT not in config['web'].get('redirect_uris', []):
-        raise SystemExit('Use the approved Web OAuth client with exact localhost callback; no settings changed')
+    config = load_web_client(args.client_file)
     if not args.project_number.isdigit():
         raise SystemExit('Project number must be numeric')
     flow = Flow.from_client_config(config, scopes=[SCOPE], redirect_uri=REDIRECT, autogenerate_code_verifier=True)
@@ -158,6 +174,9 @@ function loaded(){gapi.load('picker',ready);}</script><script nonce="NONCE" src=
     # Loopback only, fixed host validation protects against DNS rebinding.
     with LoopbackServer(('127.0.0.1', 8765), Handler) as server:
         server.timeout = 1
+        if args.open_browser:
+            import webbrowser
+            webbrowser.open('http://localhost:8765', new=1)
         print('Open http://localhost:8765 in your browser. No credentials will be printed.', flush=True)
         deadline = __import__('time').monotonic() + 900
         while not complete and __import__('time').monotonic() < deadline:

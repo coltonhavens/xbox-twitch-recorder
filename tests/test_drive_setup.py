@@ -52,7 +52,7 @@ class DriveSetupTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as scratch:
             root = Path(scratch)
             client = root/'client.json'
-            client.write_text(json.dumps({'web':{'client_id':'fake-client','client_secret':'fake-client-secret',
+            client.write_text(json.dumps({'web':{'project_id':'xbox-twitch-recorder','client_id':'fake-client','client_secret':'fake-client-secret',
                 'auth_uri':'https://accounts.google.com/o/oauth2/auth','token_uri':'https://oauth2.googleapis.com/token',
                 'redirect_uris':['http://localhost:8765/callback']}}))
             key = root/'key.txt'
