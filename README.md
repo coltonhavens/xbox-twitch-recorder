@@ -1,8 +1,10 @@
 # Xbox Twitch Recorder
 
-Phase 1 is a public, static application website and privacy policy for a personal project. **Recording automation is planned, not operational.** There is no login, OAuth flow, Twitch download process, Drive upload, or backend in this implementation.
+Phase 1 is a public, static application website and privacy policy for a personal project. **Recording automation is planned, not operational.** The static website has no login or OAuth flow. A live recording worker is now prepared for review, but is not installed or operational; owner OAuth bootstrap and cloud provisioning remain blocked.
 
-The goal is to detect the owner's completed Xbox Twitch broadcasts and archive available VODs (including audio present in the source) to the owner's Google Drive, with future processing in the cloud. Missing or muted audio cannot be recovered; Twitch VOD availability and Drive capacity apply.
+The recording design captures Twitch live playback, rather than depending on VOD audio, and uploads verified segments to the owner’s Google Drive. Missing or excluded microphone audio cannot be recovered. See [recording design and rollout](docs/RECORDING.md) for implementation, limitations, approvals and acceptance checks.
+
+Offline tests: `python -m unittest discover -s tests -v` (requires local ffmpeg/ffprobe). Cloud worker: `python -m recorder.worker` after approved installation and configuration; disabled by default.
 
 ## Website
 
@@ -39,3 +41,4 @@ See [deployment instructions](docs/DEPLOYMENT.md) and the [verification checklis
 - Intended destination folder ID: `1X9VfSes_byvkygreHfdvGNHzVXjvAYBG` (identifier only, not authorization; not exposed in the public site)
 
 Do not create another project, run a new Hosting initialization over this configuration, change DNS, or modify OAuth credentials for this phase. Never commit tokens, secrets, service-account keys, or private recordings. Future backend credentials must stay outside `public/` and source control.
+

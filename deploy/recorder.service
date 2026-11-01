@@ -1,0 +1,27 @@
+[Unit]
+Description=Personal Xbox Twitch live archiver
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=xtr
+Group=xtr
+WorkingDirectory=/opt/xtr
+EnvironmentFile=/etc/xtr/worker.env
+ExecStart=/opt/xtr/venv/bin/python -m recorder.worker
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=180
+KillMode=mixed
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/xtr
+
+[Install]
+WantedBy=multi-user.target

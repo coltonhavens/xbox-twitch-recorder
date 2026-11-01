@@ -8,3 +8,12 @@ node_modules/
 *credentials*.json
 *token*.json
 work/
+
+
+__pycache__/
+*.pyc
+.venv/
+worker.env
+*authorized-user*.json
+*.sqlite3*
+*.ts
