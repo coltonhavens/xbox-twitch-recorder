@@ -18,6 +18,16 @@ REDIRECT = 'http://localhost:8765/callback'
 
 def make_config(credentials, api):
     from googleapiclient.http import MediaIoBaseUpload
+    if not credentials.refresh_token:
+        raise ValueError('Offline refresh token required; repeat consent with prompt=consent')
+    if set(credentials.granted_scopes or credentials.scopes or []) != {SCOPE}:
+        raise ValueError('Unexpected actual granted scopes')
+    oauth = json.loads(credentials.to_json())
+    # A short-lived access token and expiry need not be stored in GitHub.
+    oauth.pop('token', None)
+    oauth.pop('expiry', None)
+    if set(oauth.get('scopes', [])) != {SCOPE}:
+        raise ValueError('Unexpected scopes; refuse broader authorization')
     folder = api.files().get(fileId=FOLDER, fields='mimeType,capabilities(canAddChildren)').execute()
     if folder['mimeType'] != 'application/vnd.google-apps.folder' or not folder.get('capabilities', {}).get('canAddChildren'):
         raise ValueError('Selected folder must be writable by this app')
@@ -32,16 +42,6 @@ def make_config(credentials, api):
         manifest_id = api.files().create(body={'name': 'Xbox Twitch Recorder recovery.json', 'parents': [FOLDER],
             'appProperties': {'xtr_role': 'manifest'}},
             media_body=MediaIoBaseUpload(io.BytesIO(content), mimetype='application/json'), fields='id').execute(num_retries=0)['id']
-    if not credentials.refresh_token:
-        raise ValueError('Offline refresh token required; repeat consent with prompt=consent')
-    if set(credentials.granted_scopes or credentials.scopes or []) != {SCOPE}:
-        raise ValueError('Unexpected actual granted scopes')
-    oauth = json.loads(credentials.to_json())
-    # A short-lived access token and expiry need not be stored in GitHub.
-    oauth.pop('token', None)
-    oauth.pop('expiry', None)
-    if set(oauth.get('scopes', [])) != {SCOPE}:
-        raise ValueError('Unexpected scopes; refuse broader authorization')
     return {'oauth': oauth, 'manifest_id': manifest_id}
 
 

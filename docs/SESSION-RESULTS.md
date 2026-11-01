@@ -19,7 +19,7 @@ Pinned yt-dlp 2026.10.26 TwitchVodIE/TwitchVideosIE and native HLS/strict-fragme
 
 Pinned dependencies were **successfully installed** in an isolated work directory using authorized package-network access. Installation initially found a real version conflict: google-auth-oauthlib1.2.3 requires google-auth<2.42. The requirements now pin compatible google-auth2.41.1; the complete installation succeeded. No service was enabled or billed cloud resource created.
 
-`python -m unittest discover -s tests -v`: **22 tests passed**, using the installed dependencies through the isolated PYTHONPATH.
+`python -m unittest discover -s tests -v`: **26 tests passed**, using the installed dependencies through the isolated PYTHONPATH.
 
 Actual FFmpeg test generated eight seconds H.264 video + AAC sine audio, ran the production pipe/remux path, streamed through a fake Drive session, then ffprobe verified one full-duration MP4 with video/audio. The process temporary directory was removed after exit. No Twitch video or actual Drive upload was used by this synthetic test.
 
@@ -36,3 +36,9 @@ Dependency installation and synthetic media success therefore do **not** verify 
 ## Remaining ownership boundary
 
 Owner must perform only the Google Drive authorization setup detailed in DRIVE-AUTHORIZATION.md to provide the app's folder grant, long-lived refresh configuration and recovery-manifest ID through Actions secret XTR_DRIVE_AUTH. The one-time local helper is not an ongoing computer dependency. Google client/API/consent changes, actual owner consent and secret creation were not performed. No credentials were exposed, notifications sent, paid services enabled, permissions granted, workflows activated, deployments run or PR merged. Existing website files were preserved with copy updated to the current inactive recording plan; no emulator/browser/production revalidation is claimed.
+
+## Drive connection preparation follow-up
+
+Owner reports the existing Web client now has the correct localhost origin/callback saved. No Google Cloud outbound identity is connected, so the app publishing status is **unknown**, not inferred as Testing or Production. No client, consent, publishing or test-user settings were read or changed. Next owner read-only check: Google Auth Platform → Audience → Publishing status.
+
+Additional offline tests passed: a real loopback helper HTTP server with dummy credentials rejects an invalid Host, incorrect callback state/session and cross-origin completion POST, sets no-store/HttpOnly/origin-only referrer protections and never exposes the dummy client secret. No request reached Google and no authorization output was created. Fake Drive tests verify manifest reuse rather than duplication, access-token omission, and rejection of missing refresh tokens/broader scopes **before any Drive request or file creation**. The authorization helper now validates those credentials before touching the folder/manifest. Actual Picker/Google consent/refresh/upload remains owner-account acceptance, not an offline test result.
