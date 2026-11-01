@@ -1,5 +1,0 @@
-[Unit]
-Description=Power off even when archive service cannot start
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/systemctl --no-block poweroff

@@ -1,7 +1,0 @@
-{
-  "displayName": "Xbox Twitch Recorder: USD 10 monthly planned ceiling",
-  "budgetFilter": {"projects": ["projects/REPLACE_WITH_PROJECT_NUMBER"], "calendarPeriod": "MONTH", "creditTypesTreatment": "INCLUDE_ALL_CREDITS"},
-  "amount": {"specifiedAmount": {"currencyCode": "USD", "units": "10"}},
-  "thresholdRules": [{"thresholdPercent": 0.5, "spendBasis": "CURRENT_SPEND"}, {"thresholdPercent": 0.8, "spendBasis": "CURRENT_SPEND"}, {"thresholdPercent": 1.0, "spendBasis": "CURRENT_SPEND"}, {"thresholdPercent": 1.0, "spendBasis": "FORECASTED_SPEND"}],
-  "allUpdatesRule": {"monitoringNotificationChannels": [], "disableDefaultIamRecipients": false}
-}

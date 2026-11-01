@@ -52,6 +52,6 @@ If necessary, roll back using the previous release in Firebase Console → Hosti
 The intended application URLs are homepage `https://xbox.mrhype420.com/` and policy `https://xbox.mrhype420.com/privacy`. An authorized owner can review these against the existing Google Auth Platform configuration after the pages are live. This work does not change that configuration, establish Google verification approval, or implement an OAuth callback. Before automation, finalize scopes, the existing-folder access flow, credentials handling, cloud storage, retry/cleanup behavior, retention, and an updated policy.
 
 
-## Separate recording worker deployment
+## Independent recording automation
 
-The static Hosting procedure above does not install the recorder. PR #3 proposes a scheduled self-stopping Compute Engine VM, separate state/staging buckets, and scoped owner OAuth. Review [VM-DEPLOYMENT.md](VM-DEPLOYMENT.md) for installation inputs, shutdown/watchdog limits, alerts, cost allowances and exact approvals. These resources and services remain unprovisioned and disabled.
+The static Hosting procedure above is unrelated to recording. The recorder runs through a gated GitHub Actions workflow and owner Drive OAuth; it does not require Firebase deployment, WIF, a VM, Cloud Run or GCS. See [recording documentation](RECORDING.md) and [one-time Drive authorization](DRIVE-AUTHORIZATION.md). The existing website files and Hosting workflow are preserved, and no workflow has been activated.

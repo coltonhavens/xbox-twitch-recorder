@@ -1,62 +1,27 @@
-"""Scheduled, bounded-memory completed-VOD archive. No live recorder or provisioning."""
+"""GitHub Actions VOD archiver: full MP4 streamed to owner Drive, no cloud infrastructure."""
 import argparse
-import datetime as dt
 import hashlib
 import json
-import logging
 import os
 from pathlib import Path
 import re
+import signal
 import subprocess
 import tempfile
 import time
-import urllib.error
-import urllib.parse
 import urllib.request
-import uuid
-from .events import emit
-from .guards import Budget, GuardStop, FILE_BYTES
+import urllib.parse
 
-LOG = logging.getLogger('vod-archive')
 CHANNEL = 'mrhype420'
 FOLDER = '1X9VfSes_byvkygreHfdvGNHzVXjvAYBG'
 CHUNK = 8 * 1024 * 1024
-LEASE_SECONDS = 7 * 3600  # Exceeds the native six-hour GCE STOP limit.
-
+MAX_BYTES = 100 * 1024 ** 3
 
 def seconds(value):
     match = re.fullmatch(r'(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?', value)
     if not match or not any(match.groups()):
         raise ValueError('Invalid Twitch duration')
     return sum(int(n or 0) * unit for n, unit in zip(match.groups(), (3600, 60, 1)))
-
-
-def instant(value):
-    return dt.datetime.fromisoformat(value.replace('Z', '+00:00')).timestamp()
-
-
-def observe(state, video, now, offline, since):
-    """Fail closed: two stable duration observations >=10min apart, owner offline."""
-    if (video['user_login'].lower() != CHANNEL or video['type'] != 'archive' or
-            instant(video['created_at']) < since):
-        return False
-    duration = seconds(video['duration'])
-    if duration <= 0:
-        return False
-    if state.get('observed_duration') != duration:
-        state.update(observed_duration=duration, stable_since=now)
-        return False
-    return offline and now - state['stable_since'] >= 600
-
-
-def validate_info(info, video):
-    if (str(info.get('id', '')).lstrip('v') != video['id'] or
-            str(info.get('uploader_id', '')).lower() != CHANNEL or
-            info.get('is_live') is not False):
-        raise ValueError('VOD identity or completion unverified')
-    expected = seconds(video['duration'])
-    if abs(float(info.get('duration') or 0) - expected) > 2:
-        raise ValueError('VOD duration changed; wait for next scan')
 
 
 def downloader_args(vod_id):
@@ -75,7 +40,17 @@ def vod_info(vod_id):
                             capture_output=True, timeout=180, check=True)
     # Full extractor JSON may contain signed playback URLs: never log/save it.
     info = json.loads(result.stdout)
-    return {key: info.get(key) for key in ('id', 'uploader_id', 'duration', 'is_live')}
+    result = {key: info.get(key) for key in ('id', 'uploader_id', 'duration', 'is_live')}
+    url = info.get('url', '')
+    if not url.startswith('https://'):
+        raise ValueError('No secure selected media playlist')
+    request = urllib.request.Request(url, headers=info.get('http_headers', {}))
+    with urllib.request.urlopen(request, timeout=30) as response:
+        playlist = response.read(8 * 1024 * 1024 + 1)
+    if len(playlist) > 8 * 1024 * 1024:
+        raise ValueError('Unexpected playlist size')
+    result['completed_playlist'] = b'#EXT-X-ENDLIST' in playlist.splitlines()
+    return result
 
 
 def mux_args(progress):
@@ -95,304 +70,320 @@ def validate_progress(text, expected):
     return duration
 
 
-def stop(process):
-    if process and process.poll() is None:
-        process.terminate()
+
+class NotReady(ValueError):
+    pass
+
+
+def metadata(vod_id):
+    info = vod_info(vod_id)
+    if (str(info.get('uploader_id', '')).lower() != CHANNEL or
+            str(info.get('id', '')).lstrip('v') != vod_id):
+        raise ValueError('Unverified owner/identity')
+    if info.get('is_live') is not False or not info.get('completed_playlist') or not info.get('duration'):
+        raise NotReady('VOD is live or still processing')
+    return {'id': vod_id, 'duration': f"{int(info['duration'])}s", 'user_login': CHANNEL, 'type': 'archive'}
+
+
+def discover():
+    # yt-dlp paginates Twitch's ARCHIVE playlist; no extra owner Twitch API secret.
+    result = subprocess.run(['yt-dlp', '--ignore-config', '--quiet', '--flat-playlist', '--dump-single-json',
+                             '--socket-timeout', '30', '--playlist-end', '501',
+                             'https://www.twitch.tv/' + CHANNEL + '/videos?filter=archives&sort=time'],
+                            capture_output=True, check=True, timeout=240)
+    entries = json.loads(result.stdout).get('entries', [])
+    if not entries:
+        raise ValueError('Empty ARCHIVE playlist; verify downloader compatibility')
+    if len(entries) > 500:
+        raise ValueError('Discovery cap exceeded; review rather than omit videos')
+    ids = []
+    for entry in entries:
+        vod_id = str(entry['id']).lstrip('v')
+        if not vod_id.isdigit():
+            raise ValueError('Unexpected playlist identity')
+        ids.append(vod_id)
+    return list(dict.fromkeys(ids))
+
+
+class Video:
+    def __init__(self, video):
+        self.video = video
+        self.tmp = tempfile.TemporaryDirectory(prefix='xtr-')
+        self.progress = Path(self.tmp.name) / 'progress'
+        self.source = self.target = None
+
+    def __enter__(self):
         try:
-            process.wait(timeout=10)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.wait(timeout=10)
+            self.source = subprocess.Popen(downloader_args(self.video['id']), stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            self.target = subprocess.Popen(mux_args(self.progress), stdin=self.source.stdout, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            self.source.stdout.close()
+            return self
+        except BaseException:
+            self.__exit__(None, None, None)
+            raise
+
+    def read(self, size):
+        return self.target.stdout.read(size)
+
+    def finish(self):
+        if self.target.wait(timeout=60) != 0 or self.source.wait(timeout=60) != 0:
+            raise RuntimeError('Download/remux failed; incomplete media must not commit')
+        return validate_progress(self.progress.read_text(), seconds(self.video['duration']))
+
+    def __exit__(self, *_):
+        for process in (self.source, self.target):
+            if process is not None and process.poll() is None:
+                process.terminate()
+                try:
+                    process.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait(timeout=10)
+        if self.target and self.target.stdout:
+            self.target.stdout.close()
+        self.tmp.cleanup()
 
 
-def stage_video(video, sink):
-    """Remux full VOD to one fragmented MP4; stream to seek-free GCS sink."""
-    source = target = None
-    md5 = hashlib.md5()
-    size = 0
-    with tempfile.TemporaryDirectory() as scratch:
-        progress = Path(scratch) / 'progress'
+def ack_offset(response):
+    header = response.headers.get('Range', '')
+    if not header:
+        return 0
+    match = re.fullmatch(r'bytes=0-(\d+)', header)
+    if not match:
+        raise ValueError('Invalid Drive acknowledgement')
+    return int(match.group(1)) + 1
+
+
+def send_chunk(session, url, block, start, total=None, sleep=time.sleep):
+    """Retry/status-query ambiguous sends using only the retained current chunk."""
+    from requests.exceptions import RequestException
+    end = start + len(block)
+    position = start
+    for attempt in range(6):
         try:
-            source = subprocess.Popen(downloader_args(video['id']), stdout=subprocess.PIPE,
-                                      stderr=subprocess.DEVNULL)
-            target = subprocess.Popen(mux_args(progress), stdin=source.stdout,
-                                      stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-            source.stdout.close()
-            while block := target.stdout.read(CHUNK):
-                if size + len(block) > FILE_BYTES:
-                    raise GuardStop('VOD exceeds 40 GiB file limit; preserve source and review')
-                sink.write(block)
-                md5.update(block)
-                size += len(block)
-            if target.wait(timeout=60) != 0 or source.wait(timeout=60) != 0:
-                raise RuntimeError('Downloader/remux failed; stage must not be uploaded')
-            duration = validate_progress(progress.read_text(), seconds(video['duration']))
-            if not size:
-                raise ValueError('Empty VOD')
-            return {'size': size, 'md5': md5.hexdigest(), 'duration': duration}
-        finally:
-            stop(source)
-            stop(target)
-            if target and target.stdout:
-                target.stdout.close()
-
-
-class Twitch:
-    def __init__(self, client_id, secret):
-        body = urllib.parse.urlencode({'client_id': client_id, 'client_secret': secret,
-                                       'grant_type': 'client_credentials'}).encode()
-        with urllib.request.urlopen(urllib.request.Request('https://id.twitch.tv/oauth2/token', data=body), timeout=30) as r:
-            self.token = json.load(r)['access_token']
-        self.client_id = client_id
-
-    def get(self, resource, **query):
-        req = urllib.request.Request('https://api.twitch.tv/helix/' + resource + '?' + urllib.parse.urlencode(query),
-                                     headers={'Client-ID': self.client_id, 'Authorization': 'Bearer ' + self.token})
-        with urllib.request.urlopen(req, timeout=30) as response:
-            return json.load(response)
-
-    def scan(self):
-        users = self.get('users', login=CHANNEL)['data']
-        if len(users) != 1 or users[0]['login'].lower() != CHANNEL:
-            raise ValueError('Cannot resolve channel identity')
-        user_id = users[0]['id']
-        offline = not self.get('streams', user_id=user_id)['data']
-        videos, cursor = [], None
-        for _ in range(100):
-            args = {'user_id': user_id, 'type': 'archive', 'first': 100}
-            if cursor:
-                args['after'] = cursor
-            page = self.get('videos', **args)
-            videos.extend(page['data'])
-            cursor = page.get('pagination', {}).get('cursor')
-            if not cursor:
-                return offline, videos
-        raise RuntimeError('Pagination cap exceeded; refuse incomplete scan')
-
-
-class Bucket:
-    def __init__(self, name):
-        from google.cloud import storage
-        client = storage.Client()
-        self.bucket = client.bucket(name)
-        self.media_bucket = client.bucket(os.environ['STAGING_BUCKET'])
-        self.budget = None
-        self.owner = uuid.uuid4().hex
-        self.lock_generation = None
-        self.deadline = 0
-
-    def read(self, key):
-        from google.api_core.exceptions import NotFound
-        try:
-            return json.loads(self.bucket.blob('state/' + key + '.json').download_as_text())
-        except NotFound:
-            return {}
-
-    def save(self, key, data):
-        self.assert_lease()
-        self.bucket.blob('state/' + key + '.json').upload_from_string(json.dumps(data), content_type='application/json')
-
-    def acquire(self, now):
-        from google.api_core.exceptions import NotFound, PreconditionFailed
-        blob = self.bucket.blob('state/lock.json')
-        try:
-            # Bind bytes to the generation being replaced, never a second unpinned GET.
-            blob.reload()
-            generation = blob.generation
-            old = json.loads(blob.download_as_text(if_generation_match=generation))
-            if old.get('until', 0) > now:
-                return False
-        except NotFound:
-            generation = 0
-        except PreconditionFailed:
-            return False
-        self.deadline = now + LEASE_SECONDS
-        try:
-            blob.upload_from_string(json.dumps({'owner': self.owner, 'until': self.deadline}),
-                                    if_generation_match=generation, content_type='application/json')
-        except PreconditionFailed:
-            return False
-        self.lock_generation = blob.generation
-        return True
-
-    def assert_lease(self):
-        if not self.lock_generation or time.time() >= self.deadline - 180:
-            raise RuntimeError('Lease expired; stop before further side effects')
-
-    def release(self):
-        if self.lock_generation:
-            self.bucket.blob('state/lock.json').delete(if_generation_match=self.lock_generation)
-
-    def stage(self, video):
-        self.assert_lease()
-        self.budget.admit_stage()
-        blob = self.media_bucket.blob('staging/' + video['id'] + '.mp4')
-        with blob.open('wb', chunk_size=CHUNK, ignore_flush=True) as sink:
-            metadata = stage_video(video, sink)
-        blob.reload()
-        metadata['generation'] = int(blob.generation)
-        self.budget.downloaded(metadata['size'])
-        return metadata
-
-    def open_stage(self, vod_id, generation):
-        blob = self.media_bucket.blob('staging/' + vod_id + '.mp4', generation=generation)
-        blob.reload()
-        return blob.open('rb', chunk_size=CHUNK)
-
-    def cleanup(self, vod_id, generation):
-        from google.api_core.exceptions import NotFound
-        if generation:
-            self.assert_lease()
+            response = session.put(url, data=block[position-start:], headers={
+                'Content-Length': str(end-position),
+                'Content-Range': f"bytes {position}-{end-1}/{total if total is not None else '*'}"}, timeout=120, allow_redirects=False)
+            if response.status_code in (200, 201):
+                if total is None:
+                    raise ValueError('Drive prematurely completed upload')
+                return response.json()
+            if response.status_code == 308:
+                confirmed = ack_offset(response)
+            elif response.status_code in (408, 429) or response.status_code >= 500:
+                raise RequestException('Retryable Drive status')
+            else:
+                raise RuntimeError('Drive upload rejected')
+        except RequestException:
             try:
-                self.media_bucket.blob('staging/' + vod_id + '.mp4').delete(if_generation_match=generation)
-            except NotFound:
-                pass  # Crash after successful cleanup must be idempotent.
-
-
-    def staging_usage(self):
-        blobs = list(self.media_bucket.list_blobs())
-        total = sum(blob.size or 0 for blob in blobs)
-        oldest = min((blob.time_created.timestamp() for blob in blobs if blob.time_created), default=None)
-        return total, oldest
+                response = session.put(url, data=b'', headers={'Content-Length': '0',
+                    'Content-Range': f"bytes */{total if total is not None else '*'}"}, timeout=120, allow_redirects=False)
+            except RequestException:
+                sleep(min(2 ** attempt, 32))
+                continue
+            if response.status_code in (200, 201):
+                if total is None:
+                    raise ValueError('Unexpected early completion')
+                return response.json()
+            if response.status_code != 308:
+                if response.status_code in (408, 429) or response.status_code >= 500:
+                    sleep(min(2 ** attempt, 32))
+                    continue
+                raise RuntimeError('Drive session expired; retry full VOD next run')
+            confirmed = ack_offset(response)
+        if not start <= confirmed <= end:
+            raise ValueError('Drive offset outside retained chunk; restart next run')
+        if confirmed == end:
+            if total is not None:
+                # Final 308 is not proof of completed object. Next run can reconcile.
+                raise RuntimeError('Final upload not confirmed')
+            return None
+        position = confirmed
+        sleep(min(2 ** attempt, 32))
+    raise TimeoutError('Drive chunk retry allowance exhausted')
 
 
 class Drive:
-    def __init__(self, path):
+    def __init__(self, config):
         from google.oauth2.credentials import Credentials
+        from google.auth.transport.requests import AuthorizedSession
         from googleapiclient.discovery import build
         from google_auth_httplib2 import AuthorizedHttp
         import httplib2
-        credentials = Credentials.from_authorized_user_file(path)
-        if set(credentials.scopes or []) != {'https://www.googleapis.com/auth/drive.file'}:
-            raise ValueError('Require owner-authorized drive.file, no broader scope')
+        oauth = config['oauth']
+        if set(oauth.get('scopes', [])) != {'https://www.googleapis.com/auth/drive.file'}:
+            raise ValueError('Require exactly owner drive.file authorization')
+        credentials = Credentials.from_authorized_user_info(oauth)
+        self.session = AuthorizedSession(credentials)
         self.api = build('drive', 'v3', http=AuthorizedHttp(credentials, http=httplib2.Http(timeout=120)), cache_discovery=False)
-        folder = self.api.files().get(fileId=FOLDER, fields='mimeType,capabilities(canAddChildren)', supportsAllDrives=True).execute(num_retries=3)
+        self.manifest_id = config['manifest_id']
+        folder = self.api.files().get(fileId=FOLDER, fields='id,mimeType,capabilities(canAddChildren)').execute(num_retries=3)
         if folder['mimeType'] != 'application/vnd.google-apps.folder' or not folder.get('capabilities', {}).get('canAddChildren'):
-            raise ValueError('Drive folder is not authorized for this app')
+            raise ValueError('Existing folder not authorized')
+        meta = self.api.files().get(fileId=self.manifest_id, fields='parents,appProperties,trashed').execute(num_retries=3)
+        if meta.get('trashed') or FOLDER not in meta.get('parents', []) or meta.get('appProperties', {}).get('xtr_role') != 'manifest':
+            raise ValueError('Invalid private recovery manifest')
+        self.data = json.loads(self.api.files().get_media(fileId=self.manifest_id).execute(num_retries=3))
+        if self.data.get('version') != 1 or self.data.get('channel') != CHANNEL or not isinstance(self.data.get('videos'), dict):
+            raise ValueError('Invalid recovery data; do not silently reset it')
 
-    def allocate(self):
-        return self.api.files().generateIds(count=1, space='drive', type='files').execute(num_retries=3)['ids'][0]
+    def save(self):
+        from googleapiclient.http import MediaIoBaseUpload
+        import io
+        content = json.dumps(self.data, sort_keys=True).encode()
+        self.api.files().update(fileId=self.manifest_id, media_body=MediaIoBaseUpload(io.BytesIO(content), mimetype='application/json')).execute(num_retries=3)
 
-    def existing(self, file_id):
+    def allocate(self, vod_id):
+        entry = self.data['videos'].setdefault(vod_id, {})
+        if not entry.get('file_id'):
+            entry['file_id'] = self.api.files().generateIds(count=1, space='drive', type='files').execute(num_retries=3)['ids'][0]
+            self.save()  # Durable on Drive BEFORE any archive file create.
+        return entry
+
+    def remote(self, file_id):
         from googleapiclient.errors import HttpError
         try:
-            return self.api.files().get(fileId=file_id, fields='id,size,md5Checksum,parents,appProperties,trashed', supportsAllDrives=True).execute(num_retries=3)
+            return self.api.files().get(fileId=file_id, fields='id,size,md5Checksum,parents,appProperties,trashed').execute(num_retries=3)
         except HttpError as exc:
             if exc.resp.status == 404:
                 return None
             raise
 
     @staticmethod
-    def verify(remote, video, media):
-        if (remote.get('trashed') or FOLDER not in remote.get('parents', []) or
-                remote.get('appProperties', {}).get('twitch_vod_id') != video['id'] or
-                remote.get('appProperties', {}).get('twitch_channel') != CHANNEL or
-                int(remote.get('size', -1)) != media['size'] or remote.get('md5Checksum') != media['md5']):
-            raise ValueError('Remote verification failed; preserve stage/state')
+    def verified(remote, entry, vod_id):
+        return bool(remote and not remote.get('trashed') and FOLDER in remote.get('parents', []) and
+                    remote.get('appProperties', {}).get('twitch_vod_id') == vod_id and
+                    remote.get('appProperties', {}).get('twitch_channel') == CHANNEL and
+                    entry.get('expected_size', 0) > 0 and
+                    int(remote.get('size', -1)) == entry.get('expected_size') and
+                    remote.get('md5Checksum') == entry.get('expected_md5'))
 
-    def upload(self, reader, file_id, video, checkpoint):
-        from googleapiclient.http import MediaIoBaseUpload
-        media = MediaIoBaseUpload(reader, mimetype='video/mp4', chunksize=CHUNK, resumable=True)
-        request = self.api.files().create(body={'id': file_id, 'name': 'MrHype420-' + video['id'] + '.mp4',
-                                               'parents': [FOLDER], 'appProperties': {'twitch_vod_id': video['id'], 'twitch_channel': CHANNEL}},
-                                           media_body=media, fields='id,size,md5Checksum,parents,appProperties,trashed', supportsAllDrives=True)
-        result = None
-        while result is None:
-            checkpoint()
-            _, result = request.next_chunk(num_retries=5)
-        return result
+    def prepare(self, entry, vod_id):
+        remote = self.remote(entry['file_id'])
+        if self.verified(remote, entry, vod_id):
+            entry['done'] = True
+            self.save()
+            return False
+        if entry.get('done'):
+            raise ValueError('Previously completed archive changed/deleted; manual review')
+        if remote is None:
+            self.api.files().create(body={'id': entry['file_id'], 'name': 'MrHype420-' + vod_id + '.mp4',
+                'parents': [FOLDER], 'mimeType': 'video/mp4',
+                'appProperties': {'twitch_vod_id': vod_id, 'twitch_channel': CHANNEL}}, fields='id').execute(num_retries=0)
+        elif (FOLDER not in remote.get('parents', []) or remote.get('trashed') or
+              remote.get('appProperties', {}).get('twitch_vod_id') != vod_id or
+              remote.get('appProperties', {}).get('twitch_channel') != CHANNEL):
+            raise ValueError('Archive ID conflict; do not overwrite')
+        return True
+
+    def stream(self, video, entry, reader):
+        response = self.session.patch('https://www.googleapis.com/upload/drive/v3/files/' + entry['file_id'],
+            params={'uploadType': 'resumable'}, json={}, headers={'X-Upload-Content-Type': 'video/mp4'}, timeout=120, allow_redirects=False)
+        url = response.headers.get('Location', '')
+        target = urllib.parse.urlsplit(url)
+        if (response.status_code != 200 or target.scheme != 'https' or
+                target.hostname not in ('www.googleapis.com', 'content.googleapis.com') or
+                target.port not in (None, 443) or target.username is not None):
+            raise RuntimeError('Cannot start trusted Drive upload')  # Bearer-like session URL: never log/persist it.
+        block = reader.read(CHUNK)
+        if not block:
+            raise ValueError('Empty source')
+        size, digest = 0, hashlib.md5()
+        while block:
+            following = reader.read(CHUNK)  # One-chunk lookahead, independent of full VOD size.
+            size += len(block)
+            if size > MAX_BYTES:
+                raise ValueError('100 GiB safety limit exceeded')
+            digest.update(block)
+            final = not following
+            if final:
+                reader.finish()  # Both processes + expected duration BEFORE final commit.
+                entry.update(expected_size=size, expected_md5=digest.hexdigest())
+                self.save()  # Recover ambiguous final success on the next run.
+            send_chunk(self.session, url, block, size-len(block), size if final else None)
+            block = following
+        remote = self.remote(entry['file_id'])
+        if not self.verified(remote, entry, video['id']):
+            raise ValueError('Final checksum/parent/identity verification failed')
+        entry['done'] = True
+        self.save()
 
 
-def archive(video, state, store, drive, budget=None):
-    """Stable ID persisted before create: retries and ambiguous success cannot duplicate."""
-    if state.get('done'):
-        if state.get('media', {}).get('generation'):
-            store.cleanup(video['id'], state['media']['generation'])
-            state['media']['generation'] = None
-            store.save(video['id'], state)
-        return
-    if not state.get('drive_id'):
-        state['drive_id'] = drive.allocate()
-        store.save(video['id'], state)
-    remote = drive.existing(state['drive_id'])
-    if remote is not None:
-        if not state.get('media'):
-            raise ValueError('Remote exists without expected checksum; manual review')
-        drive.verify(remote, video, state['media'])
-    else:
-        if budget is not None and not budget.begin_attempt(state, video['id']):
-            return
-        if not state.get('media'):
-            validate_info(vod_info(video['id']), video)
-            state['media'] = store.stage(video)
-            store.save(video['id'], state)  # Checksum + generation BEFORE Drive side effect.
-        with store.open_stage(video['id'], state['media']['generation']) as reader:
-            remote = drive.upload(reader, state['drive_id'], video, store.assert_lease)
-        drive.verify(remote, video, state['media'])
-    state.update(done=True, completed_at=time.time())
-    store.save(video['id'], state)  # Durable completion BEFORE deleting staging media.
-    store.cleanup(video['id'], state['media']['generation'])
-    state['media']['generation'] = None
-    store.save(video['id'], state)
-    LOG.info('vod_archived id=%s drive_id=%s', video['id'], state['drive_id'])
+def run(drive, ids, now=time.time):
+    errors = 0
+    for vod_id in ids:
+        entry = drive.data['videos'].get(vod_id, {})
+        try:
+            # Always reconcile prior success before spending a retry or querying Twitch.
+            if entry.get('file_id') and not drive.prepare(entry, vod_id):
+                continue
+            if entry.get('attempts', 0) >= 5 or now() < entry.get('retry_after', 0):
+                continue
+            video = metadata(vod_id)
+            duration = seconds(video['duration'])
+            if entry.get('duration') != duration:
+                entry.update(duration=duration, stable_since=now())
+                drive.data['videos'][vod_id] = entry
+                drive.save()
+                continue
+            if now() - entry['stable_since'] < 600:
+                continue
+            entry = drive.allocate(vod_id)
+            if not drive.prepare(entry, vod_id):
+                continue
+            entry.update(attempts=entry.get('attempts', 0)+1,
+                         retry_after=now()+3600 * 2**entry.get('attempts', 0))
+            drive.save()
+            with Video(video) as reader:
+                drive.stream(video, entry, reader)
+            print(json.dumps({'vod_id': vod_id, 'verified': True}), flush=True)
+        except NotReady:
+            continue
+        except Exception as exc:
+            if isinstance(exc, RunDeadline):
+                raise
+            errors += 1
+            # No extractor error strings: they can contain signed URLs or credentials.
+            print(json.dumps({'vod_id': vod_id, 'error_type': type(exc).__name__}), flush=True)
+    if errors:
+        raise RuntimeError('Pending archive failures; next schedule retries within allowance')
+
+
+class RunDeadline(TimeoutError):
+    pass
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--vod-id', help='Limit discovery to one owned archived VOD; no completion bypass')
+    parser.add_argument('--vod-id')
     args = parser.parse_args()
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
     if os.environ.get('ARCHIVE_ENABLED') != 'true':
-        raise SystemExit('Archive disabled; explicit rollout approval required')
-    since = instant(os.environ['ARCHIVE_SINCE'])
-    store = Bucket(os.environ['STATE_BUCKET'])
-    if not store.acquire(time.time()):
-        LOG.info('overlapping_job_skipped')
-        return
-    errors = 0
-    budget = None
+        raise SystemExit('Archive disabled')
+    def expired(*_):
+        raise RunDeadline('Five-hour processing allowance exhausted')
+    signal.signal(signal.SIGALRM, expired)
+    signal.alarm(18000)
     try:
-        budget = Budget(store)
-        budget.reserve_run()
-        store.budget = budget
-        budget.check_staging()
-        twitch = Twitch(os.environ['TWITCH_CLIENT_ID'], Path(os.environ['TWITCH_CLIENT_SECRET_FILE']).read_text().strip())
-        offline, videos = twitch.scan()
-        drive = None
-        for video in sorted(videos, key=lambda v: v['created_at']):
-            if args.vod_id and video['id'] != args.vod_id:
-                continue
-            store.assert_lease()
-            state = store.read(video['id'])
-            if state.get('done') and not state.get('media', {}).get('generation'):
-                continue
-            try:
-                if not state.get('done') and not state.get('media'):
-                    eligible = observe(state, video, time.time(), offline, since)
-                    store.save(video['id'], state)
-                    if not eligible:
-                        continue
-                if drive is None:
-                    drive = Drive(os.environ['DRIVE_OAUTH_FILE'])
-                archive(video, state, store, drive, budget)
-            except Exception as exc:
-                errors += 1
-                emit('vod_pending', 'ERROR', vod_id=video['id'], error_type=type(exc).__name__)
-                if isinstance(exc, GuardStop):
-                    emit('cost_guard_paused', 'WARNING', vod_id=video['id'])
-                    break
-        if errors:
-            raise RuntimeError('Pending VOD failures; inspect logs and retry next schedule')
-    except GuardStop:
-        emit('cost_guard_paused', 'WARNING')
-        raise
-    finally:
+        config = json.loads(os.environ.pop('XTR_DRIVE_AUTH'))
+        drive = Drive(config)
         try:
-            if budget is not None:
-                budget.finish_run()
-        finally:
-            store.release()
+            ids = [args.vod_id] if args.vod_id else discover()
+        except ValueError:
+            if not any(not v.get('done') for v in drive.data['videos'].values()):
+                raise
+            ids = []  # Still reconcile pending remote success if discovery is temporarily unavailable.
+        if any(not re.fullmatch(r'\d+', item) for item in ids):
+            raise ValueError('Invalid VOD ID')
+        # Also reconcile unfinished IDs no longer listed by Twitch (e.g. expired VOD).
+        ids = list(dict.fromkeys(ids + [key for key, v in drive.data['videos'].items() if not v.get('done')]))
+        run(drive, ids)
+    finally:
+        signal.alarm(0)
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as exc:
+        print(json.dumps({'success': False, 'error_type': type(exc).__name__}))
+        raise SystemExit(1)

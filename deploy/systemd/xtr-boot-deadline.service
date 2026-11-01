@@ -1,5 +1,0 @@
-[Unit]
-Description=Power off when the archive service failed to start
-[Service]
-Type=oneshot
-ExecStart=/bin/sh -c 'if ! /usr/bin/systemctl is-active --quiet xtr-archive.service; then /usr/bin/systemctl --no-block poweroff; fi'

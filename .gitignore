@@ -20,3 +20,8 @@ worker.env
 
 archive.env
 *.mp4
+
+work/
+*oauth-client*.json
+*drive-auth*.json
+*picker-key*.txt

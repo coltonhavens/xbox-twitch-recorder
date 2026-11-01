@@ -1,8 +1,0 @@
-[Unit]
-Description=Independent guest shutdown watchdog
-[Timer]
-OnBootSec=5h50m
-AccuracySec=1s
-Unit=xtr-poweroff.service
-[Install]
-WantedBy=timers.target

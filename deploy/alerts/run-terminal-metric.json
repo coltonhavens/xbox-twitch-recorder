@@ -1,6 +1,0 @@
-{
-  "name": "xtr_run_terminal",
-  "description": "Small terminal run counter for detecting startup, scheduler or alert-transport failures",
-  "filter": "logName=\"projects/xbox-twitch-recorder/logs/vod-archive\" AND (jsonPayload.event=\"run_finished\" OR jsonPayload.event=\"run_failed\" OR jsonPayload.event=\"runtime_limit\" OR jsonPayload.event=\"supervisor_failed\")",
-  "metricDescriptor": {"metricKind": "DELTA", "valueType": "INT64", "unit": "1"}
-}
