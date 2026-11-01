@@ -11,6 +11,8 @@ Find completed saved Twitch broadcasts from **MrHype420**, stream each full vide
 
 No Homebrew, Python or GitHub CLI is required on the owner’s Mac. The browser connection UI and secure server-side GitHub-secret handoff are prepared under `broker/`. A static page cannot safely replace that trusted backend; approve temporary free hosting before expecting a live link. Nothing has been deployed or connected. Development test instructions are in the recording docs, not owner setup requirements.
 
+[Review the temporary Render Free configuration](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Fcoltonhavens%2Fxbox-twitch-recorder%2Ftree%2Ffeat%2Flive-cloud-recorder) directly in your browser; the ChatGPT Render connection is not required to open this review. **Do not submit/deploy yet.** The prepared `render.yaml` has automatic deployments off, private inputs outside source, and authorization disabled. Account billing, exact origin and credentials must be reviewed before deployment approval; see the browser connection documentation.
+
 The workflow is `.github/workflows/archive-vods.yml`, gated off unless XTR_ARCHIVE_ENABLED=true on main in this public repository. This work does not set that variable, merge, dispatch or activate any workflow. Credentials belong only in the encrypted Actions secret XTR_DRIVE_AUTH; no service-account keys or public credential files.
 
 ## Website
