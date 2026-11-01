@@ -5,15 +5,11 @@ Find completed saved Twitch broadcasts from **MrHype420**, stream each full vide
 **Prepared in PR #3, not activated.** Drive authorization and actual source-to-Drive acceptance are pending. The owner confirmed microphone audio in VOD 2917078189; this environment's attempted Twitch download was blocked by network policy. No success is claimed for that VOD.
 
 - [Existing OAuth app production readiness](docs/OAUTH-PRODUCTION.md)
-- [One-time Mac Drive authorization: exact commands](docs/DRIVE-AUTHORIZATION.md)
+- [Browser-only Drive connection and required hosting approval](docs/DRIVE-AUTHORIZATION.md)
 - [Recorder behavior, runner limits and recovery](docs/RECORDING.md)
 - [Actual test results and limits](docs/SESSION-RESULTS.md)
 
-```sh
-python -m pip install -r recorder/requirements.txt
-python -m unittest discover -s tests -v
-python -m recorder.check_vod --vod-id 2917078189
-```
+No Homebrew, Python or GitHub CLI is required on the owner’s Mac. The browser connection UI and secure server-side GitHub-secret handoff are prepared under `broker/`. A static page cannot safely replace that trusted backend; approve temporary free hosting before expecting a live link. Nothing has been deployed or connected. Development test instructions are in the recording docs, not owner setup requirements.
 
 The workflow is `.github/workflows/archive-vods.yml`, gated off unless XTR_ARCHIVE_ENABLED=true on main in this public repository. This work does not set that variable, merge, dispatch or activate any workflow. Credentials belong only in the encrypted Actions secret XTR_DRIVE_AUTH; no service-account keys or public credential files.
 

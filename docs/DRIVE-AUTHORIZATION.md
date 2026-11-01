@@ -1,57 +1,42 @@
-# One-time Drive authorization on the owner's Mac
+# Browser-only Drive connection — prepared, not deployed
 
-Owner reports the **existing Xbox Twitch Recorder Web client** in `xbox-twitch-recorder` is now **In production**, with drive.file, Drive/Picker APIs and localhost origin/callback already configured. Do not repeat that setup. No publishing, client creation, scope change, billing, merge, deployment or recording activation is part of this procedure. Existing app state is owner-reported, not an independent Console read.
+**No Homebrew, Python or GitHub CLI is required on the owner's Mac.** The Mac launcher was removed. The intended owner experience is: open the approved HTTPS connection link → sign into Google → select the existing folder → approve access. No live link exists until the owner approves a trusted backend deployment. Do not pretend a repository URL or static homepage can already receive the refresh authorization.
 
-## What to have ready
+Existing owner-reported setup is retained: Web OAuth client Xbox Twitch Recorder in project xbox-twitch-recorder, In production, drive.file, Drive/Picker enabled, localhost entries saved. No repeated publishing, duplicate client, broader Drive permission, Google billing or paid recording infrastructure is needed. The recorder itself still runs through inactive scheduled GitHub Actions, separately from this one-time setup service.
 
-- The JSON downloaded from the **existing Web client**, kept locally. If already downloaded after the callback was saved, reuse it. Do not create a new client or use a service-account key. The file chooser accepts its current filename; no renaming/copying into source is needed.
-- A Google Picker **API key** for that same project. API enabled and API key available are different prerequisites. Use the existing key if present; the helper cannot manufacture it or read it from the OAuth client JSON. It should be restricted to Picker and `http://localhost:8765/*`. Do not paste it into chat. The launcher asks for it with input hidden.
-- The existing numeric **project number**, available in [project settings](https://console.cloud.google.com/iam-admin/settings?project=xbox-twitch-recorder). Do not enter the project ID or client ID. The helper does not guess it.
-- Python 3 and GitHub CLI (`gh`) on the Mac. If missing and Homebrew is already installed, `brew install python gh` supplies them. No gcloud, ffmpeg, server, paid compute or persistent home computer is needed for one-time consent.
+## Why a trusted backend is necessary
 
-## Exact Terminal commands
+Google's [authorization code model](https://developers.google.com/identity/oauth2/web/guides/use-code-model) exchanges a code for access/refresh tokens **on the backend**. A static website can request a short-lived access token but cannot safely hold the existing Web client secret or a credential permitted to write GitHub Actions secrets. Public repository code, browser localStorage, URL fragments/query parameters, workflow inputs, logs or artifacts are not safe substitutes for a server-side receiver. Actions does not provide a public OAuth callback listener.
 
-The fresh temporary checkout avoids modifying an existing local checkout or merging PR #3. Inspect the PR before granting access. These commands run the PR source locally; they do not start any Actions workflow.
+The prepared broker uses **popup mode**: Google's code arrives in a JS callback and is sent in an HTTPS POST body, not an application URL. Origin/custom-CSRF-header and Secure HttpOnly SameSite cookies bind it to a ten-minute session. The backend exchanges the code with Google's fixed token endpoint, checks exactly drive.file plus a refresh token, and verifies the signed-in owner's email via [Drive about.get](https://developers.google.com/workspace/drive/api/reference/rest/v3/about/get), which accepts drive.file. No extra email/openid/Gmail scope is added. The configured owner email is private setup configuration, not inferred or printed.
 
-```sh
-gh auth status >/dev/null 2>&1 || gh auth login --web --git-protocol https
-xtr_auth_dir="$(mktemp -d "${TMPDIR:-/tmp}/xtr-auth.XXXXXX")"
-gh repo clone coltonhavens/xbox-twitch-recorder "$xtr_auth_dir"
-cd "$xtr_auth_dir"
-gh pr checkout 3
-bash scripts/authorize-drive-mac.sh
-```
+Only a short-lived access token reaches Picker in browser memory. The owner selects folder **1X9VfSes_byvkygreHfdvGNHzVXjvAYBG**, which must be writable. The server reuses or creates the same small recovery manifest and seals the refresh configuration with the target repository's public key using libsodium/PyNaCl before writing **XTR_DRIVE_AUTH**. GitHub receives `encrypted_value` and `key_id` over HTTPS; plaintext tokens never enter repo files. This follows [GitHub's encrypted-secret API](https://docs.github.com/en/rest/actions/secrets#create-or-update-a-repository-secret).
 
-The launcher creates an isolated Python virtual environment and installs the pinned dependencies. It checks GitHub owner access before requesting Google consent. Select your existing client JSON in the Mac file dialog, enter the numeric project number, and enter the Picker API key when prompted (hidden). The browser opens automatically at `http://localhost:8765`.
+The server removes completed/expired in-memory sessions, rejects code replay and unknown owners, bounds session starts, never logs request bodies/query paths/token exceptions, and does not store refresh tokens on its filesystem. Final GitHub failure can retry the existing in-memory payload without re-creating the manifest. Browser responses contain neither refresh token, client secret nor GitHub token. Existing Drive sharing settings still apply; no sharing change is made.
 
-Click **Authorize Google Drive**, sign in with the Google account that can upload into your archive folder, and select **1X9VfSes_byvkygreHfdvGNHzVXjvAYBG** in Picker. Other folder selections are rejected. Approve only the requested per-file scope. A fresh offline grant is requested; do not reuse a seven-day Testing-issued refresh configuration just because the app is now Production.
+## Simplest no-paid-hosting alternative to local software
 
-Success message: **Drive authorization saved as XTR_DRIVE_AUTH. Temporary setup copies removed. Recording remains disabled.** The helper creates/reuses one small recovery manifest in the existing folder and sends the refresh configuration plus manifest ID directly to the encrypted repository Actions secret using gh stdin. Refresh/client secrets are not printed, placed in command arguments, or passed through chat. It does not enable XTR_ARCHIVE_ENABLED, dispatch a workflow, merge, deploy, or change Google settings.
+Proposed: a **temporary Render Free web service**, used only for owner connection, then removed. [Official free-service documentation](https://render.com/docs/free) supports Python web services and managed TLS; 750 free service-hours are shared per workspace. Free services sleep after 15 idle minutes and can restart, so an interrupted setup must start again. This is a short personal setup session, not the long-running recorder or a production availability promise.
 
-The downloaded source JSON remains where you selected it; private helper copies and the temporary Picker-key file are removed on success/error. No full VOD is downloaded during setup. The temporary checkout/venv can be deleted after success if desired. Never delete the OAuth client, recovery manifest or Drive archives as part of local-file cleanup. Your computer can be turned off afterward; eventual recording uses GitHub Actions, subject to separate activation approval.
+Require the Free instance type, no paid disk/database/add-on, and **no payment method**. Render documents suspension rather than paid bandwidth/build overages without a payment method. Confirm account eligibility and dashboard pricing before deployment; if a paid plan/card is required, stop for owner review rather than upgrade. No Render service/account connection has been created here. No deploy button, auto-deploy manifest or executable provisioning command is supplied to bypass approval.
 
-## Security and verification boundaries
+A browser-only connection cannot be delivered with **no hosting/trusted backend at all** under these security requirements. The prepared free temporary broker is the alternative; moving the old localhost callback to a remote machine alone would not solve the origin and secret-handoff problems.
 
-Local checks require Web type, exact existing project ID, callback, any supplied origin list, complete client fields, and Google's expected OAuth endpoints. The client's human-readable name is not in standard downloaded JSON; choose the correct existing named client yourself. No API call is made to inspect or edit Google Cloud settings.
+## Prepared implementation and later operator setup
 
-Loopback-only listener, Host/Origin checks, state, PKCE, session cookie, nonce CSRF check, no-store/origin-only referrer headers, callback-log suppression, exact scope/folder checks, exclusive mode0600 temporary files, fifteen-minute consent deadline and bounded requests remain in force. The short-lived access token goes only to local Google Picker; refresh/client secrets remain server-side. GitHub owner permission is checked before consent. A gh failure never prints its captured token-related output. Actual browser integration, owner account consent, refresh and Drive writes cannot be certified by offline mocks; confirm the real success message, not merely a passing unit test.
+Source: `broker/server.py`, `broker/static/*`, `broker/requirements.txt`, `broker/runtime.env.example`. Disabled by default with BROKER_ENABLED unset/false. No source or file contains real credentials. A future approved service would use Python3.12, build `pip install -r broker/requirements.txt`, and start `python -m broker.server` from the repository root. These are operator reference values, **not commands the Mac owner must run** and not actions performed in this PR.
 
-Authorization may be revoked or expire later for normal Google reasons; Production does not guarantee a permanent token. If Google returns extra scopes or a restricted account blocks the grant, stop rather than adding broad Drive permissions. Existing Drive sharing settings apply; no permissions/sharing are changed.
+Following explicit hosting approval, operator setup needs the owner-authorized provider connection and private runtime values:
 
-Do not delete/overwrite the recovery manifest: it stores stable archive IDs. Reauthorization with the same client/folder reuses it; multiple manifests fail closed for review. This setup verifies folder write capability and creates/reuses metadata; it does not claim that VOD2917078189 or a full media upload has been tested.
+- Exact new HTTPS broker origin. Add it to **the existing** Web client's authorized JavaScript origins, preserving localhost and all existing callbacks. Google popup code exchange uses this origin; no replacement client or redirect endpoint is needed. This settings update needs owner approval. The existing downloaded client JSON must include that approved origin; do not fabricate it as if the Console had changed.
+- Existing Google Web client JSON/client secret, same-project numeric project number and Picker key via the provider's private environment dashboard, never repository files or chat. Add the approved HTTPS referrer to the existing Picker key restriction, preserving existing values. No scope/publishing change is requested.
+- Owner's primary Google account email for the allowlist; not guessed from repository name or support fields.
+- A short-lived **fine-grained GitHub token** selected only for coltonhavens/xbox-twitch-recorder with repository **Secrets: read/write** (and automatic Metadata read). No Contents write, workflow, Actions execution, administration or org access is needed. GitHub scopes cannot restrict this token to one secret name: the permission covers repository secrets, although this code targets only XTR_DRIVE_AUTH. Treat the backend as trusted, expire/revoke the token promptly after setup, and remove the service/private runtime credentials after success. Do not paste this token into chat. Existing connector access cannot currently perform this secret write for the owner.
 
-## Portable advanced alternative
+The broker checks immutable repository/owner IDs and public-key access before the owner grants Google access. It never dispatches a workflow, changes XTR_ARCHIVE_ENABLED, merges a PR, modifies IAM/billing, or publishes the Google app. Finishing a session locks that running broker process against another connection; deleting the temporary service and revoking its short-lived GitHub token are still required cleanup. A provider restart resets process memory and requires a new session, not a persistent credential database.
 
-For non-Mac environments, the underlying helper still accepts explicit private files:
+If Google does not return offline refresh authorization, the broker refuses rather than silently saving an access-only token. An existing/incomplete grant may need owner-reviewed fresh consent; do not automatically revoke a working grant. Actual Google popup/Picker, hosted-origin approval, proxy headers/cookies and end-to-end secret write must be verified after approved deployment; offline tests cannot prove those account/provider integrations.
 
-```sh
-python -m recorder.authorize_drive \
-  --client-file /path/to/existing-client.json \
-  --picker-key-file /path/to/private-picker-key.txt \
-  --project-number YOUR_NUMERIC_PROJECT_NUMBER \
-  --github-secret --open-browser
-```
+## Only next owner decision
 
-`--output work/drive-auth.json` instead creates a new mode0600 configuration file for a secure manual secret upload; it never overwrites one. Do not store credentials in an Actions variable, issue, artifact, cache or repository file.
-
-Sources: [Drive per-file scope](https://developers.google.com/workspace/drive/api/guides/api-specific-auth), [Google Picker](https://developers.google.com/workspace/drive/api/guides/picker), [OAuth web flow](https://developers.google.com/identity/protocols/oauth2/web-server), [refresh-token lifetime](https://developers.google.com/identity/protocols/oauth2#expiration).
+**Approve or decline temporary Render Free authorization hosting, without a payment method or paid plan.** No live URL can be given honestly before that approval and provider access. If approved, remaining provider/OAuth-origin/GitHub-credential approvals must happen through their secure browser dashboards; none require installing local software. Do not send credentials in this chat. Recording remains a separate, disabled workflow and is not activated by setup.

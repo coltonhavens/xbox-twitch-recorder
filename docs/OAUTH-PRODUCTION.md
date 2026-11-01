@@ -45,4 +45,4 @@ Production readiness is not a request to create a parallel project/client, remov
 
 ## Current owner interaction
 
-Production is now owner-confirmed. Do not repeat the completed origin, callback, scope or publishing setup. Obtain a fresh owner Drive grant using the [Mac authorization launcher](DRIVE-AUTHORIZATION.md). No Google Cloud setting is changed by that launcher, and no recording workflow is activated. Branding field values above remain reference values, not a claim that the actual Console was independently inspected or that live website URLs were verified.
+Production is now owner-confirmed. Do not repeat the completed origin, callback, scope or publishing setup. Obtain a fresh owner Drive grant using the [browser-only connection plan](DRIVE-AUTHORIZATION.md). No Google Cloud setting is changed by the prepared broker, and no recording workflow is activated. Branding field values above remain reference values, not a claim that the actual Console was independently inspected or that live website URLs were verified.

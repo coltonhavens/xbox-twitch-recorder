@@ -38,16 +38,16 @@ Uploads retain current and lookahead chunks. Transient failures query session st
 
 Up to five expensive full attempts per VOD, with increasing hourly waits; metadata failures are surfaced separately. Finished remote objects reconcile before retry allowance checks. Paused retries require reviewing the failure and manifest instead of blindly resetting it. Five-hour processing limit and 100 GiB output cap stop pathological transfers. Temporary process directories are removed on normal/exception exits, including after verified upload; abrupt runner disposal also removes its ephemeral disk. No complete video file or credential is saved on the runner. Pending upload session data is subject to Google's expiry; placeholders/manifests remain for recovery, not automatic destructive cleanup.
 
-## Owner Drive authorization and later activation
+## Browser-only owner authorization, separate from recording
 
-The implemented one-time PKCE OAuth + Google Picker helper requests **only drive.file**, selects the exact existing folder, verifies it is writable, and creates/reuses the manifest. It stores refresh configuration in GitHub Actions secret XTR_DRIVE_AUTH without exposing it to logs/arguments/source. It uses a local loopback browser **once**, not a computer that must stay on. See [DRIVE-AUTHORIZATION.md](DRIVE-AUTHORIZATION.md) for owner steps, client setup and refresh-token longevity. The helper does not modify Google settings or activate the workflow.
+No local Mac software is required. A browser popup requests only drive.file and POSTs its short-lived authorization code to a temporary trusted HTTPS broker, which exchanges it server-side. It verifies the owner using Drive about.get under the same scope, supplies only a short-lived access token to Google Picker, accepts the exact folder, creates/reuses the recovery manifest, and seals the configuration with GitHub's public key before writing XTR_DRIVE_AUTH. Refresh/client/GitHub secrets stay out of URLs, browser storage, repository files, caches and logs.
 
-Nothing has been merged, enabled, dispatched, deployed or authorized. A later, separate owner activation would require the reviewed workflow on main and an explicit enable-variable decision after real Drive and VOD acceptance. Existing FIREBASE_DEPLOY_ENABLED is unrelated and untouched.
+The broker is not deployed. Pure static hosting cannot safely hold the Web client secret or a GitHub secret-writing credential; GitHub Actions itself is not a publicly reachable OAuth callback service. Temporary Render Free hosting is the proposed browser-only alternative, requiring separate approval, runtime secret setup and an added HTTPS origin on the existing Web client. No new OAuth client or Google scope is requested. No recording activation or PR merge is authorized by connecting Drive. See [DRIVE-AUTHORIZATION.md](DRIVE-AUTHORIZATION.md) for the precise trust boundary and next owner decision. The Mac installer/launcher and its recommendation were removed.
 
-## Testing
+## Development testing (not owner Mac setup)
 
 ```sh
-python -m pip install -r recorder/requirements.txt
+python -m pip install -r tests/requirements.txt
 python -m unittest discover -s tests -v
 python -m recorder.check_vod --vod-id 2917078189
 ```

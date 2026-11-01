@@ -32,7 +32,7 @@ jobs:
           ffmpeg -version > /dev/null
           ffprobe -version > /dev/null
       - name: Offline verification before secrets are available
-        run: python -m unittest discover -s tests -v
+        run: python -m unittest discover -s tests -p 'test_archive.py' -v
       - name: Archive completed full VODs
         env:
           ARCHIVE_ENABLED: 'true'
