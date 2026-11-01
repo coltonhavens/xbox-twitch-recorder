@@ -2,7 +2,7 @@
 
 This is the only account authorization needed by the public-VOD recorder. No VM, Cloud Run, GCS, service-account key, Google Cloud IAM grant or Twitch app secret is required. Nothing below has been applied. The helper writes the Drive credential secret only when the owner explicitly runs it; it does not enable recording, change workflow variables, merge or deploy.
 
-Current setup note: the owner reports the existing localhost origin/callback are saved and Picker is enabled; preserve them. The app’s Testing/Production publishing status is unverified because no Google Cloud identity is connected. Read it under [Google Auth Platform → Audience](https://console.cloud.google.com/auth/audience?project=xbox-twitch-recorder); do not infer it from the OAuth client JSON or change it automatically.
+Current setup (owner-reported): External app in Testing; owner is a test user; Drive and Picker enabled; localhost origin/callback saved. Preserve those settings. No Google Cloud identity is connected for independent inspection. [Production-readiness preparation](OAUTH-PRODUCTION.md) separates non-sensitive scope rules, branding/personal-use review, seven-day Testing tokens, and the owner’s later publication decision. Nothing is published or changed automatically.
 
 ## Owner steps
 
