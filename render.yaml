@@ -1,0 +1,31 @@
+# Review-only preparation. Creating a Blueprint deploys resources and needs owner approval.
+# No credentials in this file. Authorization stays disabled until separately approved.
+services:
+  - type: web
+    name: xtr-drive-connect-temporary
+    runtime: python
+    plan: free
+    repo: https://github.com/coltonhavens/xbox-twitch-recorder
+    branch: feat/live-cloud-recorder
+    autoDeployTrigger: "off"
+    buildCommand: pip install -r broker/requirements.txt
+    startCommand: python -m broker.server
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.12"
+      - key: BROKER_ENABLED
+        value: "false"
+      - key: BROKER_ORIGIN
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_PROJECT_NUMBER
+        sync: false
+      - key: PICKER_API_KEY
+        sync: false
+      - key: GITHUB_SECRET_WRITER_TOKEN
+        sync: false
+      - key: OWNER_GOOGLE_EMAIL
+        sync: false

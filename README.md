@@ -1,8 +1,19 @@
 # Xbox Twitch Recorder
 
-Phase 1 is a public, static application website and privacy policy for a personal project. **Recording automation is planned, not operational.** There is no login, OAuth flow, Twitch download process, Drive upload, or backend in this implementation.
+Find completed saved Twitch broadcasts from **MrHype420**, stream each full video with available microphone/game audio into **one MP4**, and upload it to the owner's existing Google Drive folder. Runs on scheduled standard **GitHub Actions** runners; no home computer, VM, Cloud Run, GCS or Firebase deployment is required for recording.
 
-The goal is to detect the owner's completed Xbox Twitch broadcasts and archive available VODs (including audio present in the source) to the owner's Google Drive, with future processing in the cloud. Missing or muted audio cannot be recovered; Twitch VOD availability and Drive capacity apply.
+**Prepared in PR #3, not activated.** Drive authorization and actual source-to-Drive acceptance are pending. The owner confirmed microphone audio in VOD 2917078189; this environment's attempted Twitch download was blocked by network policy. No success is claimed for that VOD.
+
+- [Existing OAuth app production readiness](docs/OAUTH-PRODUCTION.md)
+- [Browser-only Drive connection and required hosting approval](docs/DRIVE-AUTHORIZATION.md)
+- [Recorder behavior, runner limits and recovery](docs/RECORDING.md)
+- [Actual test results and limits](docs/SESSION-RESULTS.md)
+
+No Homebrew, Python or GitHub CLI is required on the owner’s Mac. The browser connection UI and secure server-side GitHub-secret handoff are prepared under `broker/`. A static page cannot safely replace that trusted backend; approve temporary free hosting before expecting a live link. Nothing has been deployed or connected. Development test instructions are in the recording docs, not owner setup requirements.
+
+[Review the temporary Render Free configuration](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Fcoltonhavens%2Fxbox-twitch-recorder%2Ftree%2Ffeat%2Flive-cloud-recorder) directly in your browser; the ChatGPT Render connection is not required to open this review. **Do not submit/deploy yet.** The prepared `render.yaml` has automatic deployments off, private inputs outside source, and authorization disabled. Account billing, exact origin and credentials must be reviewed before deployment approval; see the browser connection documentation.
+
+The workflow is `.github/workflows/archive-vods.yml`, gated off unless XTR_ARCHIVE_ENABLED=true on main in this public repository. This work does not set that variable, merge, dispatch or activate any workflow. Credentials belong only in the encrypted Actions secret XTR_DRIVE_AUTH; no service-account keys or public credential files.
 
 ## Website
 
@@ -38,4 +49,5 @@ See [deployment instructions](docs/DEPLOYMENT.md) and the [verification checklis
 - Connected custom domain: https://xbox.mrhype420.com
 - Intended destination folder ID: `1X9VfSes_byvkygreHfdvGNHzVXjvAYBG` (identifier only, not authorization; not exposed in the public site)
 
-Do not create another project, run a new Hosting initialization over this configuration, change DNS, or modify OAuth credentials for this phase. Never commit tokens, secrets, service-account keys, or private recordings. Future backend credentials must stay outside `public/` and source control.
+The website is independent of recording. Do not create another project, reinitialize Hosting, change DNS, or modify OAuth settings without the owner’s separate approval. Never commit tokens, secrets, service-account keys, or private recordings. Future backend credentials must stay outside `public/` and source control.
+

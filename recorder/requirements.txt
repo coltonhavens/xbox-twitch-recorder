@@ -1,0 +1,7 @@
+yt-dlp==2026.10.26
+google-api-python-client==2.187.0
+google-auth==2.41.1
+google-auth-httplib2==0.2.1
+google-auth-oauthlib==1.2.3
+httplib2==0.31.0
+requests==2.32.5
