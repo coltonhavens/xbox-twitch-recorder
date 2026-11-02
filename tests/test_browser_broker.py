@@ -5,8 +5,8 @@ import json
 import threading
 import unittest
 from http.server import ThreadingHTTPServer
-from unittest.mock import Mock
-from broker.server import Broker, Remote, SafeError, configuration, handler, seal, FOLDER, SCOPE
+from unittest.mock import Mock, patch
+from broker.server import Broker, Remote, SafeError, configuration, handler, seal, FOLDER, SCOPE, application
 
 
 def settings():
@@ -40,6 +40,34 @@ class FakeRemote:
 
 
 class BrowserBrokerTests(unittest.TestCase):
+    def test_disabled_setup_does_not_read_credentials_or_initialize_remote(self):
+        with patch('broker.server.configuration') as config, patch('broker.server.Remote') as remote:
+            request_handler = application({'BROKER_ENABLED':'false'})
+            self.assertTrue(issubclass(request_handler, __import__('http.server',fromlist=['BaseHTTPRequestHandler']).BaseHTTPRequestHandler))
+            config.assert_not_called()
+            remote.assert_not_called()
+
+    def test_disabled_setup_http_never_starts_authorization(self):
+        server = ThreadingHTTPServer(('127.0.0.1',0),application({}))
+        thread = threading.Thread(target=server.serve_forever,daemon=True)
+        thread.start()
+        try:
+            for method, path, expected in [('GET','/',200),('GET','/healthz',200),
+                                           ('GET','/app.js',404),('GET','/?code=private',404),
+                                           ('POST','/start',503),('POST','/code',503),('POST','/finish',503)]:
+                connection = http.client.HTTPConnection(*server.server_address,timeout=3)
+                connection.request(method,path)
+                response = connection.getresponse()
+                body = response.read()
+                self.assertEqual(response.status,expected)
+                self.assertNotIn(b'private',body)
+                self.assertNotIn('Set-Cookie',dict(response.getheaders()))
+                connection.close()
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=3)
+
     def separate_settings(self):
         return {'BROKER_ENABLED':'true','BROKER_ORIGIN':'https://connect.example.test',
                 'GOOGLE_PROJECT_NUMBER':'123',

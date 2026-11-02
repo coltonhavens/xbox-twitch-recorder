@@ -261,8 +261,30 @@ def handler(broker):
     return Handler
 
 
-def main():
-    config = configuration(os.environ)
+def application(env):
+    if env.get('BROKER_ENABLED') != 'true':
+        class DisabledHandler(BaseHTTPRequestHandler):
+            def log_message(self, *_):
+                pass
+            def reply(self, status):
+                data = b'Authorization is disabled. No Google or GitHub connection has started. Recording is off.\n'
+                self.send_response(status)
+                self.send_header('Content-Type','text/plain; charset=utf-8')
+                self.send_header('Content-Length',str(len(data)))
+                self.send_header('Cache-Control','no-store')
+                self.send_header('X-Content-Type-Options','nosniff')
+                self.send_header('Content-Security-Policy',"default-src 'none'; frame-ancestors 'none'")
+                self.send_header('Connection','close')
+                self.end_headers()
+                self.wfile.write(data)
+                self.close_connection = True
+            def do_GET(self):
+                self.reply(200 if self.path in ('/', '/healthz') else 404)
+            def do_POST(self):
+                self.reply(503)
+        # No credential configuration, broker, Google/GitHub client or session exists.
+        return DisabledHandler
+    config = configuration(env)
     broker = Broker(config,Remote(config))
     def expire_sessions():
         while True:
@@ -270,6 +292,11 @@ def main():
             with broker.lock:
                 broker.clean()
     threading.Thread(target=expire_sessions,daemon=True).start()
+    return handler(broker)
+
+
+def main():
+    request_handler = application(os.environ)
     class Server(ThreadingHTTPServer):
         daemon_threads = True
         def get_request(self):
@@ -277,7 +304,7 @@ def main():
             connection.settimeout(15)
             return connection,address
     # Bind behind the approved host's TLS proxy. No direct public HTTP access is approved.
-    with Server(('0.0.0.0',int(os.environ.get('PORT','10000'))),handler(broker)) as server:
+    with Server(('0.0.0.0',int(os.environ.get('PORT','10000'))),request_handler) as server:
         server.serve_forever()
 
 
