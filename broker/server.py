@@ -3,6 +3,7 @@ import base64
 import hmac
 import json
 import os
+import re
 from pathlib import Path
 import secrets
 import threading
@@ -31,14 +32,30 @@ def configuration(env):
     if (parsed.scheme != 'https' or not parsed.hostname or parsed.path or parsed.query or
             parsed.fragment or parsed.username or parsed.port not in (None, 443)):
         raise SafeError('Configure the approved HTTPS origin')
-    try:
-        client = json.loads(env['GOOGLE_WEB_CLIENT_JSON'])['web']
-    except (KeyError, ValueError, TypeError):
-        raise SafeError('Configure the existing Web client securely')
-    if (client.get('project_id') != PROJECT or origin not in client.get('javascript_origins', []) or
-            not client.get('client_id') or not client.get('client_secret') or
-            client.get('token_uri') != 'https://oauth2.googleapis.com/token'):
-        raise SafeError('Existing client must match the project and approved HTTPS origin')
+    separate = bool(env.get('GOOGLE_CLIENT_ID') or env.get('GOOGLE_CLIENT_SECRET'))
+    if separate and env.get('GOOGLE_WEB_CLIENT_JSON'):
+        raise SafeError('Configure either separate client fields or the original JSON, not both')
+    if separate:
+        number = env.get('GOOGLE_PROJECT_NUMBER', '')
+        client_id = env.get('GOOGLE_CLIENT_ID', '').strip()
+        secret = env.get('GOOGLE_CLIENT_SECRET', '').strip()
+        if (not number.isdigit() or not secret or
+                not re.fullmatch(re.escape(number) + r'-[A-Za-z0-9_-]+\.apps\.googleusercontent\.com', client_id)):
+            raise SafeError('Configure the existing Google client ID, secret and matching project number')
+        # Local format/project-number check only. Google must independently accept
+        # the exact hosted origin; this does not claim its Console settings changed.
+        client = {'project_id':PROJECT, 'client_id':client_id, 'client_secret':secret,
+                  'token_uri':'https://oauth2.googleapis.com/token'}
+    else:
+        try:
+            client = json.loads(env['GOOGLE_WEB_CLIENT_JSON'])['web']
+        except (KeyError, ValueError, TypeError):
+            raise SafeError('Configure the existing Web client securely')
+        if (not isinstance(client, dict) or client.get('project_id') != PROJECT or
+                origin not in client.get('javascript_origins', []) or
+                not client.get('client_id') or not client.get('client_secret') or
+                client.get('token_uri') != 'https://oauth2.googleapis.com/token'):
+            raise SafeError('Existing client must match the project and approved HTTPS origin')
     owner = env.get('OWNER_GOOGLE_EMAIL', '').strip().casefold()
     if '@' not in owner or not env.get('GITHUB_SECRET_WRITER_TOKEN') or not env.get('PICKER_API_KEY') or not env.get('GOOGLE_PROJECT_NUMBER', '').isdigit():
         raise SafeError('Secure owner, GitHub and Picker configuration required')

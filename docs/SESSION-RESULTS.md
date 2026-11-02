@@ -1,3 +1,7 @@
+# Separate client fields (November 1, 2026, owner local date)
+
+Replaced the required Render JSON input with private GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET fields. Original JSON remains a mutually exclusive legacy alternative. Mixed sources, missing secret and mismatched project-number prefix fail closed. No Console setting or approved origin is inferred from these fields. All 38 offline tests passed, including the new configuration-path tests and existing actual local HTTP and sealed-box tests. Render YAML parsed locally: one Free service, automatic deploys off, authorization false, no disks/databases; both client fields use sync:false without values. No actual credential was read, stored, validated against Google or deployed. Owner approved retaining the existing saved card; documentation now distinguishes that from a no-overage guarantee. No merge, deployment or activation.
+
 # GitHub Actions simplification evidence — November 1, 2026
 
 This supersedes the VM/Cloud Run design in PR #3. Prior head a22fa47ab13c0b6391916c640ecd510cc387f753. Only the existing PR branch/source and description are updated; no merge, activation, permission/configuration change or deployment is performed.

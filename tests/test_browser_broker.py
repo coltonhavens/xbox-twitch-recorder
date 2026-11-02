@@ -40,6 +40,31 @@ class FakeRemote:
 
 
 class BrowserBrokerTests(unittest.TestCase):
+    def separate_settings(self):
+        return {'BROKER_ENABLED':'true','BROKER_ORIGIN':'https://connect.example.test',
+                'GOOGLE_PROJECT_NUMBER':'123',
+                'GOOGLE_CLIENT_ID':'123-existing.apps.googleusercontent.com',
+                'GOOGLE_CLIENT_SECRET':'private-client-secret',
+                'OWNER_GOOGLE_EMAIL':'owner@example.test',
+                'GITHUB_SECRET_WRITER_TOKEN':'private-github-token',
+                'PICKER_API_KEY':'browser-picker-key'}
+
+    def test_separate_client_fields_need_no_downloaded_json(self):
+        config = configuration(self.separate_settings())
+        self.assertEqual(config['client']['client_id'],'123-existing.apps.googleusercontent.com')
+        self.assertEqual(config['client']['token_uri'],'https://oauth2.googleapis.com/token')
+        self.assertNotIn('javascript_origins',config['client'])
+
+    def test_mixed_client_sources_and_wrong_project_rejected(self):
+        for changed in ({'GOOGLE_WEB_CLIENT_JSON':'{}'},
+                        {'GOOGLE_PROJECT_NUMBER':'456'},
+                        {'GOOGLE_CLIENT_ID':'123-existing.apps.googleusercontent.com.evil.test'},
+                        {'GOOGLE_CLIENT_SECRET':''}):
+            env = self.separate_settings()
+            env.update(changed)
+            with self.subTest(changed=list(changed)), self.assertRaises(SafeError):
+                configuration(env)
+
     def test_disabled_service_cannot_start(self):
         with self.assertRaises(SafeError):
             configuration({})
