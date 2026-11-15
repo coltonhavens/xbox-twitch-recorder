@@ -1,0 +1,55 @@
+# One job: completed MrHype420 Twitch VODs → Google Drive
+
+Prepared in PR #3; **not activated**. Channel: MrHype420. Destination: `1X9VfSes_byvkygreHfdvGNHzVXjvAYBG`. The owner confirmed microphone audio in VOD 2917078189; this implementation preserves the selected saved video's audio, including microphone/game audio when present. It cannot reconstruct muted or excluded audio. Actual VOD download in this environment is still blocked, as recorded in SESSION-RESULTS.md.
+
+## Minimal architecture
+
+`.github/workflows/archive-vods.yml` runs on a standard GitHub-hosted `ubuntu-24.04` runner: discover Twitch ARCHIVE VODs → confirm completion → yt-dlp full combined video/audio → FFmpeg stream-copy to **one fragmented MP4** → resumable Google Drive upload. No paid infrastructure, personal computer, local full-video staging, GCS, VM, Cloud Run, Scheduler service, service account, IAM, Secret Manager or Firebase deployment belongs to recording. The unrelated static website, firebase.json and existing gated Hosting workflow remain intact.
+
+The proposed schedule is minute 17 every two hours, with optional manual selection of VOD 2917078189. Workflow concurrency is one archive writer, `cancel-in-progress: false`, permissions `contents: read`, pinned Actions, no repository writes/OIDC, no media/credential artifact or cache. It runs only in the exact public repository on main and only if `XTR_ARCHIVE_ENABLED=true`. This work did not set that variable; PR remains unmerged and the job inactive. No PR/fork-triggered job receives the Drive secret. Dependency installation/tests happen before the secret is available. The main process removes the credential payload from its environment before launching downloader/FFmpeg children.
+
+## Detection and downloader compatibility
+
+Pinned **yt-dlp 2026.10.26** reads the public channel's paginated `/videos?filter=archives&sort=time` playlist, so no extra Twitch developer credentials or broadcaster OAuth is required. Query only ARCHIVE broadcasts, validate owner/ID for each, require `is_live=false`, require an explicit **HLS #EXT-X-ENDLIST** on the selected media playlist, and observe stable duration across two scans >=10 minutes apart. Still-live/processing VODs defer. Empty/archive discovery failures produce an error instead of falsely reporting an empty successful archive; pending remote uploads can still reconcile if discovery temporarily fails. A 500-video safety cap fails rather than silently truncating the playlist.
+
+The official Twitch metadata API is **not** treated as a VOD file download endpoint. yt-dlp uses Twitch playback metadata/token/HLS interfaces. Inspected pinned TwitchVodIE, TwitchVideosIE, native downloader and CLI options. Its archive-playlist source includes historical TODO notes, so real channel discovery/download remains an explicit compatibility check, not a guarantee. Changes, restrictions, VOD expiry/removal can break extraction; fail and inspect rather than bypass restrictions. No private cookies are requested or implemented.
+
+`--downloader native`, combined video+audio format selection, full VOD without time ranges, bounded request/fragment retries and `--abort-on-unavailable-fragments` prevent silently skipping missing fragments. FFmpeg maps mandatory video+audio, copies codecs with AAC ADTS-to-ASC conversion, emits one fragmented MP4, and must report a complete duration within 0.5–5 seconds of source metadata. Both processes must exit successfully before the final Drive chunk commits. No transcription/transcoding, audio replacement, splitting or quality downgrade. Google Drive preview behavior requires a real test; normal MP4 player compatibility is tested offline.
+
+## Runner storage, time, public visibility and included usage
+
+GitHub's published standard public Ubuntu runner has **4 CPUs, 16 GB RAM, 14 GB SSD**. The earlier 10-hour/8-Mb/s input can be ~36 GB, so a full local recording plus remux copy cannot be assumed to fit. This implementation keeps at most two 8 MiB upload chunks plus process buffers, streams the MP4 instead of writing it to disk, and uses temporary disk only for small progress/native-fragment files. Native fragment/process peaks still need measurement; bounded Python upload buffers alone are not a complete memory benchmark. The 100 GiB safety cap prevents an unexpected unbounded output, without making a file that large fit on local disk.
+
+GitHub-hosted jobs have a **six-hour maximum**. This job has a **330-minute timeout**, with a five-hour processing alarm to leave cleanup time. A large VOD must download/remux/upload faster than its playback duration when necessary; transfer speed is not yet measured. If the limit interrupts it, the next run re-downloads into the same Drive file ID. There is no durable media spool or promise that every possible long VOD can finish within GitHub's limit. Do not use paid/larger runners or self-hosted runners as an automatic fallback.
+
+Repository visibility was independently verified **public**. Standard public-repository GitHub-hosted runner usage is free and does not consume the private-repository compute allowance; larger runners are billed. No recording artifacts/caches are used. Current account private-plan balances were not inspected or assumed; the workflow refuses private repository execution so a visibility change cannot silently incur private runner charges. Existing Google Drive storage is reused; API quotas and available storage still apply. No $300 trial credit, new paid cloud service or recording storage subscription is required.
+
+GitHub schedules can be delayed/dropped and public schedules are disabled after **60 days without repository activity**. A two-hour poll is not an uptime SLA; use GitHub's workflow failure notifications and monitor recent successful runs/VOD expiry. Do not add fake commits to defeat the inactivity policy. Schedule operation after 60 days requires normal owner maintenance through GitHub. This limitation is documented, not hidden behind an always-on external service.
+
+Official sources: [runner specifications](https://docs.github.com/en/actions/reference/runners/github-hosted-runners), [six-hour job limit](https://docs.github.com/en/actions/reference/limits), [public/private billing and included usage](https://docs.github.com/en/billing/concepts/product-billing/github-actions), [scheduled-workflow behavior](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
+
+## Duplicate prevention and recovery in Drive only
+
+One app-created recovery JSON file in the destination folder stores source IDs, stable preallocated Drive IDs, duration observations, retry state, expected full-file size/MD5 and completion. Its ID is part of the encrypted Actions secret. No recording metadata/state is committed to the public repository; no expiring Actions artifact/cache is the source of truth. Preserve this manifest and the one-writer workflow concurrency. Do not run a second tool against the same manifest concurrently; Drive manifest saves are not a general distributed locking system.
+
+Allocate a Drive ID and persist it in the manifest **before creating the destination file**. A metadata-only placeholder is then created with the source identity; content is updated through a resumable session using that same ID. Failed creation or ambiguous final upload cannot intentionally create a new second archive ID. Completion requires not-trashed status, expected parent, VOD ID/channel, full size and MD5. Store expected checksum/size durably **before sending the final media chunk**. If final commit succeeds but its response is lost, the next run verifies the existing object and marks it done without another download/upload. A completed file changed or removed by the owner requires review, not silent recreation.
+
+Uploads retain current and lookahead chunks. Transient failures query session status and resend only the unacknowledged part still buffered. Expired sessions/runner cancellation can require replay from the beginning on the next run; no signed session URL or partial-media checkpoint is persisted. Reuse the same ID, never deduplicate on a display name alone. Chunk size is a multiple of Drive's 256 KiB requirement. Final chunks are withheld if process/duration validation fails. Intermediate chunks are not represented as complete recordings.
+
+Up to five expensive full attempts per VOD, with increasing hourly waits; metadata failures are surfaced separately. Finished remote objects reconcile before retry allowance checks. Paused retries require reviewing the failure and manifest instead of blindly resetting it. Five-hour processing limit and 100 GiB output cap stop pathological transfers. Temporary process directories are removed on normal/exception exits, including after verified upload; abrupt runner disposal also removes its ephemeral disk. No complete video file or credential is saved on the runner. Pending upload session data is subject to Google's expiry; placeholders/manifests remain for recovery, not automatic destructive cleanup.
+
+## Browser-only owner authorization, separate from recording
+
+No local Mac software is required. A browser popup requests only drive.file and POSTs its short-lived authorization code to a temporary trusted HTTPS broker, which exchanges it server-side. It verifies the owner using Drive about.get under the same scope, supplies only a short-lived access token to Google Picker, accepts the exact folder, creates/reuses the recovery manifest, and seals the configuration with GitHub's public key before writing XTR_DRIVE_AUTH. Refresh/client/GitHub secrets stay out of URLs, browser storage, repository files, caches and logs.
+
+The broker is not deployed. Pure static hosting cannot safely hold the Web client secret or a GitHub secret-writing credential; GitHub Actions itself is not a publicly reachable OAuth callback service. Temporary Render Free hosting is the proposed browser-only alternative, requiring separate approval, runtime secret setup and an added HTTPS origin on the existing Web client. No new OAuth client or Google scope is requested. No recording activation or PR merge is authorized by connecting Drive. See [DRIVE-AUTHORIZATION.md](DRIVE-AUTHORIZATION.md) for the precise trust boundary and next owner decision. The Mac installer/launcher and its recommendation were removed.
+
+## Development testing (not owner Mac setup)
+
+```sh
+python -m pip install -r tests/requirements.txt
+python -m unittest discover -s tests -v
+python -m recorder.check_vod --vod-id 2917078189
+```
+
+The last command is metadata/playlist-only and does not upload. Optional `--output work/MrHype420-2917078189.mp4` downloads locally for listening, if enough test disk is available; production uses the streaming path instead. No source audio guarantee is made from track presence alone. Run a real final Drive copy/listening/duplicate rerun and interruption test after consent; no live stream is needed. See SESSION-RESULTS.md for exactly what passed and what was blocked.

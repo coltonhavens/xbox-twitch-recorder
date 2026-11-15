@@ -149,3 +149,12 @@ Set `FIREBASE_DEPLOY_ENABLED=false` to stop new deployment jobs. It does not rev
 For a bad release, use Firebase Console → Hosting → release history to roll back with an authorized operator, then fix the source through a PR. Do not change DNS. Review the dedicated service account's project grants periodically and remove them if CI deployment is retired.
 
 Reference: [Google GitHub auth action](https://github.com/google-github-actions/auth), [GitHub OIDC federation](https://cloud.google.com/iam/docs/workload-identity-federation-with-deployment-pipelines#github-actions), [Firebase Hosting roles](https://firebase.google.com/docs/projects/iam/roles-predefined-product#hosting), [GitHub environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/managing-environments-for-deployment).
+
+
+## Current continuation: inspect before provisioning
+
+The owner is creating `github-hosting-deploy` separately. Do **not** rerun the account-creation or project-role-grant block above blindly. First run `scripts/audit-deployment.sh` with authorized read access and compare to `deploy/wif-intent.json`. The JSON is a reviewable intent, not an applied resource or executable plan. The project number remains unknown; never substitute the project ID into principal paths. Preserve existing completed setup and prepare only the missing actions for owner approval.
+
+The repository and owner immutable IDs were reverified through the GitHub connector: 1442216654 and 230064597. Existing provider condition already includes all requested boundaries. Keep the dedicated pool exclusive to this provider. No additional Service Account Token Creator grant is needed. Confirm no user-managed service-account keys exist with the read-only audit.
+
+Current connector supports repository/source/workflow reads and branch/PR writes, but has no environment, Actions-variable, or IAM configuration tools. Actual GitHub environment/variable/protection settings and cloud state therefore remain unverified here. Owner-reported settings are not independently verified findings. Do not set the enable variable even after identifiers are configured until explicit deployment approval. No public deploy has been attempted.

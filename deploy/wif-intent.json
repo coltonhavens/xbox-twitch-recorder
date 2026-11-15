@@ -1,0 +1,19 @@
+{
+  "status": "review-only; not applied",
+  "project_id": "xbox-twitch-recorder",
+  "project_number": null,
+  "service_account": "github-hosting-deploy@xbox-twitch-recorder.iam.gserviceaccount.com",
+  "pool_id": "github-hosting",
+  "provider_id": "github",
+  "issuer_uri": "https://token.actions.githubusercontent.com",
+  "attribute_mapping": {
+    "google.subject": "assertion.sub",
+    "attribute.repository_id": "assertion.repository_id",
+    "attribute.repository_owner_id": "assertion.repository_owner_id"
+  },
+  "attribute_condition": "assertion.repository_id == '1442216654' && assertion.repository_owner_id == '230064597' && assertion.repository == 'coltonhavens/xbox-twitch-recorder' && assertion.ref == 'refs/heads/main' && assertion.workflow_ref == 'coltonhavens/xbox-twitch-recorder/.github/workflows/deploy-firebase.yml@refs/heads/main' && assertion.sub == 'repo:coltonhavens/xbox-twitch-recorder:environment:firebase-production'",
+  "service_account_project_roles": ["roles/firebasehosting.admin", "roles/serviceusage.serviceUsageConsumer"],
+  "impersonation_role_on_service_account_only": "roles/iam.workloadIdentityUser",
+  "principal_set_template": "principalSet://iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-hosting/attribute.repository_id/1442216654",
+  "allowed_audiences": "provider default; do not add wildcard or arbitrary audiences"
+}

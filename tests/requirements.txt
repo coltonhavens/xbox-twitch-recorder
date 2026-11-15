@@ -1,0 +1,2 @@
+-r ../recorder/requirements.txt
+-r ../broker/requirements.txt
