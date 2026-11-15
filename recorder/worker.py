@@ -54,7 +54,7 @@ def vod_info(vod_id):
 
 
 def mux_args(progress):
-    return ['ffmpeg', '-nostdin', '-v', 'error', '-xerror', '-i', 'pipe:0',
+    return ['ffmpeg', '-nostdin', '-v', 'error', '-err_detect', 'ignore_err', '-fflags', '+discardcorrupt', '-i', 'pipe:0',
             '-map', '0:v:0', '-map', '0:a:0', '-c', 'copy', '-bsf:a', 'aac_adtstoasc',
             '-movflags', 'frag_keyframe+empty_moov+default_base_moof',
             '-progress', str(progress), '-f', 'mp4', 'pipe:1']
