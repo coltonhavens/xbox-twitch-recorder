@@ -16,6 +16,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 plan = json.load(open(sys.argv[1])); outdir = sys.argv[2]
 os.makedirs(outdir, exist_ok=True)
 S, E = float(plan["start"]), float(plan["end"])
+if not [w for w in plan["words"] if S <= w["s"] < E]:
+    raise SystemExit(f"{plan['name']}: no captions. Every clip needs on-screen captions (his words, or callouts like DOWN!/DOUBLE KILL!)")
 with tempfile.TemporaryDirectory() as d:
     win = os.path.join(d, "window.mp4")
     subprocess.run(["python3", os.path.join(HERE, "twitch_fetch.py"), "window", str(plan["vod"]), str(S), str(E), win], check=True)
