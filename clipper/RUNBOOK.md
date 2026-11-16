@@ -46,6 +46,20 @@ in the action and ends on the payoff.
   "I suck" clips** unless the commentary alone carries it.
 - Don't reuse the same moment. Don't invent words — captions come from the transcript (fix obvious mishearings only).
 
+
+## Automatic clip triggers (always clip these, talking or not)
+Scan the game HUD, not just the transcript:
+- **"Clip it" / "clip that"** (Whisper often hears "flip that"): clip the 30–60 s before it. Transcribe the whole
+  stream once with base.en **without** VAD too — the VAD pass misses lines over loud game audio.
+- **Multi-kills:** 2+ different enemy names in the top-right "ENEMY DOWNED" banner within ~10 s = double, 3 = triple,
+  4 = quad. Scan the banner (crop 1000,80 → 280x60 on 1280x720) at 1 fps, OCR only frames that changed, ignore
+  "TEAMMATE DOWN/DEAD/REVIVED". Verify names on a banner contact sheet before trusting OCR. Multi-kill clips are
+  `type: "gameplay"` (real time), start ~10 s before the first down, end on the last down or his reaction.
+- **Assassinations / finishing moves** (getting behind someone): always a clip on their own.
+- **Headshot montages (later):** only shots the scorecard / popup confirms (HEADSHOT, ONE SHOT ONE KILL), no misses.
+- Small.en without VAD hallucinates filler ("death", "five", repeated lines) on game audio — keep only real lines
+  you can match to his voice; drop the rest rather than caption garbage.
+
 ## 5. Write the plan (one JSON per clip)
 `plans/<YYYY-MM-DD>/<n>_<slug>.json` — format documented at the top of `render_plan.py`. All times are VOD seconds.
 - `title`: 2 short lines, the meaning in plain words ("Trying my absolute hardest\nagainst BOTS").

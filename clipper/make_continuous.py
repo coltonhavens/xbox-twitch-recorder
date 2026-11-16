@@ -25,6 +25,8 @@ for s, e in talk:
     spans.append((s, e, 1.0)); t = e
 if t < B:
     gap = B - t; spans.append((t, B, 1.0 if gap < 3 else (2.0 if gap < 8 else 4.0)))
+if plan.get("realtime"):
+    spans = [(A, B, 1.0)]                            # gameplay clips: always real time, even with no talking
 # merge neighbours with the same speed
 merged = []
 for sp in spans:
