@@ -1,0 +1,44 @@
+{
+ "vod": "2930265100",
+ "start": 1294.5,
+ "end": 1318.0,
+ "title": "3 enemies down\nin 12 seconds",
+ "meaning": "Three different enemies downed back to back in 12 seconds (ACE__LA, BIGRAT55, PHARTBUHTT).",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 1299.5,
+   "e": 1300.3
+  },
+  {
+   "w": "DOWN!",
+   "s": 1307.5,
+   "e": 1308.3
+  },
+  {
+   "w": "3",
+   "s": 1312.0,
+   "e": 1312.4
+  },
+  {
+   "w": "DOWNS!",
+   "s": 1312.4,
+   "e": 1313.2
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   1294.5,
+   1308,
+   "rage"
+  ],
+  [
+   1308,
+   9000000000.0,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-16_three_downs_12_seconds"
+}

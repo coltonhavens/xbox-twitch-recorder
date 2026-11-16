@@ -68,6 +68,37 @@
     ]
    ],
    "note": "Nov 15 night stream; test run"
+  },
+  "2930265100": {
+   "transcribed": true,
+   "clipped": [
+    [
+     1294.5,
+     1318.0,
+     "three_downs_12_seconds"
+    ],
+    [
+     1362.5,
+     1386.5,
+     "thought_you_could_chase_me"
+    ],
+    [
+     1394.5,
+     1445.0,
+     "six_downs_flow_state"
+    ],
+    [
+     4079.5,
+     4166.3,
+     "here_for_the_bots"
+    ],
+    [
+     7461.0,
+     7492.0,
+     "triple_clip_that"
+    ]
+   ],
+   "note": "Nov 16 stream; nightly run. Skipped 2096-2132 (sarcastic 'I'm so good' after a 12th place \u2014 an 'I suck' clip, no meme sounds yet) and 6150-6195 (single down)."
   }
  }
 }

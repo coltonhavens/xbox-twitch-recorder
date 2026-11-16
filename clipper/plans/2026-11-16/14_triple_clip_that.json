@@ -1,0 +1,89 @@
+{
+ "vod": "2930265100",
+ "start": 7461.0,
+ "end": 7492.0,
+ "title": "Triple down in 8 seconds.\n\"There you go, clip that\"",
+ "meaning": "Three enemies downed in under 8 seconds (THEBERRIES, LIGHT_DAISY, [SOAP]ICCYHOTT), then 'there you go, clip that.'",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 7466.0,
+   "e": 7466.8
+  },
+  {
+   "w": "DOWN!",
+   "s": 7470.5,
+   "e": 7471.3
+  },
+  {
+   "w": "TRIPLE!",
+   "s": 7473.5,
+   "e": 7474.5
+  },
+  {
+   "w": "There",
+   "s": 7475.0,
+   "e": 7475.46
+  },
+  {
+   "w": "you",
+   "s": 7475.46,
+   "e": 7475.58
+  },
+  {
+   "w": "go,",
+   "s": 7475.58,
+   "e": 7475.74
+  },
+  {
+   "w": "clip",
+   "s": 7475.74,
+   "e": 7476.0
+  },
+  {
+   "w": "that.",
+   "s": 7476.0,
+   "e": 7476.4
+  },
+  {
+   "w": "There",
+   "s": 7489.92,
+   "e": 7490.52
+  },
+  {
+   "w": "you",
+   "s": 7490.52,
+   "e": 7490.6
+  },
+  {
+   "w": "go,",
+   "s": 7490.6,
+   "e": 7490.74
+  },
+  {
+   "w": "clip",
+   "s": 7490.74,
+   "e": 7490.92
+  },
+  {
+   "w": "that.",
+   "s": 7490.92,
+   "e": 7491.3
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   7461,
+   7474,
+   "rage"
+  ],
+  [
+   7474,
+   9000000000.0,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-16_triple_clip_that"
+}
