@@ -56,6 +56,12 @@ Scan the game HUD, not just the transcript:
   "TEAMMATE DOWN/DEAD/REVIVED". Verify names on a banner contact sheet before trusting OCR. Multi-kill clips are
   `type: "gameplay"` (real time), start ~10 s before the first down, end on the last down or his reaction.
 - **Assassinations / finishing moves** (getting behind someone): always a clip on their own.
+- **Longshots:** always a clip. Run `medal_scan.py VOD '[down times]'` on every confirmed down; it reads the
+  center medal/popup band, the kill banner and the weapon box for "LONGSHOT". Also catch him saying "long shot",
+  "from way over there", "how far was that". Confirm on a contact sheet (popup visible) before clipping.
+- **Throwing knife kills:** always a clip. Same scan looks for "THROWING KNIFE" / "KNIFE"; also catch him saying
+  "knife", "threw it", "tomahawk". Confirm by eye: the knife throw is on screen and the banner shows the down.
+  Start ~5 s before the throw, end on the down or his reaction.
 - **Headshot montages (later):** only shots the scorecard / popup confirms (HEADSHOT, ONE SHOT ONE KILL), no misses.
 - Small.en without VAD hallucinates filler ("death", "five", repeated lines) on game audio — keep only real lines
   you can match to his voice; drop the rest rather than caption garbage.
