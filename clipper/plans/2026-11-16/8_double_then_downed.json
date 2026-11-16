@@ -1,0 +1,39 @@
+{
+ "vod": "2930103522",
+ "start": 3043,
+ "end": 3066,
+ "title": "Double kill... then\ninstantly downed",
+ "meaning": "D_double_then_downed",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 3052.0,
+   "e": 3053.0
+  },
+  {
+   "w": "DOUBLE",
+   "s": 3058.0,
+   "e": 3058.6
+  },
+  {
+   "w": "KILL!",
+   "s": 3058.6,
+   "e": 3059.5
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   3043,
+   3055,
+   "shocked"
+  ],
+  [
+   3055,
+   9000000000.0,
+   "sad"
+  ]
+ ],
+ "name": "2026-11-16_double_then_downed"
+}

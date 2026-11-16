@@ -37,6 +37,37 @@
     ]
    ],
    "note": "setup test clip"
+  },
+  "2930103522": {
+   "transcribed": true,
+   "clipped": [
+    [
+     1044,
+     1067,
+     "i_knew_he_was_waiting"
+    ],
+    [
+     5630,
+     5662,
+     "two_downs_clip_it"
+    ],
+    [
+     6362,
+     6392,
+     "good_kills"
+    ],
+    [
+     3043,
+     3066,
+     "double_then_downed"
+    ],
+    [
+     5092,
+     5119,
+     "double_another_team"
+    ]
+   ],
+   "note": "Nov 15 night stream; test run"
   }
  }
 }

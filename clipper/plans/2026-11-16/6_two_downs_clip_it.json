@@ -1,0 +1,51 @@
+{
+ "vod": "2930103522",
+ "start": 5630,
+ "end": 5662,
+ "title": "2 downs in 3 seconds.\nOkay, I'll clip it.",
+ "meaning": "B_two_downs_clip_it",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "Hey,",
+   "s": 5654.3,
+   "e": 5654.78
+  },
+  {
+   "w": "I'll",
+   "s": 5654.86,
+   "e": 5655.08
+  },
+  {
+   "w": "clip",
+   "s": 5655.08,
+   "e": 5655.32
+  },
+  {
+   "w": "it",
+   "s": 5655.32,
+   "e": 5655.56
+  }
+ ],
+ "fix": {
+  "Hey,": "Okay,"
+ },
+ "moods": [
+  [
+   5630,
+   5640,
+   "rage"
+  ],
+  [
+   5640,
+   5652,
+   "shocked"
+  ],
+  [
+   5652,
+   9000000000.0,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-16_two_downs_clip_it"
+}

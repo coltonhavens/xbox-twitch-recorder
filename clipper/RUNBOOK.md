@@ -60,6 +60,11 @@ Scan the game HUD, not just the transcript:
 - Small.en without VAD hallucinates filler ("death", "five", repeated lines) on game audio — keep only real lines
   you can match to his voice; drop the rest rather than caption garbage.
 
+## Colton's feedback (Nov 16)
+- **Keep intros short:** start ~5 s before the first real action (the first shot / the down), not 15-20 s.
+- **Every clip has on-screen captions.** If he doesn't talk, add short callout words at the moments that matter
+  (e.g. "DOWN!" at each down, "DOUBLE KILL!" on the second) using the banner times.
+
 ## 5. Write the plan (one JSON per clip)
 `plans/<YYYY-MM-DD>/<n>_<slug>.json` — format documented at the top of `render_plan.py`. All times are VOD seconds.
 - `title`: 2 short lines, the meaning in plain words ("Trying my absolute hardest\nagainst BOTS").
