@@ -35,7 +35,8 @@ for path in files:
     have = child(day, name)
     if have and int(have.get("size", 0)) == os.path.getsize(path):
         print("already in Drive:", name); continue
-    media = MediaFileUpload(path, mimetype="video/mp4", resumable=True, chunksize=8 * 1024 * 1024)
+    mime = "video/mp4" if name.endswith(".mp4") else "text/plain"
+    media = MediaFileUpload(path, mimetype=mime, resumable=True, chunksize=8 * 1024 * 1024)
     req = api.files().create(body={"name": name, "parents": [day]}, media_body=media, fields="id,size")
     resp = None
     while resp is None:

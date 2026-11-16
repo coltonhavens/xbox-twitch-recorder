@@ -32,4 +32,6 @@ with tempfile.TemporaryDirectory() as d:
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", cont["out"], "-c:v", "libx264", "-preset", "medium", "-crf", "24",
                     "-maxrate", "4M", "-bufsize", "8M", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k",
                     "-movflags", "+faststart", final], check=True)
+caption = plan.get("caption") or (" ".join(plan["title"].split()) + " #callofduty #warzone #mrhype420 #codclips #gaming")
+open(os.path.join(outdir, plan["name"] + ".txt"), "w").write(caption + "\n")   # TikTok caption, read by the poster
 print("rendered", final, os.path.getsize(final))

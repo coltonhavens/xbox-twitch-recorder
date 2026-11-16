@@ -62,6 +62,6 @@ jobs:
           done
           for d in out/*/; do
             date=$(basename "$d")
-            python clipper/upload_to_drive.py "$date" "$d"*.mp4
+            python clipper/upload_to_drive.py "$date" "$d"*.mp4 "$d"*.txt
           done
 # No artifacts, no write token; the only secret is the existing drive.file credential.
