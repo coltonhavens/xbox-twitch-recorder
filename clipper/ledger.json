@@ -1,0 +1,42 @@
+{
+ "note": "VOD id -> transcribed + clipped windows (VOD seconds). Never clip overlapping seconds twice.",
+ "vods": {
+  "2928149268": {
+   "transcribed": true,
+   "clipped": [
+    [
+     1587.5,
+     1746.3,
+     "rooftop_sniper"
+    ],
+    [
+     686.6,
+     766.0,
+     "late_from_instagram"
+    ],
+    [
+     801.8,
+     836.4,
+     "plate_up"
+    ],
+    [
+     1939.5,
+     2016.2,
+     "first_shots"
+    ]
+   ],
+   "note": "Nov 14 stream; clipped by hand during setup"
+  },
+  "2929897580": {
+   "transcribed": true,
+   "clipped": [
+    [
+     4472.35,
+     4541.85,
+     "tryhard_vs_bots"
+    ]
+   ],
+   "note": "setup test clip"
+  }
+ }
+}

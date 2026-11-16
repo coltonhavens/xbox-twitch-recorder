@@ -1,0 +1,5 @@
+yt-dlp==2026.10.26
+numpy
+pillow
+google-api-python-client==2.187.0
+google-auth==2.41.1
