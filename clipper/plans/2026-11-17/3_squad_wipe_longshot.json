@@ -1,0 +1,79 @@
+{
+ "vod": "2930581958",
+ "start": 1442.0,
+ "end": 1477.5,
+ "title": "Squad wipe\nwith a LONGSHOT",
+ "meaning": "Downs RAINMAN1142011 and BSKP3, finishes the squad with a one-shot LONGSHOT (SQUAD WIPED), then gets sniped at right after.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 1446.5,
+   "e": 1447.3
+  },
+  {
+   "w": "DOWN!",
+   "s": 1457.5,
+   "e": 1458.3
+  },
+  {
+   "w": "SQUAD",
+   "s": 1468.5,
+   "e": 1469.0
+  },
+  {
+   "w": "WIPED!",
+   "s": 1469.0,
+   "e": 1469.5
+  },
+  {
+   "w": "LONGSHOT!",
+   "s": 1469.5,
+   "e": 1470.7
+  },
+  {
+   "w": "Oh,",
+   "s": 1472.3,
+   "e": 1473.2
+  },
+  {
+   "w": "you're",
+   "s": 1473.2,
+   "e": 1474.1
+  },
+  {
+   "w": "sniping",
+   "s": 1474.1,
+   "e": 1475.0
+  },
+  {
+   "w": "me",
+   "s": 1475.0,
+   "e": 1475.9
+  },
+  {
+   "w": "from...",
+   "s": 1475.9,
+   "e": 1476.8
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   1442,
+   1468,
+   "rage"
+  ],
+  [
+   1468,
+   1472,
+   "shocked"
+  ],
+  [
+   1472,
+   9000000000.0,
+   "rage"
+  ]
+ ],
+ "name": "2026-11-17_squad_wipe_longshot"
+}

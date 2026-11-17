@@ -1,0 +1,49 @@
+{
+ "vod": "2930581958",
+ "start": 1170.0,
+ "end": 1199.0,
+ "title": "4 enemies down\nin 19 seconds",
+ "meaning": "Four different enemies downed in 19 seconds (DOUBLE1MAX, TALEW, ACEKNIGHT, CROUCHING7HE) and the game pops QUAD FEED.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 1175.0,
+   "e": 1175.8
+  },
+  {
+   "w": "DOWN!",
+   "s": 1181.5,
+   "e": 1182.3
+  },
+  {
+   "w": "DOWN!",
+   "s": 1184.5,
+   "e": 1185.3
+  },
+  {
+   "w": "QUAD",
+   "s": 1194.0,
+   "e": 1194.7
+  },
+  {
+   "w": "FEED!",
+   "s": 1194.7,
+   "e": 1195.4
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   1170,
+   1184,
+   "rage"
+  ],
+  [
+   1184,
+   9000000000.0,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-17_quad_feed"
+}

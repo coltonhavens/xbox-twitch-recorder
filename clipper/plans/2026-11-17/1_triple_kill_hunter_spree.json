@@ -1,0 +1,59 @@
+{
+ "vod": "2930581958",
+ "start": 397.0,
+ "end": 431.5,
+ "title": "Triple kill, then\none more for the spree",
+ "meaning": "Downs 1BIGEDGE77, LEMON__XX and TOPE_BOY2005, gets TRIPLE KILL, then downs THE___IVANO too: four downs in 24 seconds.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 402.0,
+   "e": 402.8
+  },
+  {
+   "w": "DOWN!",
+   "s": 410.5,
+   "e": 411.3
+  },
+  {
+   "w": "DOWN!",
+   "s": 415.5,
+   "e": 416.3
+  },
+  {
+   "w": "TRIPLE",
+   "s": 423.0,
+   "e": 423.7
+  },
+  {
+   "w": "KILL!",
+   "s": 423.7,
+   "e": 424.4
+  },
+  {
+   "w": "4",
+   "s": 426.0,
+   "e": 426.7
+  },
+  {
+   "w": "DOWNS!",
+   "s": 426.7,
+   "e": 427.4
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   397,
+   415,
+   "rage"
+  ],
+  [
+   415,
+   9000000000.0,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-17_triple_kill_hunter_spree"
+}

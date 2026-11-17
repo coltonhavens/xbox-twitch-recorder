@@ -99,6 +99,42 @@
     ]
    ],
    "note": "Nov 16 stream; nightly run. Skipped 2096-2132 (sarcastic 'I'm so good' after a 12th place \u2014 an 'I suck' clip, no meme sounds yet) and 6150-6195 (single down)."
+  },
+  "2930581958": {
+   "transcribed": true,
+   "clipped": [
+    [
+     1170.0,
+     1199.0,
+     "quad_feed"
+    ],
+    [
+     397.0,
+     431.5,
+     "triple_kill_hunter_spree"
+    ],
+    [
+     215.5,
+     243.5,
+     "sniper_triple_longshot"
+    ],
+    [
+     1442.0,
+     1477.5,
+     "squad_wipe_longshot"
+    ],
+    [
+     1662.0,
+     1700.5,
+     "lucky_you_got_a_boy"
+    ]
+   ],
+   "note": "Nov 16-17 stream (43 min); nightly run 2026-11-17. Unused for later: 1612-1642 one-shot LONGSHOT (1619.5, ALBUQRAZY) + down 1637; 457-476 two downs incl. LONGSHOT at 470.5; 1270-1295 downs; 2015-2058 four downs over 43s; 2509-2537 three downs in 28s."
+  },
+  "2930963428": {
+   "transcribed": true,
+   "clipped": [],
+   "note": "13-min audio-only VOD (no video formats on Twitch); nothing to clip."
   }
  }
 }

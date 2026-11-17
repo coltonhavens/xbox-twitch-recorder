@@ -1,0 +1,49 @@
+{
+ "vod": "2930581958",
+ "start": 215.5,
+ "end": 243.5,
+ "title": "3 enemies down in\n20 seconds, one a LONGSHOT",
+ "meaning": "Scoped in, he downs LEFTY_BAJA1987 (LONGSHOT medal), TRANCHANT471 and SNAKEWORLD back to back in 20 seconds.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 220.5,
+   "e": 221.3
+  },
+  {
+   "w": "LONGSHOT!",
+   "s": 226.5,
+   "e": 227.7
+  },
+  {
+   "w": "DOWN!",
+   "s": 233.0,
+   "e": 233.8
+  },
+  {
+   "w": "3",
+   "s": 240.5,
+   "e": 241.2
+  },
+  {
+   "w": "DOWNS!",
+   "s": 241.2,
+   "e": 241.9
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   215.5,
+   233,
+   "calm"
+  ],
+  [
+   233,
+   9000000000.0,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-17_sniper_triple_longshot"
+}
