@@ -1,0 +1,79 @@
+{
+ "vod": "2931992210",
+ "start": 6615.0,
+ "end": 6652.0,
+ "title": "Downed both of them\nmy first team wipe",
+ "meaning": "He hunts a duo through a stairwell, downs both, and calls it his first team wipe of the night.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 6620.5,
+   "e": 6621.3
+  },
+  {
+   "w": "DOWN!",
+   "s": 6637.5,
+   "e": 6638.3
+  },
+  {
+   "w": "There",
+   "s": 6645.66,
+   "e": 6646.68
+  },
+  {
+   "w": "we",
+   "s": 6646.68,
+   "e": 6646.8
+  },
+  {
+   "w": "go,",
+   "s": 6646.8,
+   "e": 6647.54
+  },
+  {
+   "w": "looks",
+   "s": 6647.54,
+   "e": 6649.82
+  },
+  {
+   "w": "like",
+   "s": 6649.82,
+   "e": 6649.92
+  },
+  {
+   "w": "my",
+   "s": 6649.92,
+   "e": 6650.12
+  },
+  {
+   "w": "first",
+   "s": 6650.12,
+   "e": 6650.4
+  },
+  {
+   "w": "team",
+   "s": 6650.4,
+   "e": 6650.66
+  },
+  {
+   "w": "wipe.",
+   "s": 6650.66,
+   "e": 6651.46
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   6615,
+   6637,
+   "calm"
+  ],
+  [
+   6637,
+   9000000000.0,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-18_first_team_wipe"
+}

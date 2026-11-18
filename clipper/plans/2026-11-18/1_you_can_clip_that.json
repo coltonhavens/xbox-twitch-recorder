@@ -1,0 +1,89 @@
+{
+ "vod": "2931992210",
+ "start": 688.0,
+ "end": 737.0,
+ "title": "3 downs, then\n\"you can clip that\"",
+ "meaning": "He downs two in five seconds, snipes a third, and tells chat to clip it because it was a good kill.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 693.0,
+   "e": 693.8
+  },
+  {
+   "w": "DOUBLE!",
+   "s": 698.0,
+   "e": 698.8
+  },
+  {
+   "w": "DOWN!",
+   "s": 723.5,
+   "e": 724.3
+  },
+  {
+   "w": "Alright,",
+   "s": 728.42,
+   "e": 728.8
+  },
+  {
+   "w": "you",
+   "s": 731.06,
+   "e": 731.06
+  },
+  {
+   "w": "can",
+   "s": 731.06,
+   "e": 731.2
+  },
+  {
+   "w": "clip",
+   "s": 731.2,
+   "e": 731.38
+  },
+  {
+   "w": "that",
+   "s": 731.38,
+   "e": 732.42
+  },
+  {
+   "w": "That",
+   "s": 732.42,
+   "e": 733.8
+  },
+  {
+   "w": "was",
+   "s": 733.8,
+   "e": 735.84
+  },
+  {
+   "w": "a",
+   "s": 735.84,
+   "e": 735.94
+  },
+  {
+   "w": "good",
+   "s": 735.94,
+   "e": 736.08
+  },
+  {
+   "w": "kill.",
+   "s": 736.08,
+   "e": 736.34
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   688,
+   723,
+   "calm"
+  ],
+  [
+   723,
+   9000000000.0,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-18_you_can_clip_that"
+}

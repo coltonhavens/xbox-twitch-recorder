@@ -1,0 +1,59 @@
+{
+ "vod": "2931992210",
+ "start": 1321.5,
+ "end": 1339.5,
+ "title": "3 sniper downs\nin 9 seconds",
+ "meaning": "Three different enemies downed in 9 seconds with the sniper (WRITINGCOTTON, WATERMELON, SKEWR_WOOD), then 'those are good shots'.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 1326.5,
+   "e": 1327.3
+  },
+  {
+   "w": "DOUBLE!",
+   "s": 1331.5,
+   "e": 1332.3
+  },
+  {
+   "w": "TRIPLE!",
+   "s": 1335.5,
+   "e": 1336.3
+  },
+  {
+   "w": "Those",
+   "s": 1337.82,
+   "e": 1338.06
+  },
+  {
+   "w": "are",
+   "s": 1338.06,
+   "e": 1338.18
+  },
+  {
+   "w": "good",
+   "s": 1338.18,
+   "e": 1338.3
+  },
+  {
+   "w": "shots.",
+   "s": 1338.3,
+   "e": 1338.7
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   1321,
+   1331,
+   "calm"
+  ],
+  [
+   1331,
+   9000000000.0,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-18_sniper_triple_9_seconds"
+}

@@ -1,0 +1,39 @@
+{
+ "vod": "2931992210",
+ "start": 1206.0,
+ "end": 1233.0,
+ "title": "3 enemies down\nin 18 seconds",
+ "meaning": "Three different enemies downed in 18 seconds around the shipping yard (REAVERWHEEL, MEGA_RATCHET, X_SNOWCOSSACK).",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 1211.0,
+   "e": 1211.8
+  },
+  {
+   "w": "DOUBLE!",
+   "s": 1222.5,
+   "e": 1223.3
+  },
+  {
+   "w": "TRIPLE!",
+   "s": 1228.5,
+   "e": 1229.3
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   1206,
+   1222,
+   "calm"
+  ],
+  [
+   1222,
+   9000000000.0,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-18_triple_18_seconds"
+}

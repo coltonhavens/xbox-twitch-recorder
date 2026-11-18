@@ -135,6 +135,47 @@
    "transcribed": true,
    "clipped": [],
    "note": "13-min audio-only VOD (no video formats on Twitch); nothing to clip."
+  },
+  "2931992210": {
+   "transcribed": true,
+   "clipped": [
+    [
+     6615.0,
+     6652.0,
+     "first_team_wipe"
+    ],
+    [
+     688.0,
+     737.0,
+     "you_can_clip_that"
+    ],
+    [
+     1321.5,
+     1339.5,
+     "sniper_triple_9_seconds"
+    ],
+    [
+     1373.0,
+     1416.0,
+     "bad_push_four_downs"
+    ],
+    [
+     1206.0,
+     1233.0,
+     "triple_18_seconds"
+    ]
+   ],
+   "note": "Nov 17-18 stream (2h8m); nightly run 2026-11-18. Unused for later: 44-152 bot-lobby downs (many); 1651-1678 triple KAPALOT/KARACORAZAD/MOTTONWARRIOR then dies; 1743-1753 double; 2090-2126 downs; 2940-2981 triple over 40s; 3243-3271 3-4 downs in 28s; 4896-4922 downs; 2002-2033 'bot killed me with a pistol' rant (I-suck clip, skipped). No longshots/knives found (medal_scan)."
+  },
+  "2931853788": {
+   "transcribed": true,
+   "clipped": [],
+   "note": "Nov 17 stream (45m); transcribed 2026-11-18, not clipped yet. Candidate: 746-760 'oh that's a real guy, good kill boys, look at that bounty'."
+  },
+  "2931375285": {
+   "transcribed": true,
+   "clipped": [],
+   "note": "Nov 17 stream (55m); transcribed 2026-11-18, not clipped yet."
   }
  }
 }
