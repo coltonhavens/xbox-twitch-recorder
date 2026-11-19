@@ -1,0 +1,111 @@
+{
+ "vod": "2932398326",
+ "start": 141.5,
+ "end": 190.0,
+ "title": "Five downs in 35 seconds\nTRIPLE KILL to finish",
+ "meaning": "He clears a building with a shotgun, downing five players in about 35 seconds and finishing on a triple kill.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 146.5,
+   "e": 147.3
+  },
+  {
+   "w": "DOWN!",
+   "s": 160.0,
+   "e": 160.8
+  },
+  {
+   "w": "That'll",
+   "s": 160.62,
+   "e": 161.14
+  },
+  {
+   "w": "be",
+   "s": 161.14,
+   "e": 161.24
+  },
+  {
+   "w": "people",
+   "s": 161.24,
+   "e": 161.5
+  },
+  {
+   "w": "on",
+   "s": 161.5,
+   "e": 161.68
+  },
+  {
+   "w": "this",
+   "s": 161.68,
+   "e": 161.86
+  },
+  {
+   "w": "roof.",
+   "s": 161.86,
+   "e": 162.86
+  },
+  {
+   "w": "DOWN!",
+   "s": 170.6,
+   "e": 171.4
+  },
+  {
+   "w": "Oh,",
+   "s": 171.8,
+   "e": 172.32
+  },
+  {
+   "w": "I",
+   "s": 172.36,
+   "e": 172.54
+  },
+  {
+   "w": "just",
+   "s": 172.54,
+   "e": 172.66
+  },
+  {
+   "w": "got",
+   "s": 172.66,
+   "e": 172.88
+  },
+  {
+   "w": "fucking",
+   "s": 172.88,
+   "e": 173.18
+  },
+  {
+   "w": "shotgun.",
+   "s": 173.18,
+   "e": 173.6
+  },
+  {
+   "w": "DOUBLE!",
+   "s": 178.5,
+   "e": 179.3
+  },
+  {
+   "w": "TRIPLE KILL!",
+   "s": 181.0,
+   "e": 182.2
+  }
+ ],
+ "fix": {
+  "That'll": "Gotta"
+ },
+ "moods": [
+  [
+   141.5,
+   170,
+   "calm"
+  ],
+  [
+   170,
+   9000000000.0,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-19_five_downs_triple_kill"
+}

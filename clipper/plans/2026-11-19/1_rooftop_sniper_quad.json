@@ -1,0 +1,49 @@
+{
+ "vod": "2932398326",
+ "start": 1393.5,
+ "end": 1430.0,
+ "title": "Four downs from one roof\nsniper QUAD",
+ "meaning": "Posted on a rooftop with a sniper, he downs four different players in about 25 seconds.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 1398.6,
+   "e": 1399.4
+  },
+  {
+   "w": "DOUBLE!",
+   "s": 1407.0,
+   "e": 1407.8
+  },
+  {
+   "w": "TRIPLE!",
+   "s": 1413.8,
+   "e": 1414.6
+  },
+  {
+   "w": "QUAD!",
+   "s": 1422.8,
+   "e": 1424.0
+  },
+  {
+   "w": "FROM THE ROOF",
+   "s": 1426.0,
+   "e": 1427.5
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   1393.5,
+   1420,
+   "calm"
+  ],
+  [
+   1420,
+   9000000000.0,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-19_rooftop_sniper_quad"
+}
