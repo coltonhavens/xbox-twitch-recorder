@@ -1,0 +1,69 @@
+{
+ "vod": "2930581958",
+ "start": 1614.5,
+ "end": 1639.0,
+ "title": "One shot one kill\nLONGSHOT headshot",
+ "meaning": "With a Mosin sniper he drops a player with a one-shot longshot headshot, then snipes a second player 15 seconds later.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 1619.6,
+   "e": 1620.5
+  },
+  {
+   "w": "LONGSHOT HEADSHOT!",
+   "s": 1620.8,
+   "e": 1622.0
+  },
+  {
+   "w": "There",
+   "s": 1622.48,
+   "e": 1623.88
+  },
+  {
+   "w": "we",
+   "s": 1623.88,
+   "e": 1624.08
+  },
+  {
+   "w": "go.",
+   "s": 1624.08,
+   "e": 1624.3
+  },
+  {
+   "w": "Oh",
+   "s": 1635.82,
+   "e": 1637.22
+  },
+  {
+   "w": "SNIPED!",
+   "s": 1636.6,
+   "e": 1637.5
+  },
+  {
+   "w": "shit.",
+   "s": 1637.22,
+   "e": 1637.68
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   1614.5,
+   1619,
+   "calm"
+  ],
+  [
+   1619,
+   1630,
+   "shocked"
+  ],
+  [
+   1630,
+   9000000000.0,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-20_longshot_headshot"
+}

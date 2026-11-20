@@ -1,0 +1,89 @@
+{
+ "vod": "2934307253",
+ "start": 1924.5,
+ "end": 1943.2,
+ "title": "Someone's here...\nDOUBLE DOWN",
+ "meaning": "He hears someone in the building and drops two players back to back, then says 'let's go, clip that'.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "In",
+   "s": 1925.06,
+   "e": 1925.54
+  },
+  {
+   "w": "the",
+   "s": 1925.54,
+   "e": 1925.7
+  },
+  {
+   "w": "building,",
+   "s": 1925.7,
+   "e": 1925.9
+  },
+  {
+   "w": "I",
+   "s": 1926.12,
+   "e": 1926.12
+  },
+  {
+   "w": "mean,",
+   "s": 1926.12,
+   "e": 1926.26
+  },
+  {
+   "w": "someone's",
+   "s": 1926.4,
+   "e": 1926.78
+  },
+  {
+   "w": "here.",
+   "s": 1926.78,
+   "e": 1927.32
+  },
+  {
+   "w": "DOWN!",
+   "s": 1931.6,
+   "e": 1932.5
+  },
+  {
+   "w": "DOUBLE!",
+   "s": 1936.6,
+   "e": 1937.5
+  },
+  {
+   "w": "Let's",
+   "s": 1941.3,
+   "e": 1941.78
+  },
+  {
+   "w": "go,",
+   "s": 1941.78,
+   "e": 1942.0
+  },
+  {
+   "w": "clip",
+   "s": 1942.04,
+   "e": 1942.3
+  },
+  {
+   "w": "that.",
+   "s": 1942.3,
+   "e": 1942.58
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   1924.5,
+   1931,
+   "calm"
+  ],
+  [
+   1931,
+   9000000000.0,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-20_double_down_clip_that"
+}

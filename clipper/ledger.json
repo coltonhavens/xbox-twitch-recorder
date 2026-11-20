@@ -127,6 +127,11 @@
      1662.0,
      1700.5,
      "lucky_you_got_a_boy"
+    ],
+    [
+     1614.5,
+     1639.0,
+     "longshot_headshot"
     ]
    ],
    "note": "Nov 16-17 stream (43 min); nightly run 2026-11-17. Unused for later: 1612-1642 one-shot LONGSHOT (1619.5, ALBUQRAZY) + down 1637; 457-476 two downs incl. LONGSHOT at 470.5; 1270-1295 downs; 2015-2058 four downs over 43s; 2509-2537 three downs in 28s."
@@ -163,9 +168,14 @@
      1206.0,
      1233.0,
      "triple_18_seconds"
+    ],
+    [
+     3234.5,
+     3270.0,
+     "four_downs_30_seconds"
     ]
    ],
-   "note": "Nov 17-18 stream (2h8m); nightly run 2026-11-18. Unused for later: 44-152 bot-lobby downs (many); 1651-1678 triple KAPALOT/KARACORAZAD/MOTTONWARRIOR then dies; 1743-1753 double; 2090-2126 downs; 2940-2981 triple over 40s; 3243-3271 3-4 downs in 28s; 4896-4922 downs; 2002-2033 'bot killed me with a pistol' rant (I-suck clip, skipped). No longshots/knives found (medal_scan)."
+   "note": "Nov 17-18 stream (2h8m); nightly run 2026-11-18. Unused for later: 44-152 bot-lobby downs (many); 1651-1678 only a double (KAPALOT banner twice, MOTIONWARRIOR12) then dies, no real voice lines \u2014 checked 2026-11-20; 1743-1753 double; 2090-2126 downs; 2940-2981 triple over 40s; 3243-3271 3-4 downs in 28s; 4896-4922 downs; 2002-2033 'bot killed me with a pistol' rant (I-suck clip, skipped). No longshots/knives found (medal_scan)."
   },
   "2931853788": {
    "transcribed": true,
@@ -213,6 +223,27 @@
     ]
    ],
    "note": "Nov 18-19 stream (2h7m): Warzone to ~2800s, then MW3 Gunfight 2v2 with a friend. Nightly run 2026-11-19. Outfit clip was requested on stream at 1689. Unused for later: 1523-1546 double (URFAVGRANNY, AARON_RYDER18); 1601-1618 downs; 5600-5616 'I set up my AI to clip my lives' talk; 7446-7466 'Bullseye, now we knife them'; 3225-3278 Ford joke (non-gaming). 1068 'clip that' follows his own death (skipped, I-suck). No longshots/knives in Warzone part of short VOD."
+  },
+  "2934307253": {
+   "transcribed": true,
+   "clipped": [
+    [
+     1192.5,
+     1255.0,
+     "teammate_dead_holds_alone"
+    ],
+    [
+     1924.5,
+     1943.2,
+     "double_down_clip_that"
+    ],
+    [
+     2905.0,
+     2927.7,
+     "zipline_to_nowhere"
+    ]
+   ],
+   "note": "Nov 19-20 stream (60m); nightly run 2026-11-20. 88-450 is business/sales talk (non-gaming). Unused for later: 3331-3346 sniped by a guy on the tower, 'God, what a shot' over killcam (he dies; skipped as I-suck); 2176 single snipe down (DABUS22) 'I got one, sniped him'; 2768-2862 assassination rant + 'I played it like a little bitch and won, clip that' (crude); 1889 down ROSAPERCS + 1900-1917 impact warhead 'first time I've seen a warhead work'; banner downs at 158, 293, 537."
   }
  }
 }

@@ -1,0 +1,44 @@
+{
+ "vod": "2931992210",
+ "start": 3234.5,
+ "end": 3270.0,
+ "title": "Four downs\nin 30 seconds",
+ "meaning": "Fighting through a warehouse he downs four different players in about 28 seconds.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 3239.6,
+   "e": 3240.5
+  },
+  {
+   "w": "DOUBLE KILL!",
+   "s": 3243.0,
+   "e": 3243.9
+  },
+  {
+   "w": "TRIPLE!",
+   "s": 3257.6,
+   "e": 3258.5
+  },
+  {
+   "w": "QUAD!",
+   "s": 3267.6,
+   "e": 3268.8
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   3234.5,
+   3255,
+   "rage"
+  ],
+  [
+   3255,
+   9000000000.0,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-20_four_downs_30_seconds"
+}
