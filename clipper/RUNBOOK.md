@@ -100,6 +100,14 @@ Write one plan with `"type": "montage"` (format at the top of `make_montage.py`)
 - Other styles (later, when Colton asks): triple-kill fights kept whole (same fight, not stitched from different
   fights), squad wipes, every kill from last night, top 5 of the week, reaction first.
 
+## Brother hello pool (Colton, Nov 21) — for the "me and my brother every morning" montage
+Every stream where **Havens07** is in the squad list (bottom left, crop 20,590 → 280x120): find the moment he joins /
+the first minute you two talk, and save the hello (2–4 s, both voices if audible, word timings from medium.en) to
+`ledger.json` → `"brother_hellos"` as {vod, a, b, words}. Don't clip it on its own. When the pool has 5+ different
+days, build one 10–15 s montage: one hello per day, back to back, day label on each ("MON", "TUE"...), short.
+Nov 18 (2932398326) has his side only: "Oh buddy" 2.5–4.6, "Hey buddy" 45.4–46.6. Havens07's voice may not be on the
+stream audio at all (party chat not captured): if a hello has only Colton, keep it but flag it.
+
 ## 5. Write the plan (one JSON per clip)
 `plans/<YYYY-MM-DD>/<n>_<slug>.json` — format documented at the top of `render_plan.py`. All times are VOD seconds.
 - `title`: 2 short lines, the meaning in plain words ("Trying my absolute hardest\nagainst BOTS").

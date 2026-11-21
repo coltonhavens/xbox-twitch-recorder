@@ -32,8 +32,61 @@ def refine(win, w0, h):
     return h
 run = lambda *a: subprocess.run(list(a), check=True)
 
+def personality(plan, outdir):
+    """Personality montage: his best lines back to back (trash talk, screaming, laughing). Each line plays whole and
+    in real time with its own captions; music sits low under his voice; every cut gets a bass hit + zoom punch and
+    the last line (the payoff) gets the big hit. plan["lines"] = [{"vod","a","b","words":[{"w","s","e","spk"}]}]"""
+    tr = json.load(open(os.path.join(HERE, "music", "tracks.json")))[plan["track"]]
+    with tempfile.TemporaryDirectory() as d:
+        parts, cuts, words, cum = [], [], [], 0.0
+        for i, ln in enumerate(plan["lines"]):
+            a, b = ln["a"], ln["b"]
+            win = os.path.join(d, f"w{i}.mp4")
+            run("python3", os.path.join(HERE, "twitch_fetch.py"), "window", str(ln["vod"]), str(a), str(b), win)
+            f = os.path.join(d, f"p{i}.mp4")
+            run("ffmpeg", "-v", "error", "-y", "-i", win, "-vf", "scale=1280:720,fps=30,setsar=1",
+                "-af", "aresample=48000", "-ac", "2", "-c:v", "libx264", "-preset", "veryfast", "-crf", "18",
+                "-c:a", "aac", "-b:a", "192k", f)
+            parts.append(f); cuts.append(round(cum, 3))
+            words += [{"w": w["w"], "s": round(cum + w["s"] - a, 2), "e": round(cum + w["e"] - a, 2), "spk": w.get("spk", "me")}
+                      for w in ln["words"] if a <= w["s"] < b]
+            cum += b - a
+        L = cum; final = cuts[-1]
+        lst = os.path.join(d, "list.txt"); open(lst, "w").write("".join(f"file '{p}'\n" for p in parts))
+        raw = os.path.join(d, "raw.mp4")
+        run("ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", raw)
+        hits = cuts[1:] or [0.0]
+        z = "+".join(f"if(gte(t,{h}),{0.18 if h == final else 0.08}*exp(-(t-{h})*7),0)" for h in hits)
+        boom = "".join(f"[b{i}]" for i in range(len(hits)))
+        chain = f"[2:a]asplit={len(hits)}{boom};" + ";".join(
+            f"[b{i}]adelay={int(h * 1000)}|{int(h * 1000)},volume={0.9 if h == final else 0.45}[d{i}]" for i, h in enumerate(hits))
+        duck = f"(1-0.9*between(t,{final - 0.25:.3f},{final:.3f}))"
+        mont = os.path.join(d, "montage.mp4")
+        run("ffmpeg", "-v", "error", "-y", "-i", raw, "-ss", f"{tr['first_beat']:.3f}", "-i", os.path.join(HERE, "music", tr["file"]),
+            "-i", os.path.join(HERE, "music", "boom.wav"), "-filter_complex",
+            f"[0:v]scale=w='trunc(1280*(1+{z})/2)*2':h='trunc(720*(1+{z})/2)*2':eval=frame,"
+            f"crop=1280:720:(iw-1280)/2:(ih-720)/2,setsar=1[v];[0:a]volume=1.0[g];"
+            f"[1:a]aresample=48000,volume='0.28*{duck}':eval=frame,afade=t=out:st={max(0, L - 0.6):.2f}:d=0.6[m];{chain};"
+            f"[g][m]" + "".join(f"[d{i}]" for i in range(len(hits))) +
+            f"amix=inputs={2 + len(hits)}:normalize=0:duration=first,alimiter=limit=0.95[a]",
+            "-map", "[v]", "-map", "[a]", "-t", f"{L:.3f}", "-c:v", "libx264", "-preset", "veryfast", "-crf", "18",
+            "-c:a", "aac", "-b:a", "192k", mont)
+        spec = {"src": mont, "start": 0, "end": round(L, 2), "title": plan["title"], "words": words,
+                "moods": plan.get("moods") or [[0, L, "laugh"]], "out": os.path.join(d, "full.mp4")}
+        json.dump(spec, open(os.path.join(d, "spec.json"), "w"))
+        run("python3", os.path.join(HERE, "render_clip.py"), os.path.join(d, "spec.json"))
+        out = os.path.join(outdir, plan["name"] + ".mp4")
+        run("ffmpeg", "-v", "error", "-y", "-i", spec["out"], "-c:v", "libx264", "-preset", "medium", "-crf", "22",
+            "-maxrate", "5M", "-bufsize", "10M", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
+            "-movflags", "+faststart", out)
+    cap = plan.get("caption") or (" ".join(plan["title"].split()) + " #callofduty #warzone #mrhype420 #gaming #funny")
+    open(os.path.join(outdir, plan["name"] + ".txt"), "w").write(cap + "\n")
+    print("personality montage", out, f"{L:.1f}s", "cuts at", cuts)
+
 def main(plan_path, outdir):
     plan = json.load(open(plan_path)); os.makedirs(outdir, exist_ok=True)
+    if plan.get("style") == "personality":
+        return personality(plan, outdir)
     tr = json.load(open(os.path.join(HERE, "music", "tracks.json")))[plan["track"]]
     P = 60.0 / tr["bpm"]
     step = P * tr.get("beats_per_kill", 2)          # time between downs
