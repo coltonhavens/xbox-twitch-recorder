@@ -1,0 +1,69 @@
+{
+ "vod": "2935372195",
+ "start": 5206.5,
+ "end": 5231.5,
+ "title": "Bought a fresh loadout\nthen downed 3 in 16s",
+ "meaning": "He says he's gonna buy another loadout, grabs it at the buy station, and immediately downs three players in 16 seconds.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "I'm",
+   "s": 5206.92,
+   "e": 5207.3
+  },
+  {
+   "w": "gonna",
+   "s": 5207.4,
+   "e": 5207.42
+  },
+  {
+   "w": "buy",
+   "s": 5207.42,
+   "e": 5207.6
+  },
+  {
+   "w": "another",
+   "s": 5207.6,
+   "e": 5207.86
+  },
+  {
+   "w": "one.",
+   "s": 5207.86,
+   "e": 5208.8
+  },
+  {
+   "w": "DOWN!",
+   "s": 5213.0,
+   "e": 5214.4
+  },
+  {
+   "w": "DOWN!",
+   "s": 5220.5,
+   "e": 5221.9
+  },
+  {
+   "w": "THREE IN 16!",
+   "s": 5229.0,
+   "e": 5231.4
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   5206.5,
+   5212.8,
+   "calm"
+  ],
+  [
+   5212.8,
+   5228.8,
+   "shocked"
+  ],
+  [
+   5228.8,
+   9000000000.0,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-21_fresh_loadout_three_downs"
+}

@@ -1,0 +1,109 @@
+{
+ "vod": "2935372195",
+ "start": 7499.5,
+ "end": 7537.5,
+ "title": "Teammate goes down\nso I drop 3 robots",
+ "meaning": "Right after his teammate gets dropped, he goes off and downs three players in 30 seconds, cussing out each 'stupid robot' he drops.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "Yeah,",
+   "s": 7500.64,
+   "e": 7501.1
+  },
+  {
+   "w": "you",
+   "s": 7501.16,
+   "e": 7501.36
+  },
+  {
+   "w": "better",
+   "s": 7501.38,
+   "e": 7501.5
+  },
+  {
+   "w": "run.",
+   "s": 7501.52,
+   "e": 7502.4
+  },
+  {
+   "w": "Oh",
+   "s": 7504.96,
+   "e": 7505.4
+  },
+  {
+   "w": "shit.",
+   "s": 7505.48,
+   "e": 7506.3
+  },
+  {
+   "w": "DOWN!",
+   "s": 7506.5,
+   "e": 7508.0
+  },
+  {
+   "w": "DOWN!",
+   "s": 7522.6,
+   "e": 7524.0
+  },
+  {
+   "w": "Fuck",
+   "s": 7525.76,
+   "e": 7526.6
+  },
+  {
+   "w": "you.",
+   "s": 7526.78,
+   "e": 7527.5
+  },
+  {
+   "w": "Stupid",
+   "s": 7527.66,
+   "e": 7528.9
+  },
+  {
+   "w": "robot-ass",
+   "s": 7529.34,
+   "e": 7529.95
+  },
+  {
+   "w": "bitch.",
+   "s": 7530.0,
+   "e": 7531.0
+  },
+  {
+   "w": "DOWN!",
+   "s": 7533.8,
+   "e": 7534.7
+  },
+  {
+   "w": "Fuck",
+   "s": 7534.8,
+   "e": 7535.6
+  },
+  {
+   "w": "you.",
+   "s": 7535.82,
+   "e": 7536.8
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   7499.5,
+   7504.8,
+   "calm"
+  ],
+  [
+   7504.8,
+   7522,
+   "shocked"
+  ],
+  [
+   7522,
+   9000000000.0,
+   "rage"
+  ]
+ ],
+ "name": "2026-11-21_stupid_robot_three_downs"
+}

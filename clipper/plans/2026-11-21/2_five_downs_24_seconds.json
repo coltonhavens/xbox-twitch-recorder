@@ -1,0 +1,59 @@
+{
+ "vod": "2935372195",
+ "start": 7655.5,
+ "end": 7689.5,
+ "title": "5 downs in 24 seconds\nending on a TRIPLE",
+ "meaning": "Sprinting through the refinery with an SMG, he downs five different players in 24 seconds, the last three fast enough for a triple kill.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 7660.4,
+   "e": 7661.8
+  },
+  {
+   "w": "DOWN!",
+   "s": 7665.6,
+   "e": 7667.0
+  },
+  {
+   "w": "DOWN!",
+   "s": 7673.6,
+   "e": 7675.0
+  },
+  {
+   "w": "DOWN!",
+   "s": 7682.3,
+   "e": 7683.8
+  },
+  {
+   "w": "TRIPLE KILL!",
+   "s": 7684.2,
+   "e": 7686.6
+  },
+  {
+   "w": "5 DOWNS!",
+   "s": 7686.8,
+   "e": 7689.4
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   7655.5,
+   7660,
+   "calm"
+  ],
+  [
+   7660,
+   7684,
+   "shocked"
+  ],
+  [
+   7684,
+   9000000000.0,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-21_five_downs_24_seconds"
+}

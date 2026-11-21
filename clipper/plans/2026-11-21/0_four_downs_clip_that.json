@@ -1,0 +1,79 @@
+{
+ "vod": "2935719309",
+ "start": 1585.5,
+ "end": 1636.2,
+ "title": "4 downs in 40 seconds\nthen CLIP THAT",
+ "meaning": "He drops three players one after another across the refinery, finishes with a double kill, and immediately calls 'let's go, clip that'.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 1590.6,
+   "e": 1591.8
+  },
+  {
+   "w": "DOWN!",
+   "s": 1607.6,
+   "e": 1608.8
+  },
+  {
+   "w": "DOWN!",
+   "s": 1626.6,
+   "e": 1627.8
+  },
+  {
+   "w": "DOUBLE KILL!",
+   "s": 1628.8,
+   "e": 1630.4
+  },
+  {
+   "w": "Let's",
+   "s": 1633.5,
+   "e": 1634.0
+  },
+  {
+   "w": "go,",
+   "s": 1634.0,
+   "e": 1634.1
+  },
+  {
+   "w": "clip",
+   "s": 1634.1,
+   "e": 1634.4
+  },
+  {
+   "w": "that.",
+   "s": 1634.4,
+   "e": 1634.6
+  },
+  {
+   "w": "That's",
+   "s": 1634.6,
+   "e": 1635.0
+  },
+  {
+   "w": "it.",
+   "s": 1635.0,
+   "e": 1635.6
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   1585.5,
+   1590.5,
+   "calm"
+  ],
+  [
+   1590.5,
+   1631,
+   "shocked"
+  ],
+  [
+   1631,
+   9000000000.0,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-21_four_downs_clip_that"
+}

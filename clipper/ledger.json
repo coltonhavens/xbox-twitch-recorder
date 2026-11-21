@@ -244,6 +244,54 @@
     ]
    ],
    "note": "Nov 19-20 stream (60m); nightly run 2026-11-20. 88-450 is business/sales talk (non-gaming). Unused for later: 3331-3346 sniped by a guy on the tower, 'God, what a shot' over killcam (he dies; skipped as I-suck); 2176 single snipe down (DABUS22) 'I got one, sniped him'; 2768-2862 assassination rant + 'I played it like a little bitch and won, clip that' (crude); 1889 down ROSAPERCS + 1900-1917 impact warhead 'first time I've seen a warhead work'; banner downs at 158, 293, 537."
+  },
+  "2935719309": {
+   "transcribed": true,
+   "clipped": [
+    [
+     1585.5,
+     1636.2,
+     "four_downs_clip_that"
+    ]
+   ],
+   "note": "Nov 20-21 stream (35m) Warzone Resurgence; nightly run 2026-11-21. VAD transcript timestamps are off (use _novad). Unused for later: 71/75 two downs then he dies at 75; 348, 433 single downs; 980 single; 1793-1851 'two more, one more... found a specialist' ends with him dead (I-suck)."
+  },
+  "2935586660": {
+   "transcribed": true,
+   "clipped": [],
+   "note": "Nov 20 stream (64m): MW3 Search & Destroy, no Warzone kill banner; audio goes silent after ~1150s. Checked 115-180 'did you see my 360 bro' \u2014 on-screen moment unclear (killcam not clearly his), ends with him dying; skipped."
+  },
+  "2935372195": {
+   "transcribed": true,
+   "clipped": [
+    [
+     7655.5,
+     7689.5,
+     "five_downs_24_seconds"
+    ],
+    [
+     7499.5,
+     7537.5,
+     "stupid_robot_three_downs"
+    ],
+    [
+     5206.5,
+     5231.5,
+     "fresh_loadout_three_downs"
+    ]
+   ],
+   "note": "Nov 20 stream (2h12m) Warzone; nightly run 2026-11-21. Twitch MUTED fragments 126-449 (~1260-4500s): no audio there, and the VAD transcript lines/times in that span are unreliable. Unused for later: 7564.8 down CAPTAINDAEMONXX; 7583.3 I_NEED_AIM_BOT + 7592.3 FISHY-FOOTBALL83 (double in 9s, no talk); 258-300 downs (TRONTITAN, SIRST_KING, JOHN_555) inside unmuted part; 5086/5096, 5300/5310, 5386/5396, 6120/6128, 6186/6197, 7325/7334, 7417/7424 doubles."
+  },
+  "2935329280": {
+   "transcribed": true,
+   "clipped": [
+    [
+     763.5,
+     832.6,
+     "last_guy_very_top"
+    ]
+   ],
+   "note": "Nov 20 stream (20m) Warzone; nightly run 2026-11-21. Unused: 12-35 'don't kill me' panic (I-suck, skipped); 451-495 'missed that shot... lucky' (I-suck)."
   }
  }
 }
