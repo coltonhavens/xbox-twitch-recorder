@@ -82,6 +82,12 @@ score (`kit/colton_voice.npy`, resemblyzer) is a hint only: game audio makes it 
 Write one plan with `"type": "montage"` (format at the top of `make_montage.py`). Rendered by the same push.
 - **Current style: sniper HEADSHOT montage, 30 s max.** Only downs where the XP popup next to the crosshair reads
   HEADSHOT ELIMINATION (it can show ~2 s after ENEMY DOWNED, under ONE SHOT ONE KILL / LONGSHOT) and the weapon is a sniper (`headshot_scan.py` → check each one on a frame). No misses, no hitmarker-only.
+- **The headshot must be the shot that DOWNS him** (Colton, Nov 21). Finishing someone already on the ground with a
+  headshot does NOT count. Test: read the magazine count (bottom right, crop 960,600 → 110x40). The HEADSHOT popup
+  must come from the same shot as ENEMY DOWNED: if the mag count drops again between the down and the HEADSHOT popup,
+  it was a finisher → reject. (Nov 21 check: 2 of 4 "headshots" were finishers.)
+- **Make it look like one clip:** cut scope-to-scope on the shot, same color grade on every cut, prefer kills from
+  the same map/session, and hide cuts in the recoil/flash.
 - **Cut shot to shot:** each kill = the shot and the down; nothing between (no reloads, walking, menus).
   Use the exact banner time (make_montage refines it at 8 fps).
 - **Team wipes in slow motion:** put the wipe's index in `"slowmo"`; it plays 0.4x over a whole bar, then the next
