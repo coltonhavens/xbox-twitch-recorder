@@ -56,7 +56,8 @@ for i, (a, b, sp) in enumerate(merged):
             txt = fix.get(w["w"], w["w"])
             if txt.strip("-") == "":
                 continue
-            words.append({"w": txt, "s": round(out_t + (w["s"] - a) / sp, 2), "e": round(out_t + (w["e"] - a) / sp, 2)})
+            words.append({"w": txt, "s": round(out_t + (w["s"] - a) / sp, 2), "e": round(out_t + (w["e"] - a) / sp, 2),
+                          "spk": w.get("spk", "me")})
     # mood follows the source timeline
     step = 0.5
     x = a

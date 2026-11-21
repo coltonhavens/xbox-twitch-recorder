@@ -37,7 +37,8 @@ for w in words:
 # caption groups: max 3 words, never across a sentence end, a comma, or a pause/cut
 g, n, prev = 0, 0, None
 for w in words:
-    if prev is not None and (n >= 3 or prev["w"][-1:] in ".?!," or w["s"] - prev["e"] > 0.6):
+    if prev is not None and (n >= 3 or prev["w"][-1:] in ".?!," or w["s"] - prev["e"] > 0.6
+                             or w.get("spk", "me") != prev.get("spk", "me")):   # new speaker = new caption
         g, n = g + 1, 0
     w["g"], n, prev = g, n + 1, w
 
@@ -50,7 +51,8 @@ NF = len(a) // spf
 env = np.array([np.sqrt((a[i * spf:(i + 1) * spf] ** 2).mean()) for i in range(NF)])
 env = np.convolve(env, [0.5, 0.5], mode="same")
 env = np.append(env[1:], 0)                       # open 1 frame before the sound
-in_word = np.array([any(w["s"] - 0.08 <= START + i / FPS < w["e"] + 0.08 for w in words) for i in range(NF)])
+spoken = [w for w in words if w.get("spk", "me") == "me"]          # callouts and other voices don't move his mouth
+in_word = np.array([any(w["s"] - 0.08 <= START + i / FPS < w["e"] + 0.08 for w in spoken) for i in range(NF)])
 hi = max(0.020, float(np.percentile(env[in_word], 40))) if in_word.any() else 0.02
 mouth, state, held = np.zeros(NF, bool), False, 0
 for i in range(NF):
@@ -86,6 +88,13 @@ def draw_title(img):
     for i, l in enumerate(lines):
         d.text(((W - widths[i]) / 2, y0 + 22 + i * 74), l, font=title_font, fill=(0, 0, 0, 255))
 
+# who is talking -> caption colors. Colton: white, current word yellow. Teammates: cyan. Enemies (proximity chat): red.
+SPK = {"me": ((255, 255, 255, 255), (255, 221, 0, 255), None),
+       "team": ((120, 220, 255, 255), (41, 182, 216, 255), "TEAMMATE"),
+       "enemy": ((255, 140, 140, 255), (255, 59, 48, 255), "ENEMY"),
+       "callout": ((255, 255, 255, 255), (255, 221, 0, 255), None)}   # DOWN!/TRIPLE! words we add, not speech
+tag_font = ImageFont.truetype(os.path.join(HERE, "fonts", "Inter-ExtraBold.otf"), 34)
+
 def draw_caption(img, T):
     cur = [w for w in words if w["s"] <= T < w["e"] + 0.25]
     if not cur:
@@ -98,8 +107,12 @@ def draw_caption(img, T):
         group, parts = group[-1:] if cur[-1] is group[-1] else [cur[-1]], [cur[-1]["t"]]
         total = d.textlength(parts[0], font=cap_font)
     x, y = (W - total) / 2, CAP_Y
+    base, hot, tag = SPK.get(cur[-1].get("spk", "me"), SPK["me"])
+    if tag:                                                # small label so it's clear it isn't Colton
+        tw = d.textlength(tag, font=tag_font)
+        d.text(((W - tw) / 2, y + 104), tag, font=tag_font, fill=hot, stroke_width=6, stroke_fill=(0, 0, 0, 255))
     for w, p in zip(group, parts):
-        col = (255, 221, 0, 255) if w is cur[-1] else (255, 255, 255, 255)
+        col = hot if w is cur[-1] else base
         d.text((x, y), p, font=cap_font, fill=col, stroke_width=9, stroke_fill=(0, 0, 0, 255))
         x += d.textlength(p, font=cap_font) + 28
 

@@ -1,0 +1,20 @@
+{
+  "phonk_1": {
+    "file": "phonk_1.mp3",
+    "bpm": 92.3,
+    "first_beat": 0.26,
+    "drop": 13.77,
+    "end": 54.0,
+    "source": "ElevenLabs Music v2.5 via Higgsfield, generated 2026-11-21 for Colton (commercial use)",
+    "note": "too fast for kill-to-kill montages (Colton, Nov 21); keep for fast styles only"
+  },
+  "trap_slow_1": {
+    "file": "trap_slow_1.mp3",
+    "bpm": 75.0,
+    "first_beat": 2.05,
+    "start_after": 2.0,
+    "beats_per_kill": 2,
+    "end": 43.0,
+    "source": "ElevenLabs Music v2.5 via Higgsfield, generated 2026-11-21 for Colton (commercial use)"
+  }
+}
