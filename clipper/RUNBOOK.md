@@ -59,7 +59,7 @@ Scan the game HUD, not just the transcript:
 - **Longshots:** always a clip. Run `medal_scan.py VOD '[down times]'` on every confirmed down; it reads the
   center medal/popup band, the kill banner and the weapon box for "LONGSHOT". Also catch him saying "long shot",
   "from way over there", "how far was that". Confirm on a contact sheet (popup visible) before clipping.
-- **Throwing knife kills:** always a clip. Same scan looks for "THROWING KNIFE" / "KNIFE"; also catch him saying
+- **Throwing knife kills:** always a clip. (The XP popup reads "THROWING KNIFE ELIMINATION"; seen on 2930265100 at ~1369.) Same scan looks for "THROWING KNIFE" / "KNIFE"; also catch him saying
   "knife", "threw it", "tomahawk". Confirm by eye: the knife throw is on screen and the banner shows the down.
   Start ~5 s before the throw, end on the down or his reaction.
 - **Headshot montages (later):** only shots the scorecard / popup confirms (HEADSHOT, ONE SHOT ONE KILL), no misses.
@@ -70,6 +70,29 @@ Scan the game HUD, not just the transcript:
 - **Keep intros short:** start ~5 s before the first real action (the first shot / the down), not 15-20 s.
 - **Every clip has on-screen captions.** If he doesn't talk, add short callout words at the moments that matter
   (e.g. "DOWN!" at each down, "DOUBLE KILL!" on the second) using the banner times.
+
+## Caption colors (who is talking) — Colton, Nov 21
+Every caption word carries `spk`: `me` (Colton: white, current word yellow), `team` (teammates: blue + small
+TEAMMATE label), `enemy` (proximity chat: red + ENEMY label), `callout` (DOWN!/HEADSHOT! words we add: like `me`,
+but they don't move the avatar's mouth). Default is `me`. Mark `team`/`enemy` only when it's clear from the
+conversation who said it (answers to his questions, callouts about him, enemy trash talk on proximity). The voice
+score (`kit/colton_voice.npy`, resemblyzer) is a hint only: game audio makes it unreliable. Unsure → leave `me`.
+
+## Daily montage (1 per day, on top of the 5 clips) — Colton, Nov 21
+Write one plan with `"type": "montage"` (format at the top of `make_montage.py`). Rendered by the same push.
+- **Current style: sniper HEADSHOT montage, 30 s max.** Only downs where the XP popup next to the crosshair reads
+  HEADSHOT ELIMINATION (it can show ~2 s after ENEMY DOWNED, under ONE SHOT ONE KILL / LONGSHOT) and the weapon is a sniper (`headshot_scan.py` → check each one on a frame). No misses, no hitmarker-only.
+- **Cut shot to shot:** each kill = the shot and the down; nothing between (no reloads, walking, menus).
+  Use the exact banner time (make_montage refines it at 8 fps).
+- **Team wipes in slow motion:** put the wipe's index in `"slowmo"`; it plays 0.4x over a whole bar, then the next
+  headshot snaps back to full speed.
+- **Music:** slow, spacious half-time track (`trap_slow_1`). Every down lands on a beat with its own drop (music cuts
+  out right before, 808 hit + zoom punch on the down). `phonk_1` is too fast for this. Only cleared, commercial-use
+  tracks in `music/` (the TikTok account is a business account: no popular copyrighted songs).
+- Keep a pool: add every confirmed sniper headshot / wipe to `ledger.json` → `"headshots"` so later montages have
+  material. Don't reuse a headshot in two montages within 2 weeks.
+- Other styles (later, when Colton asks): triple-kill fights kept whole (same fight, not stitched from different
+  fights), squad wipes, every kill from last night, top 5 of the week, reaction first.
 
 ## 5. Write the plan (one JSON per clip)
 `plans/<YYYY-MM-DD>/<n>_<slug>.json` — format documented at the top of `render_plan.py`. All times are VOD seconds.

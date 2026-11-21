@@ -38,28 +38,38 @@ def main(plan_path, outdir):
     P = 60.0 / tr["bpm"]
     step = P * tr.get("beats_per_kill", 2)          # time between downs
     pre = min(1.1, step - 0.35)                     # show the shot before the down
-    kills = []                                      # (vod, down_t, label, last_of_fight)
+    kills = []                                      # (vod, down_t, label, last_of_fight, slowmo)
     for seg in plan["segments"]:
         labs = seg.get("labels") or ["DOWN!"] * len(seg["hits"])
+        slow = set(seg.get("slowmo", []))           # indexes of hits shown in slow motion (team wipes)
         for j, (h, lab) in enumerate(zip(seg["hits"], labs)):
-            kills.append((seg["vod"], h, lab, j == len(seg["hits"]) - 1))
+            kills.append((seg["vod"], h, lab, len(seg["hits"]) > 1 and j == len(seg["hits"]) - 1, j in slow))
     intro = 2 * P                                   # "go... go..." before the first down
     n = len(kills)
     with tempfile.TemporaryDirectory() as d:
         parts, downs, cum = [], [], 0.0
-        for i, (vod, h, lab, last) in enumerate(kills):
+        for i, (vod, h, lab, last, slowmo) in enumerate(kills):
             gap = step + (P if last else 0)          # time to the next down (extra beat after a finished fight)
+            if slowmo: gap = 4 * P                   # team wipe: slow motion over a whole bar, then back to speed
             w0 = h - 4.0
             win = os.path.join(d, f"w{i}.mp4")
             run("python3", os.path.join(HERE, "twitch_fetch.py"), "window", str(vod), str(w0), str(h + 5.0), win)
             h0, h = h, refine(win, w0, h); print(f"down {vod} {h0} -> {h}", flush=True)
             a = h - (intro if i == 0 else pre)
-            b = h + (gap - pre if i < n - 1 else 2 * P + 0.6)   # end where the next clip's lead-in starts
-            f = os.path.join(d, f"p{i}.mp4")
-            run("ffmpeg", "-v", "error", "-y", "-ss", f"{a - w0:.3f}", "-t", f"{b - a:.3f}", "-i", win,
-                "-vf", "scale=1280:720,fps=30,setsar=1", "-af", "aresample=48000", "-ac", "2",
-                "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-c:a", "aac", "-b:a", "192k", f)
-            parts.append(f); downs.append((round(cum + (h - a), 3), lab)); cum += b - a
+            post = gap - pre if i < n - 1 else (4 * P if slowmo else 2 * P) + 0.6   # output seconds after the down
+            SL = 0.4
+            if slowmo:   # real time up to just before the down, then 0.4x through the wipe
+                pieces = [(a, h - 0.25, 1.0), (h - 0.25, h - 0.25 + (post + 0.25) * SL, SL)]
+            else:
+                pieces = [(a, h + post, 1.0)]
+            for j, (pa, pb, sp) in enumerate(pieces):
+                f = os.path.join(d, f"p{i}_{j}.mp4")
+                at = "atempo=0.5,atempo=0.8" if sp == SL else "anull"
+                run("ffmpeg", "-v", "error", "-y", "-ss", f"{pa - w0:.3f}", "-t", f"{pb - pa:.3f}", "-i", win,
+                    "-vf", f"scale=1280:720,setpts=PTS/{sp},fps=30,setsar=1", "-af", f"{at},aresample=48000", "-ac", "2",
+                    "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-c:a", "aac", "-b:a", "192k", f)
+                parts.append(f)
+            downs.append((round(cum + (h - a), 3), lab)); cum += (h - a) + post
         L = cum
         lst = os.path.join(d, "list.txt"); open(lst, "w").write("".join(f"file '{p}'\n" for p in parts))
         raw = os.path.join(d, "raw.mp4")
