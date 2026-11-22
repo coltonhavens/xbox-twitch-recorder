@@ -33,7 +33,7 @@ jobs:
       - name: Install tools
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq --no-install-recommends ffmpeg
+          sudo apt-get install -y -qq --no-install-recommends ffmpeg tesseract-ocr
           python -m pip install --no-cache-dir -r clipper/requirements.txt
       - name: Find plans to render
         id: plans

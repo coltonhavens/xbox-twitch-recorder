@@ -95,7 +95,13 @@ but they don't move the avatar's mouth). Default is `me`. Mark `team`/`enemy` on
 conversation who said it (answers to his questions, callouts about him, enemy trash talk on proximity). The voice
 score (`kit/colton_voice.npy`, resemblyzer) is a hint only: game audio makes it unreliable. Unsure → leave `me`.
 
-## Daily montage (1 per day, on top of the 5 clips) — Colton, Nov 21
+## Daily montage — ON for a 1-week test (Colton, Nov 21: "I like them all, let's run them for the next week")
+Every night: 5 clips (≥2 personality) + **1 montage, 10–15 s** = 6 plans. The Mac poster has a 6th slot at 21:00.
+Rotate the montage style by day: Mon/Thu triple-kill (kill-to-kill, `trap_slow_1`, each triple from ONE fight),
+Tue/Fri sniper one-shot downs (confirmed downs, not finishers), Wed/Sat sniper headshot downs if the pool has 4+
+unused (else one-shot), Sun best kills of the week. Captions/callouts on every kill. Title says what it is.
+Name montage plans `5_<style>_montage.json`.
+## (montage details)
 Write one plan with `"type": "montage"` (format at the top of `make_montage.py`). Rendered by the same push.
 - **Current style: sniper HEADSHOT montage, 30 s max.** Only downs where the XP popup next to the crosshair reads
   HEADSHOT ELIMINATION (it can show ~2 s after ENEMY DOWNED, under ONE SHOT ONE KILL / LONGSHOT) and the weapon is a sniper (`headshot_scan.py` → check each one on a frame). No misses, no hitmarker-only.
