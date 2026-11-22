@@ -83,6 +83,11 @@ kill those bots huh, what are you trying to prove"; 2934307253 ~2310–2320 "go 
 "killed me with a pistol… dog water".
 **If plans already exist for the date (added by hand), make only enough to reach 5 total.**
 
+## Colton's favorites (use as the bar)
+- **2026-11-19_rooftop_sniper_quad** ("Four downs from one roof, sniper QUAD", posted Nov 21 4 PM): "really good, love
+  that clip". One spot, one continuous fight, four confirmed sniper downs building to a QUAD, real time, callouts.
+- **bot_pistol_rant** (personality): "yes this is good".
+
 ## Caption colors (who is talking) — Colton, Nov 21
 Every caption word carries `spk`: `me` (Colton: white, current word yellow), `team` (teammates: blue + small
 TEAMMATE label), `enemy` (proximity chat: red + ENEMY label), `callout` (DOWN!/HEADSHOT! words we add: like `me`,
