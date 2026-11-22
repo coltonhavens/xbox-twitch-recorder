@@ -71,6 +71,18 @@ Scan the game HUD, not just the transcript:
 - **Every clip has on-screen captions.** If he doesn't talk, add short callout words at the moments that matter
   (e.g. "DOWN!" at each down, "DOUBLE KILL!" on the second) using the banner times.
 
+## Personality clips — APPROVED by Colton Nov 21 ("yes this is good")
+At least 2 of the 5 daily clips are personality moments: rants, roasts/trash talk, hype, laughing fits, sarcasm.
+Personality beats skill for growth. ONE complete moment per clip: the setup on screen (what happened) + his
+reaction + the payoff line at the end (e.g. bot_pistol_rant: dies to a bot's pistol → rant → "I'm so good, I'm the
+best"). Never stitch single lines from different moments (Colton rejected that: "it has nothing in it").
+Use `type: "talk"` (silences fast-forward), word timings from **medium.en** (small.en hallucinates on game audio),
+moods following the moment (shocked → rage → laugh). Sarcastic "I'm so good" after losing counts as personality.
+Saved candidates: 2930265100 2096–2132 sarcastic "I'm so good" after 12th place; 2935372195 ~5624–5640 "trying to
+kill those bots huh, what are you trying to prove"; 2934307253 ~2310–2320 "go play a real game"; 2934307253 ~1022
+"killed me with a pistol… dog water".
+**If plans already exist for the date (added by hand), make only enough to reach 5 total.**
+
 ## Caption colors (who is talking) — Colton, Nov 21
 Every caption word carries `spk`: `me` (Colton: white, current word yellow), `team` (teammates: blue + small
 TEAMMATE label), `enemy` (proximity chat: red + ENEMY label), `callout` (DOWN!/HEADSHOT! words we add: like `me`,
