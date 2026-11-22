@@ -285,7 +285,7 @@
      "fresh_loadout_three_downs"
     ]
    ],
-   "note": "Nov 20 stream (2h12m) Warzone; nightly run 2026-11-21. Twitch MUTED fragments 126-449 (~1260-4500s): no audio there, and the VAD transcript lines/times in that span are unreliable. Unused for later: 7564.8 down CAPTAINDAEMONXX; 7583.3 I_NEED_AIM_BOT + 7592.3 FISHY-FOOTBALL83 (double in 9s, no talk); 258-300 downs (TRONTITAN, SIRST_KING, JOHN_555) inside unmuted part; 5086/5096, 5300/5310, 5386/5396, 6120/6128, 6186/6197, 7325/7334, 7417/7424 doubles."
+   "note": "Nov 20 stream (2h12m) Warzone; nightly run 2026-11-21. Twitch MUTED fragments 126-449 (~1260-4500s): no audio there, and the VAD transcript lines/times in that span are unreliable. Unused for later: 7564.8 down CAPTAINDAEMONXX; 7583.3 I_NEED_AIM_BOT + 7592.3 FISHY-FOOTBALL83 (double in 9s, no talk); 258-300 downs (TRONTITAN, SIRST_KING, JOHN_555) inside unmuted part; 5086/5096, 5300/5310, 5386/5396, 6120/6128, 6186/6197, 7325/7334, 7417/7424 doubles. 2026-11-22: checked saved candidate 5595-5650 'what are you trying to prove' with medium.en: the line is not there (rant timing unreliable), dropped."
   },
   "2935329280": {
    "transcribed": true,
@@ -297,6 +297,32 @@
     ]
    ],
    "note": "Nov 20 stream (20m) Warzone; nightly run 2026-11-21. Unused: 12-35 'don't kill me' panic (I-suck, skipped); 451-495 'missed that shot... lucky' (I-suck)."
+  },
+  "2936703038": {
+   "transcribed": true,
+   "clipped": [
+    [
+     1055.5,
+     1079.6,
+     "three_downs_clip_that"
+    ],
+    [
+     4844.5,
+     4862.6,
+     "third_party_double"
+    ],
+    [
+     3056.0,
+     3085.3,
+     "take_that_gun"
+    ],
+    [
+     808.5,
+     846.2,
+     "outside_then_inside_triple"
+    ]
+   ],
+   "note": "Nov 21-22 stream (1h44m) Warzone Resurgence with Havens07 in squad (no clear hello line found in first 10 min). Nightly run 2026-11-22. Banner scan saved downs at 633/650 ESCANOR, 1186, 1284, 1362 ESCANOR95, 1727/1748, 1814, 1887, 1998, 2050, 2134+2144 (double, 10s), 2611/2619/2632 (3 downs), 4350, 4380, 4501, 4924, 5003, 5098, 5752, 5827, 6159. Skipped: 2765-2775 double snipe then dies ('great snipe but he had a friend', I-suck); 3530-3586 'clip that shit that was legit' (couldn't confirm his downs, teammates dying); 5240-5274 laugh while spectating (black screen); 5400-5437 dies behind car; 5810-5860 'down the guy on tower' (5827.5 ACTIVE-SWITCH81) but 'ain't reviving three times' line is 30s later and he dies after; 4900-4906 single down."
   }
  },
  "headshots": {
@@ -339,6 +365,31 @@
    "b": 46.7,
    "text": "Hey buddy",
    "only_colton": true
+  }
+ ],
+ "montages": [
+  {
+   "date": "2026-11-22",
+   "style": "best_of_week",
+   "kills": [
+    [
+     "2931992210",
+     [
+      1326.5,
+      1331.5,
+      1335.5
+     ]
+    ],
+    [
+     "2932398326",
+     [
+      1398.6,
+      1407.0,
+      1413.8,
+      1422.8
+     ]
+    ]
+   ]
   }
  ]
 }

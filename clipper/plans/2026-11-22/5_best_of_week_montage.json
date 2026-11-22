@@ -1,0 +1,37 @@
+{
+ "type": "montage",
+ "style": "best_of_week",
+ "title": "Best kills\nof the WEEK",
+ "track": "trap_slow_1",
+ "segments": [
+  {
+   "vod": "2931992210",
+   "hits": [
+    1326.5,
+    1331.5,
+    1335.5
+   ],
+   "labels": [
+    "DOWN!",
+    "DOUBLE!",
+    "TRIPLE!"
+   ]
+  },
+  {
+   "vod": "2932398326",
+   "hits": [
+    1398.6,
+    1407.0,
+    1413.8,
+    1422.8
+   ],
+   "labels": [
+    "DOWN!",
+    "DOUBLE!",
+    "TRIPLE!",
+    "QUAD!"
+   ]
+  }
+ ],
+ "name": "2026-11-22_best_of_week_montage"
+}

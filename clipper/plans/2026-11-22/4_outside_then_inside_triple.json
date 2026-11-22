@@ -1,0 +1,42 @@
+{
+ "vod": "2936703038",
+ "start": 808.5,
+ "end": 846.2,
+ "title": "Sniped one outside,\nthen cleared the building",
+ "meaning": "He snipes one guy in the field, runs into the building and downs two more, 3 downs in 30 seconds.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 813.0,
+   "e": 813.8,
+   "spk": "callout"
+  },
+  {
+   "w": "DOUBLE!",
+   "s": 832.5,
+   "e": 833.3,
+   "spk": "callout"
+  },
+  {
+   "w": "TRIPLE!",
+   "s": 843.5,
+   "e": 844.4,
+   "spk": "callout"
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   808.5,
+   812.8,
+   "calm"
+  ],
+  [
+   812.8,
+   846.2,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-22_outside_then_inside_triple"
+}
