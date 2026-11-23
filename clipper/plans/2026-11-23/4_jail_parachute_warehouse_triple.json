@@ -1,0 +1,42 @@
+{
+ "vod": "2937351364",
+ "start": 302.0,
+ "end": 333.0,
+ "title": "Jail cell, parachute,\nwarehouse: TRIPLE",
+ "meaning": "Three downs in 23 seconds: one in the prison cells, one sniped out of his parachute, one in the warehouse.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 307.0,
+   "e": 307.8,
+   "spk": "callout"
+  },
+  {
+   "w": "DOUBLE!",
+   "s": 316.0,
+   "e": 316.8,
+   "spk": "callout"
+  },
+  {
+   "w": "TRIPLE!",
+   "s": 330.0,
+   "e": 330.8,
+   "spk": "callout"
+  }
+ ],
+ "moods": [
+  [
+   302.0,
+   306.8,
+   "calm"
+  ],
+  [
+   306.8,
+   333.0,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-23_jail_parachute_warehouse_triple",
+ "fix": {}
+}

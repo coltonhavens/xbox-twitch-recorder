@@ -322,7 +322,38 @@
      "outside_then_inside_triple"
     ]
    ],
-   "note": "Nov 21-22 stream (1h44m) Warzone Resurgence with Havens07 in squad (no clear hello line found in first 10 min). Nightly run 2026-11-22. Banner scan saved downs at 633/650 ESCANOR, 1186, 1284, 1362 ESCANOR95, 1727/1748, 1814, 1887, 1998, 2050, 2134+2144 (double, 10s), 2611/2619/2632 (3 downs), 4350, 4380, 4501, 4924, 5003, 5098, 5752, 5827, 6159. Skipped: 2765-2775 double snipe then dies ('great snipe but he had a friend', I-suck); 3530-3586 'clip that shit that was legit' (couldn't confirm his downs, teammates dying); 5240-5274 laugh while spectating (black screen); 5400-5437 dies behind car; 5810-5860 'down the guy on tower' (5827.5 ACTIVE-SWITCH81) but 'ain't reviving three times' line is 30s later and he dies after; 4900-4906 single down."
+   "note": "Nov 21-22 stream (1h44m) Warzone Resurgence with Havens07 in squad (no clear hello line found in first 10 min). Nightly run 2026-11-22. Banner scan saved downs at 633/650 ESCANOR, 1186, 1284, 1362 ESCANOR95, 1727/1748, 1814, 1887, 1998, 2050, 2134+2144 (double, 10s), 2611/2619/2632 (3 downs), 4350, 4380, 4501, 4924, 5003, 5098, 5752, 5827, 6159. Skipped: 2765-2775 double snipe then dies ('great snipe but he had a friend', I-suck); 3530-3586 'clip that shit that was legit' (couldn't confirm his downs, teammates dying); 5240-5274 laugh while spectating (black screen); 5400-5437 dies behind car; 5810-5860 'down the guy on tower' (5827.5 ACTIVE-SWITCH81) but 'ain't reviving three times' line is 30s later and he dies after; 4900-4906 single down. 2026-11-23: triple 2608 SLOTHMOUSE / 2620 SUS4DAEMON / 2632 BROKENENVY321 used in triple-kill montage."
+  },
+  "2937351364": {
+   "transcribed": true,
+   "clipped": [
+    [
+     1897.0,
+     1956.0,
+     "clip_those_shots"
+    ],
+    [
+     2022.0,
+     2076.5,
+     "my_shots_so_good"
+    ],
+    [
+     2126.0,
+     2151.0,
+     "played_into_my_evil_hand"
+    ],
+    [
+     2336.0,
+     2378.0,
+     "get_away_from_my_boy_pablo"
+    ],
+    [
+     302.0,
+     333.0,
+     "jail_parachute_warehouse_triple"
+    ]
+   ],
+   "note": "Nov 22-23 stream (1h29m) Warzone Resurgence with Havens07 (TEAMMATE DOWN HAVENS07 at 27). Nightly run 2026-11-23. Montage used triple 1826 SEEKINGGOAT/1831 SNAKEDOOM/1839 X_GHOSTTURTLE (+1840 SEEKINGGOAT again, 1848 PRICEROJO). Unused for later: 1409/1417 double (ESHONORABLE, OLDSUNFLOWR); 1070/1080 downs then he dies (1088 'red-headed... not even his gun, embarrassing', I-suck); 2208/2267/2283 downs; 2229-2252 trivia-question proximity chat (couldn't confirm on screen, mixed with movie-theater talk); 3989-4000 'eat shit you motherfucker' after a down (gameplay hard to follow); 3651, 3727, 3876, 4126, 4511, 4544, 4597, 4737, 4886, 5082 single downs; 85/127/139/167 early downs; 1788 school rant (non-gaming)."
   }
  },
  "headshots": {
@@ -365,6 +396,30 @@
    "b": 46.7,
    "text": "Hey buddy",
    "only_colton": true
+  },
+  {
+   "vod": "2937351364",
+   "a": 26.8,
+   "b": 28.9,
+   "text": "Good morning, bud",
+   "only_colton": true,
+   "words": [
+    {
+     "w": "Good",
+     "s": 27.06,
+     "e": 27.54
+    },
+    {
+     "w": "morning,",
+     "s": 27.54,
+     "e": 27.76
+    },
+    {
+     "w": "bud.",
+     "s": 27.76,
+     "e": 28.4
+    }
+   ]
   }
  ],
  "montages": [
@@ -387,6 +442,28 @@
       1407.0,
       1413.8,
       1422.8
+     ]
+    ]
+   ]
+  },
+  {
+   "date": "2026-11-23",
+   "style": "triple_kills",
+   "kills": [
+    [
+     "2937351364",
+     [
+      1826.0,
+      1831.0,
+      1839.0
+     ]
+    ],
+    [
+     "2936703038",
+     [
+      2608.0,
+      2620.0,
+      2632.0
      ]
     ]
    ]
