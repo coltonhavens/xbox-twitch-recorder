@@ -1,0 +1,42 @@
+{
+ "vod": "2938405331",
+ "start": 369.5,
+ "end": 385.5,
+ "title": "Throwing knife,\nthen a HEADSHOT",
+ "meaning": "Right after the quad he snipes one guy, finishes another with a throwing knife, then headshots a third for a double kill.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 372.5,
+   "e": 373.3,
+   "spk": "callout"
+  },
+  {
+   "w": "KNIFE!",
+   "s": 376.2,
+   "e": 377.0,
+   "spk": "callout"
+  },
+  {
+   "w": "HEADSHOT!",
+   "s": 382.0,
+   "e": 382.8,
+   "spk": "callout"
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   369.5,
+   372.4,
+   "calm"
+  ],
+  [
+   372.4,
+   385.5,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-24_throwing_knife_then_headshot"
+}

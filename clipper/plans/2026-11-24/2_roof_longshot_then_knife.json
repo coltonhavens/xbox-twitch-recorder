@@ -1,0 +1,130 @@
+{
+ "vod": "2938405331",
+ "start": 1058.5,
+ "end": 1090.5,
+ "title": "Two off the roof,\nthen the KNIFE",
+ "meaning": "He snipes two players off the prison roof (a longshot that wipes the squad), then drops down, downs a third behind a truck and finishes him with a throwing knife.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 1063.0,
+   "e": 1063.8,
+   "spk": "callout"
+  },
+  {
+   "w": "LONGSHOT!",
+   "s": 1069.0,
+   "e": 1069.8,
+   "spk": "callout"
+  },
+  {
+   "w": "no",
+   "s": 1069.44,
+   "e": 1070.84,
+   "spk": "me"
+  },
+  {
+   "w": "fucking",
+   "s": 1070.84,
+   "e": 1071.34,
+   "spk": "me"
+  },
+  {
+   "w": "way",
+   "s": 1071.34,
+   "e": 1072.04,
+   "spk": "me"
+  },
+  {
+   "w": "Ah,",
+   "s": 1076.94,
+   "e": 1077.88,
+   "spk": "me"
+  },
+  {
+   "w": "fuck",
+   "s": 1077.88,
+   "e": 1078.82,
+   "spk": "me"
+  },
+  {
+   "w": "you",
+   "s": 1078.82,
+   "e": 1080.0,
+   "spk": "me"
+  },
+  {
+   "w": "man,",
+   "s": 1080.0,
+   "e": 1080.46,
+   "spk": "me"
+  },
+  {
+   "w": "I",
+   "s": 1080.46,
+   "e": 1080.6,
+   "spk": "me"
+  },
+  {
+   "w": "can't,",
+   "s": 1080.6,
+   "e": 1081.46,
+   "spk": "me"
+  },
+  {
+   "w": "ah,",
+   "s": 1081.46,
+   "e": 1082.02,
+   "spk": "me"
+  },
+  {
+   "w": "he",
+   "s": 1082.16,
+   "e": 1084.08,
+   "spk": "me"
+  },
+  {
+   "w": "was",
+   "s": 1084.08,
+   "e": 1085.92,
+   "spk": "me"
+  },
+  {
+   "w": "DOWN!",
+   "s": 1085.5,
+   "e": 1086.3,
+   "spk": "callout"
+  },
+  {
+   "w": "KNIFE!",
+   "s": 1086.2,
+   "e": 1087.0,
+   "spk": "callout"
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   1058.5,
+   1063.0,
+   "calm"
+  ],
+  [
+   1063.0,
+   1076.5,
+   "shocked"
+  ],
+  [
+   1076.5,
+   1085.0,
+   "rage"
+  ],
+  [
+   1085.0,
+   1090.5,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-24_roof_longshot_then_knife"
+}

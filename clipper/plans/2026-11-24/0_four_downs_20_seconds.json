@@ -1,0 +1,48 @@
+{
+ "vod": "2938405331",
+ "start": 331.5,
+ "end": 361.0,
+ "title": "Four downs in\n20 SECONDS",
+ "meaning": "Moving through the dispatch lot with the Mosin, he drops four different players in 20 seconds.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 336.0,
+   "e": 336.8,
+   "spk": "callout"
+  },
+  {
+   "w": "DOUBLE!",
+   "s": 341.0,
+   "e": 341.8,
+   "spk": "callout"
+  },
+  {
+   "w": "TRIPLE!",
+   "s": 351.5,
+   "e": 352.3,
+   "spk": "callout"
+  },
+  {
+   "w": "QUAD!",
+   "s": 356.5,
+   "e": 357.3,
+   "spk": "callout"
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   331.5,
+   336.0,
+   "calm"
+  ],
+  [
+   336.0,
+   361.0,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-24_four_downs_20_seconds"
+}

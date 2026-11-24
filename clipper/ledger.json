@@ -184,7 +184,13 @@
   },
   "2931853788": {
    "transcribed": true,
-   "clipped": [],
+   "clipped": [
+    [
+     740.5,
+     762.1,
+     "hey_buddy_sorry_about_that"
+    ]
+   ],
    "note": "Nov 17 stream (45m); transcribed 2026-11-18, not clipped yet. Candidate: 746-760 'oh that's a real guy, good kill boys, look at that bounty'."
   },
   "2931375285": {
@@ -209,6 +215,11 @@
      555.5,
      588.0,
      "prison_snipe_team_wipe"
+    ],
+    [
+     343.5,
+     367.5,
+     "im_not_camping"
     ]
    ],
    "note": "Nov 18 morning stream (25m); nightly run 2026-11-19. Unused for later: 394-403 double (XOMINNOW_LILY16, THAWCHIME); 223-261 downs; 264-365 'I'm not camping, I was just running across' rant; 1446-1463 downs (RGOGETTA, EGGPLANTX96, TRASH...)."
@@ -248,7 +259,7 @@
      "zipline_to_nowhere"
     ]
    ],
-   "note": "Nov 19-20 stream (60m); nightly run 2026-11-20. 88-450 is business/sales talk (non-gaming). Unused for later: 3331-3346 sniped by a guy on the tower, 'God, what a shot' over killcam (he dies; skipped as I-suck); 2176 single snipe down (DABUS22) 'I got one, sniped him'; 2768-2862 assassination rant + 'I played it like a little bitch and won, clip that' (crude); 1889 down ROSAPERCS + 1900-1917 impact warhead 'first time I've seen a warhead work'; banner downs at 158, 293, 537."
+   "note": "Nov 19-20 stream (60m); nightly run 2026-11-20. 88-450 is business/sales talk (non-gaming). Unused for later: 3331-3346 sniped by a guy on the tower, 'God, what a shot' over killcam (he dies; skipped as I-suck); 2176 single snipe down (DABUS22) 'I got one, sniped him'; 2768-2862 assassination rant + 'I played it like a little bitch and won, clip that' (crude); 1889 down ROSAPERCS + 1900-1917 impact warhead 'first time I've seen a warhead work'; banner downs at 158, 293, 537. 2026-11-24: checked 2303-2325 'robots are not any easier, might as well play a real game' then he gets downed at ~2317 ('no fucking way dude'); good irony candidate, not used yet."
   },
   "2935719309": {
    "transcribed": true,
@@ -354,6 +365,27 @@
     ]
    ],
    "note": "Nov 22-23 stream (1h29m) Warzone Resurgence with Havens07 (TEAMMATE DOWN HAVENS07 at 27). Nightly run 2026-11-23. Montage used triple 1826 SEEKINGGOAT/1831 SNAKEDOOM/1839 X_GHOSTTURTLE (+1840 SEEKINGGOAT again, 1848 PRICEROJO). Unused for later: 1409/1417 double (ESHONORABLE, OLDSUNFLOWR); 1070/1080 downs then he dies (1088 'red-headed... not even his gun, embarrassing', I-suck); 2208/2267/2283 downs; 2229-2252 trivia-question proximity chat (couldn't confirm on screen, mixed with movie-theater talk); 3989-4000 'eat shit you motherfucker' after a down (gameplay hard to follow); 3651, 3727, 3876, 4126, 4511, 4544, 4597, 4737, 4886, 5082 single downs; 85/127/139/167 early downs; 1788 school rant (non-gaming)."
+  },
+  "2938405331": {
+   "transcribed": true,
+   "clipped": [
+    [
+     331.5,
+     361.0,
+     "four_downs_20_seconds"
+    ],
+    [
+     369.5,
+     385.5,
+     "throwing_knife_then_headshot"
+    ],
+    [
+     1058.5,
+     1090.5,
+     "roof_longshot_then_knife"
+    ]
+   ],
+   "note": "Nov 23-24 stream (37m) Warzone Resurgence, squad GTA VI VIPER / WECUJSIX FACED / TEOSOGUAPO (no Havens07). Nightly run 2026-11-24. Transcripts: base.en VAD + _novad (little talk). Banner downs (VOD s): 182 TEENAGEDIRTBAG, 198.5 HAMBONE2121T, 220, 310 MARBLE_002, 336 STRONGLOVE_321, 341 SADSHARK, 351.5 OXOLOVER, 356.5 XO_DOUBLECOCO, 372.5, 374.5, 382 PETITSLOBSTER (HEADSHOT ELIMINATION DOUBLE KILL), 406 PURESNOW, 428 BLUEBERRY (LONGSHOT), 493 SONATAX, 511/522 ALPHA_SUSPENSE4, 842, 865 HAVOC_MATTER, 876, 884, 888, 897 SILENT_DEATH (5 downs in 34s, unused), 1063, 1069, 1085.5, 1814 WATERMELON ('Let's go, sick'), 1841, 1869, 1877, 1885, 1888, 1900, 1903, 1913 (quick-scope HEADSHOT ELIMINATION, finisher test not done), 1942 LIONBB, 1948.5 XO_BLITZ_TIGER, 1951.5 SUBROW_CRANK321 (triple in 10s, 'oh oh fuck', unused), 1971, 1999, 2008, 2020, 2026. Throwing knife eliminations at 376, 1086, 1843, 2027 (all finish an already-downed enemy). Sniper one-shot downs (mag drop + banner same frame / ONE SHOT ONE KILL popup): 198.5, 336.0, 356.5, 493.0, 1948.5 (used in 2026-11-24 montage). Unused for later: 865-899 five downs; 1940-1956 triple; 1466-1553 business talk (non-gaming); 953-976 he gets sniped on the roof ('oh what a shot', I-suck)."
   }
  },
  "headshots": {
@@ -368,6 +400,11 @@
     "vod": "2935372195",
     "t": 7533.8,
     "squad_wiped": true
+   },
+   {
+    "vod": "2938405331",
+    "t": 382.0,
+    "note": "PETITSLOBSTER, HEADSHOT ELIMINATION DOUBLE KILL popup; Mosin; finisher (mag) test not done"
    }
   ],
   "used": {},
@@ -464,6 +501,22 @@
       2608.0,
       2620.0,
       2632.0
+     ]
+    ]
+   ]
+  },
+  {
+   "date": "2026-11-24",
+   "style": "sniper_one_shots",
+   "kills": [
+    [
+     "2938405331",
+     [
+      198.5,
+      336.0,
+      356.5,
+      493.0,
+      1948.5
      ]
     ]
    ]
