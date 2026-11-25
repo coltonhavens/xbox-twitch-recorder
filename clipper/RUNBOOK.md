@@ -88,6 +88,15 @@ kill those bots huh, what are you trying to prove"; 2934307253 ~2310–2320 "go 
   that clip". One spot, one continuous fight, four confirmed sniper downs building to a QUAD, real time, callouts.
 - **bot_pistol_rant** (personality): "yes this is good".
 
+## Full-game video format — APPROVED by Colton Nov 25 (20-kill win, VOD 2939971395, ~719–1601 s)
+For a big game (personal best, 15+ kills, a win): 1) hook = the end screen (show the WHOLE stats screen, letterboxed,
+so the kill count is readable) + his reaction line ("I have 20 kills, that's my personal best"); 2) a short
+montage of the best 3–4 shots right after the hook; 3) his drop/landing talk (where to go, where the money is); 4)
+EVERY kill in the order it happened, none skipped, ~3 s each (shot → down); 5) after every 3 kills, one of his lines
+(callouts, laughing, trash talk); 6) end on the last kill + VICTORY. ~3 min. Show Colton the first 30 s before
+rendering the rest. Builder used: clipper/examples_full_game_2939971395.py. Kill times = banner OCR at 4 fps.
+Colton wants 10+ short clips cut from this game later (not done yet).
+
 ## Caption colors (who is talking) — Colton, Nov 21
 Every caption word carries `spk`: `me` (Colton: white, current word yellow), `team` (teammates: blue + small
 TEAMMATE label), `enemy` (proximity chat: red + ENEMY label), `callout` (DOWN!/HEADSHOT! words we add: like `me`,
