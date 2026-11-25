@@ -1,0 +1,26 @@
+{
+ "type": "montage",
+ "style": "sniper_one_shots",
+ "title": "One shot each,\nTWO SQUAD WIPES",
+ "track": "trap_slow_1",
+ "segments": [
+  {
+   "vod": "2939356877",
+   "hits": [
+    150.8,
+    152.3,
+    607.8,
+    686.6,
+    690.6
+   ],
+   "labels": [
+    "ONE SHOT!",
+    "BACK TO BACK!",
+    "SQUAD WIPED!",
+    "ONE SHOT!",
+    "WIPED AGAIN!"
+   ]
+  }
+ ],
+ "name": "2026-11-25_sniper_one_shot_montage"
+}
