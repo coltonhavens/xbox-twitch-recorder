@@ -1,0 +1,203 @@
+{
+ "vod": "2939971395",
+ "start": 184.0,
+ "end": 203.0,
+ "title": "Downs Little Red Riding Hood\nthen ROASTS her",
+ "meaning": "He downs an enemy wearing a red riding hood skin and roasts her: out here getting groceries for your grandma?",
+ "type": "gameplay",
+ "fix": {
+  "red": "Red",
+  "riding": "Riding",
+  "hood": "Hood",
+  "grandma": "grandma?",
+  "here": "here?"
+ },
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 189.0,
+   "e": 190.0,
+   "spk": "callout"
+  },
+  {
+   "w": "oh",
+   "s": 192.84,
+   "e": 193.28,
+   "spk": "me"
+  },
+  {
+   "w": "yes",
+   "s": 193.28,
+   "e": 193.72,
+   "spk": "me"
+  },
+  {
+   "w": "hey",
+   "s": 193.72,
+   "e": 196.06,
+   "spk": "me"
+  },
+  {
+   "w": "sit",
+   "s": 196.06,
+   "e": 196.56,
+   "spk": "me"
+  },
+  {
+   "w": "down",
+   "s": 196.56,
+   "e": 196.9,
+   "spk": "me"
+  },
+  {
+   "w": "a",
+   "s": 196.9,
+   "e": 197.02,
+   "spk": "me"
+  },
+  {
+   "w": "little",
+   "s": 197.02,
+   "e": 197.16,
+   "spk": "me"
+  },
+  {
+   "w": "red",
+   "s": 197.16,
+   "e": 197.34,
+   "spk": "me"
+  },
+  {
+   "w": "riding",
+   "s": 197.34,
+   "e": 197.6,
+   "spk": "me"
+  },
+  {
+   "w": "hood",
+   "s": 197.6,
+   "e": 197.78,
+   "spk": "me"
+  },
+  {
+   "w": "little",
+   "s": 197.78,
+   "e": 198.14,
+   "spk": "me"
+  },
+  {
+   "w": "what",
+   "s": 198.14,
+   "e": 198.66,
+   "spk": "me"
+  },
+  {
+   "w": "are",
+   "s": 198.66,
+   "e": 198.78,
+   "spk": "me"
+  },
+  {
+   "w": "you",
+   "s": 198.78,
+   "e": 199.0,
+   "spk": "me"
+  },
+  {
+   "w": "out",
+   "s": 199.0,
+   "e": 199.54,
+   "spk": "me"
+  },
+  {
+   "w": "here",
+   "s": 199.54,
+   "e": 199.72,
+   "spk": "me"
+  },
+  {
+   "w": "getting",
+   "s": 199.72,
+   "e": 199.94,
+   "spk": "me"
+  },
+  {
+   "w": "groceries",
+   "s": 199.94,
+   "e": 200.34,
+   "spk": "me"
+  },
+  {
+   "w": "for",
+   "s": 200.34,
+   "e": 200.6,
+   "spk": "me"
+  },
+  {
+   "w": "your",
+   "s": 200.6,
+   "e": 200.74,
+   "spk": "me"
+  },
+  {
+   "w": "grandma",
+   "s": 200.74,
+   "e": 201.2,
+   "spk": "me"
+  },
+  {
+   "w": "what",
+   "s": 201.2,
+   "e": 201.4,
+   "spk": "me"
+  },
+  {
+   "w": "are",
+   "s": 201.4,
+   "e": 201.48,
+   "spk": "me"
+  },
+  {
+   "w": "you",
+   "s": 201.48,
+   "e": 201.58,
+   "spk": "me"
+  },
+  {
+   "w": "doing",
+   "s": 201.58,
+   "e": 201.76,
+   "spk": "me"
+  },
+  {
+   "w": "out",
+   "s": 201.76,
+   "e": 201.94,
+   "spk": "me"
+  },
+  {
+   "w": "here",
+   "s": 201.94,
+   "e": 202.16,
+   "spk": "me"
+  }
+ ],
+ "moods": [
+  [
+   184,
+   192,
+   "calm"
+  ],
+  [
+   192,
+   198,
+   "shocked"
+  ],
+  [
+   198,
+   203,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-26_little_red_riding_hood"
+}

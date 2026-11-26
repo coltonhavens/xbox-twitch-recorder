@@ -1,0 +1,35 @@
+{
+ "type": "montage",
+ "style": "triple_kills",
+ "title": "Two fights,\nTWO TRIPLES",
+ "track": "trap_slow_1",
+ "segments": [
+  {
+   "vod": "2939356877",
+   "hits": [
+    1198.5,
+    1205.0,
+    1210.5
+   ],
+   "labels": [
+    "DOWN!",
+    "DOUBLE!",
+    "TRIPLE!"
+   ]
+  },
+  {
+   "vod": "2939356877",
+   "hits": [
+    2146.0,
+    2151.0,
+    2160.0
+   ],
+   "labels": [
+    "DOWN!",
+    "DOUBLE!",
+    "TRIPLE!"
+   ]
+  }
+ ],
+ "name": "2026-11-26_triple_kill_montage"
+}

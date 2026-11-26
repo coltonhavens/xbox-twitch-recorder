@@ -1,0 +1,65 @@
+{
+ "vod": "2938405331",
+ "start": 860.0,
+ "end": 903.0,
+ "title": "Six downs in 32 seconds\nfrom ONE ROOF",
+ "meaning": "He holds one rooftop with a sniper and downs six enemies in 32 seconds, ending on a triple kill.",
+ "type": "gameplay",
+ "fix": {},
+ "words": [
+  {
+   "w": "1 DOWN!",
+   "s": 865.5,
+   "e": 866.5,
+   "spk": "callout"
+  },
+  {
+   "w": "2 DOWNS!",
+   "s": 876.5,
+   "e": 877.5,
+   "spk": "callout"
+  },
+  {
+   "w": "3 DOWNS!",
+   "s": 880.0,
+   "e": 881.0,
+   "spk": "callout"
+  },
+  {
+   "w": "4 DOWNS!",
+   "s": 886.5,
+   "e": 887.5,
+   "spk": "callout"
+  },
+  {
+   "w": "5 DOWNS!",
+   "s": 891.0,
+   "e": 892.0,
+   "spk": "callout"
+  },
+  {
+   "w": "6 DOWNS!",
+   "s": 897.5,
+   "e": 898.5,
+   "spk": "callout"
+  }
+ ],
+ "moods": [
+  [
+   860,
+   876,
+   "calm"
+  ],
+  [
+   876,
+   892,
+   "shocked"
+  ],
+  [
+   892,
+   903,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-26_six_downs_one_roof"
+}

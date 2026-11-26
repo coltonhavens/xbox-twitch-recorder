@@ -1,0 +1,131 @@
+{
+ "vod": "2939356877",
+ "start": 2556.0,
+ "end": 2586.5,
+ "title": "Four sniper downs\nfrom the CLIFF",
+ "meaning": "From a cliff over the water he snipes four enemies in 22 seconds while nearly out of ammo, building to a quad.",
+ "type": "gameplay",
+ "fix": {},
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 2561.0,
+   "e": 2562.0,
+   "spk": "callout"
+  },
+  {
+   "w": "Okay,",
+   "s": 2565.24,
+   "e": 2566.64,
+   "spk": "me"
+  },
+  {
+   "w": "missing",
+   "s": 2566.64,
+   "e": 2568.04,
+   "spk": "me"
+  },
+  {
+   "w": "shot,",
+   "s": 2568.04,
+   "e": 2570.32,
+   "spk": "me"
+  },
+  {
+   "w": "DOUBLE!",
+   "s": 2568.5,
+   "e": 2569.5,
+   "spk": "callout"
+  },
+  {
+   "w": "out",
+   "s": 2571.06,
+   "e": 2572.64,
+   "spk": "me"
+  },
+  {
+   "w": "of",
+   "s": 2572.64,
+   "e": 2572.74,
+   "spk": "me"
+  },
+  {
+   "w": "bullets",
+   "s": 2572.74,
+   "e": 2572.96,
+   "spk": "me"
+  },
+  {
+   "w": "on",
+   "s": 2572.96,
+   "e": 2573.12,
+   "spk": "me"
+  },
+  {
+   "w": "everything.",
+   "s": 2573.12,
+   "e": 2573.46,
+   "spk": "me"
+  },
+  {
+   "w": "TRIPLE!",
+   "s": 2577.5,
+   "e": 2578.5,
+   "spk": "callout"
+  },
+  {
+   "w": "yeah",
+   "s": 2578.56,
+   "e": 2579.6,
+   "spk": "me"
+  },
+  {
+   "w": "you",
+   "s": 2579.6,
+   "e": 2579.72,
+   "spk": "me"
+  },
+  {
+   "w": "better",
+   "s": 2579.72,
+   "e": 2579.86,
+   "spk": "me"
+  },
+  {
+   "w": "run",
+   "s": 2579.86,
+   "e": 2580.1,
+   "spk": "me"
+  },
+  {
+   "w": "away",
+   "s": 2580.1,
+   "e": 2583.16,
+   "spk": "me"
+  },
+  {
+   "w": "QUAD!",
+   "s": 2583.0,
+   "e": 2584.0,
+   "spk": "callout"
+  }
+ ],
+ "moods": [
+  [
+   2556,
+   2568,
+   "calm"
+  ],
+  [
+   2568,
+   2580,
+   "shocked"
+  ],
+  [
+   2580,
+   2586.5,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-26_cliff_sniper_quad"
+}
