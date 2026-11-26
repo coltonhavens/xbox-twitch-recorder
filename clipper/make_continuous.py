@@ -36,6 +36,7 @@ for sp in spans:
         merged.append(sp)
 
 files, words, moods, out_t = [], [], [], 0.0
+memes = []
 def mood_at(x):
     for lo, hi, m in plan["moods"]:
         if lo <= x < hi:
@@ -58,6 +59,9 @@ for i, (a, b, sp) in enumerate(merged):
                 continue
             words.append({"w": txt, "s": round(out_t + (w["s"] - a) / sp, 2), "e": round(out_t + (w["e"] - a) / sp, 2),
                           "spk": w.get("spk", "me")})
+    for m in plan.get("memes", []):
+        if a <= m["t"] < b:
+            memes.append({"t": round(out_t + (m["t"] - a) / sp, 2), "kind": m["kind"]})
     # mood follows the source timeline
     step = 0.5
     x = a
@@ -76,7 +80,7 @@ lst = plan["tmp"] + ".txt"
 open(lst, "w").write("".join(f"file '{f}'\n" for f in files))
 src = plan["tmp"] + "_cont.mp4"
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", src], check=True)
-spec = {"src": src, "start": 0, "end": round(out_t, 2), "title": plan["title"], "words": words, "moods": moods, "out": plan["out"], "setup": plan.get("setup")}
+spec = {"src": src, "start": 0, "end": round(out_t, 2), "title": plan["title"], "words": words, "moods": moods, "out": plan["out"], "setup": plan.get("setup"), "memes": memes}
 json.dump(spec, open(plan["tmp"] + "_render.json", "w"))
 subprocess.run(["python3", os.path.join(os.path.dirname(os.path.abspath(__file__)), "render_clip.py"), plan["tmp"] + "_render.json"], check=True)
 fast = sum((b - a) for a, b, s in merged if s != 1)

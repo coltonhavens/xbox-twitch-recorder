@@ -29,6 +29,7 @@ with tempfile.TemporaryDirectory() as d:
         "realtime": plan.get("type", "gameplay") == "gameplay",
         "words": [{"w": w["w"], "s": round(w["s"] - S, 2), "e": round(w["e"] - S, 2), "spk": w.get("spk", "me")} for w in plan["words"] if S <= w["s"] < E],
         "moods": [[lo - S, hi - S, m] for lo, hi, m in plan["moods"]],
+        "memes": [{"t": round(m["t"] - S, 2), "kind": m["kind"]} for m in plan.get("memes", []) if S <= m["t"] < E],
         "out": os.path.join(d, "full.mp4"), "tmp": os.path.join(d, "c"),
     }
     json.dump(cont, open(os.path.join(d, "cont.json"), "w"))
