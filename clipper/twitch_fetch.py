@@ -6,7 +6,7 @@
   twitch_fetch.py window VOD START END OUT.mp4  -> exact 720p video window, START/END in VOD seconds
 
 Missing fragments are filled with silence/black of the same length, so timestamps stay true."""
-import json, os, subprocess, sys, tempfile, urllib.request
+import os, json, os, subprocess, sys, tempfile, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 CHANNEL = "mrhype420"
@@ -75,8 +75,36 @@ def audio(vod, out):
                         "-ac", "1", "-ar", "16000", out], check=True)
     print(json.dumps({"vod": vod, "seconds": round(sum(f["dur"] for f in frags), 2), "missing_fragments": missing, "live": live}))
 
+ARCHIVE_FOLDER = "1X9VfSes_byvkygreHfdvGNHzVXjvAYBG"   # Xbox Game Recordings (the recorder's Drive backups)
+
+def drive_window(vod, start, end, out):
+    """Fallback when Twitch has deleted the VOD (~7 days): read just this window from the recorder's Drive copy
+    MrHype420-<vod>.mp4, using the recorder's drive.file credential (XTR_DRIVE_AUTH, only in GitHub Actions)."""
+    raw = os.environ.get("XTR_DRIVE_AUTH")
+    if not raw:
+        raise SystemExit(f"VOD {vod} is gone from Twitch and XTR_DRIVE_AUTH isn't set here (Drive fallback runs in GitHub Actions)")
+    from google.oauth2.credentials import Credentials
+    from google.auth.transport.requests import Request
+    import urllib.request, urllib.parse
+    creds = Credentials.from_authorized_user_info(json.loads(raw)["oauth"]); creds.refresh(Request())
+    q = f"'{ARCHIVE_FOLDER}' in parents and name = 'MrHype420-{vod}.mp4' and trashed = false"
+    req = urllib.request.Request("https://www.googleapis.com/drive/v3/files?" + urllib.parse.urlencode({"q": q, "fields": "files(id,size)"}),
+                                 headers={"Authorization": f"Bearer {creds.token}"})
+    files = json.load(urllib.request.urlopen(req, timeout=60)).get("files", [])
+    if not files:
+        raise SystemExit(f"VOD {vod}: not on Twitch and no Drive backup MrHype420-{vod}.mp4")
+    url = f"https://www.googleapis.com/drive/v3/files/{files[0]['id']}?alt=media"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-headers", f"Authorization: Bearer {creds.token}\r\n",
+                    "-ss", f"{start:.3f}", "-t", f"{end - start:.3f}", "-i", url,
+                    "-vf", "scale=1280:720", "-c:v", "libx264", "-preset", "veryfast", "-crf", "18",
+                    "-c:a", "aac", "-b:a", "160k", out], check=True)
+    print(json.dumps({"vod": vod, "start": start, "end": end, "source": "drive"}))
+
 def window(vod, start, end, out):
-    base, frags, _ = playlist(vod, "720p")
+    try:
+        base, frags, _ = playlist(vod, "720p")
+    except SystemExit:
+        return drive_window(vod, start, end, out)
     sel = [f for f in frags if f["start"] + f["dur"] > start and f["start"] < end]
     if not sel:
         raise SystemExit("window outside VOD")
