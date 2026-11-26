@@ -23,13 +23,13 @@ jobs:
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends ffmpeg
           python -m pip install --no-cache-dir -r clipper/requirements.txt
-      - name: Fetch a window (Twitch, else Drive). Nothing is uploaded.
+      - name: Fetch a window (Twitch, else Drive byte ranges). Nothing is uploaded.
         env:
           XTR_DRIVE_AUTH: ${{ secrets.XTR_DRIVE_AUTH }}
           VOD: ${{ inputs.vod || '2931992210' }}
           A: ${{ inputs.start || '1997' }}
           B: ${{ inputs.end || '2005' }}
         run: |
-          python clipper/twitch_fetch.py window "$VOD" "$A" "$B" /tmp/w.mp4
+          time python clipper/twitch_fetch.py window "$VOD" "$A" "$B" /tmp/w.mp4
           ffprobe -v error -show_entries format=duration,size -of default=nw=1 /tmp/w.mp4
           ffmpeg -v error -i /tmp/w.mp4 -af volumedetect -f null - 2>&1 | grep -E "mean_volume" || true
