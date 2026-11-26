@@ -92,7 +92,7 @@ kill those bots huh, what are you trying to prove"; 2934307253 ~2310–2320 "go 
 For a big game (personal best, 15+ kills, a win): 1) hook = the end screen (show the WHOLE stats screen, letterboxed,
 so the kill count is readable) + his reaction line ("I have 20 kills, that's my personal best"); 2) a short
 montage of the best 3–4 shots right after the hook; 3) his drop/landing talk (where to go, where the money is); 4)
-EVERY kill in the order it happened, none skipped, ~3 s each (shot → down); 5) after every 3 kills, one of his lines
+EVERY kill in the order it happened, none skipped, ~4 s each (shot → down), with a counter (big yellow number + 'DOWNS' label, top-left of the gameplay square) that goes up on each down; get to the first kill fast (cut from 'where do y'all want to go' + the spots straight to the drop + money talk, then kill 1); 5) after every 3 kills, one of his lines
 (callouts, laughing, trash talk); 6) end on the last kill + VICTORY. ~3 min. Show Colton the first 30 s before
 rendering the rest. Builder used: clipper/examples_full_game_2939971395.py. Kill times = banner OCR at 4 fps.
 Colton wants 10+ short clips cut from this game later (not done yet).
