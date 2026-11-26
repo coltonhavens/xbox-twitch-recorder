@@ -76,7 +76,7 @@ lst = plan["tmp"] + ".txt"
 open(lst, "w").write("".join(f"file '{f}'\n" for f in files))
 src = plan["tmp"] + "_cont.mp4"
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", src], check=True)
-spec = {"src": src, "start": 0, "end": round(out_t, 2), "title": plan["title"], "words": words, "moods": moods, "out": plan["out"]}
+spec = {"src": src, "start": 0, "end": round(out_t, 2), "title": plan["title"], "words": words, "moods": moods, "out": plan["out"], "setup": plan.get("setup")}
 json.dump(spec, open(plan["tmp"] + "_render.json", "w"))
 subprocess.run(["python3", os.path.join(os.path.dirname(os.path.abspath(__file__)), "render_clip.py"), plan["tmp"] + "_render.json"], check=True)
 fast = sum((b - a) for a, b, s in merged if s != 1)

@@ -95,7 +95,26 @@ SPK = {"me": ((255, 255, 255, 255), (255, 221, 0, 255), None),
        "callout": ((255, 255, 255, 255), (255, 221, 0, 255), None)}   # DOWN!/TRIPLE! words we add, not speech
 tag_font = ImageFont.truetype(os.path.join(HERE, "fonts", "Inter-ExtraBold.otf"), 34)
 
+# optional setup line (Colton, Nov 25): a few words of context at the very start so a solo line makes sense to
+# a stranger, e.g. "a bot just pistoled me →". spec["setup"] = text, spec["setup_until"] = seconds (default 2.2).
+SETUP = spec.get("setup"); SETUP_UNTIL = float(spec.get("setup_until", 2.2))
+setup_font = ImageFont.truetype(os.path.join(HERE, "fonts", "Poppins-Bold.ttf"), 64)
+def draw_setup(img, T):
+    t = T - START
+    if not SETUP or t >= SETUP_UNTIL:
+        return False
+    d = ImageDraw.Draw(img)
+    txt = SETUP.upper().replace("→", "...").replace("->", "...").strip()
+    while d.textlength(txt, font=setup_font) > W - 90 and setup_font.size > 40:
+        globals()["setup_font"] = ImageFont.truetype(os.path.join(HERE, "fonts", "Poppins-Bold.ttf"), setup_font.size - 4)
+    tw = d.textlength(txt, font=setup_font); x = (W - tw) / 2; y = CAP_Y + 8
+    d.rounded_rectangle((x - 26, y - 6, x + tw + 26, y + setup_font.size + 22), radius=22, fill=(0, 0, 0, 200))
+    d.text((x, y), txt, font=setup_font, fill=(255, 221, 0, 255))
+    return True
+
 def draw_caption(img, T):
+    if draw_setup(img, T):
+        return
     cur = [w for w in words if w["s"] <= T < w["e"] + 0.25]
     if not cur:
         return

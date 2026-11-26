@@ -103,6 +103,9 @@ Only his voice is on the stream audio (teammates/randoms/enemies are not recorde
   and waits, reacts to a teammate's line). Exception: there's a cool kill in it — then it's a gameplay clip.
 - **Keep** good-looking gameplay (multi-kills, clean snipes, wins) and **his lines that make sense to a stranger who
   wasn't on his team** — a rant, a roast, a reaction, a tip, a callout that explains itself.
+- **Setup line** (Colton approved Nov 25): when his line needs a few words of context, add `"setup": "a bot just
+pistoled me..."` to the plan (short, plain words, under ~6 words). It shows in yellow under the headline for the first
+2.2 s, then his captions take over. Never put words in his mouth: the setup states what happened on screen.
 - Test before picking: "If I scrolled past this with no context, would I get it in the first 2 seconds?" If no, skip.
 - Colton rated the Nov 26 samples (tip, recap, sniper replay, business talk) 4–5/10: missing other voices made
   half-conversations fall flat. Prefer self-contained lines + strong gameplay.

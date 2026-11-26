@@ -25,7 +25,7 @@ with tempfile.TemporaryDirectory() as d:
     win = os.path.join(d, "window.mp4")
     subprocess.run(["python3", os.path.join(HERE, "twitch_fetch.py"), "window", str(plan["vod"]), str(S), str(E), win], check=True)
     cont = {
-        "vod": win, "a": 0.0, "b": E - S, "title": plan["title"], "fix": plan.get("fix", {}),
+        "vod": win, "a": 0.0, "b": E - S, "title": plan["title"], "fix": plan.get("fix", {}), "setup": plan.get("setup"),
         "realtime": plan.get("type", "gameplay") == "gameplay",
         "words": [{"w": w["w"], "s": round(w["s"] - S, 2), "e": round(w["e"] - S, 2), "spk": w.get("spk", "me")} for w in plan["words"] if S <= w["s"] < E],
         "moods": [[lo - S, hi - S, m] for lo, hi, m in plan["moods"]],
