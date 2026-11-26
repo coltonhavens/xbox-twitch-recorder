@@ -116,6 +116,19 @@ pistoled me..."` to the plan (short, plain words, under ~6 words). It shows in y
 (it needs XTR_DRIVE_AUTH), so: plans for expired VODs still RENDER fine, but this session can't preview/transcribe
 them. For backlog picks from expired VODs, rely on the saved transcripts + ledger notes, and keep windows generous.
 
+## Breathing room (Colton, Nov 26: "too close to the action… jerky… I can't see what's going on")
+Every kill/shot cut: start at least **1 s before the FIRST bullet** (not before the down banner — the down shows
+~0.5–1 s after the shot) and end **1.5–2 s after the down**. Find the first bullet from the magazine count dropping
+(crop 960,600 → 110x40, read at 6 fps). Never cut mid-recoil or on the banner frame. Full-game videos: ~4–5 s per kill.
+Montages: same lead-in; fewer kills is better than jerky kills.
+
+## Meme reactions (testing, Nov 26)
+On a headshot / clean one-shot: freeze the last frame, his smug cartoon (kit/k6) pops in with "SO CLEAN" + a chime
+(music/satisfying.wav). On a clear miss (sniper fires, mag count drops, no down within 2 s): blank-stare cartoon
+(kit/k8) with "...BRUH" + sad trombone (music/embarrassed.wav), ~1.5–1.8 s each. Original faces and sounds only (no
+copyrighted meme clips or songs — business TikTok). Use between clips in kill streaks, not on every kill.
+Builder: clipper/examples_meme_insert.sh. NOT in the nightly run until Colton approves the test.
+
 ## Caption colors (who is talking) — Colton, Nov 21
 Every caption word carries `spk`: `me` (Colton: white, current word yellow), `team` (teammates: blue + small
 TEAMMATE label), `enemy` (proximity chat: red + ENEMY label), `callout` (DOWN!/HEADSHOT! words we add: like `me`,

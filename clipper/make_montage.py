@@ -89,8 +89,8 @@ def main(plan_path, outdir):
         return personality(plan, outdir)
     tr = json.load(open(os.path.join(HERE, "music", "tracks.json")))[plan["track"]]
     P = 60.0 / tr["bpm"]
-    step = P * tr.get("beats_per_kill", 2)          # time between downs
-    pre = min(1.1, step - 0.35)                     # show the shot before the down
+    step = P * max(3, tr.get("beats_per_kill", 2))   # time between downs (>= 3 beats so each kill can breathe)
+    pre = min(2.0, step - 0.35)                     # ~1 s before the first bullet (down shows ~1 s after the shot)
     kills = []                                      # (vod, down_t, label, last_of_fight, slowmo)
     for seg in plan["segments"]:
         labs = seg.get("labels") or ["DOWN!"] * len(seg["hits"])
