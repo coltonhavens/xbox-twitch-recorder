@@ -123,7 +123,7 @@ ff = subprocess.Popen([
     "-filter_complex",
     f"[0:v]fps={FPS},scale=1280:720,split[a][b];"
     f"[a]scale=-2:{H},crop={W}:{H},gblur=sigma=30,eq=brightness=-0.15[bg];"
-    f"[b]crop=720:720:280:0,scale={W}:{W}:flags=lanczos[fg];"
+    f"[b]crop=720:720:280:0,scale={W}:{W}:flags=lanczos,unsharp=5:5:0.8:3:3:0.0[fg];"
     f"[bg][fg]overlay=0:{GAME_Y}[base];[base][1:v]overlay=0:0:format=auto[v]",
     "-map", "[v]", "-map", "0:a", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
     "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-shortest", OUT], stdin=subprocess.PIPE)

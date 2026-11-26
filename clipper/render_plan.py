@@ -34,8 +34,8 @@ with tempfile.TemporaryDirectory() as d:
     json.dump(cont, open(os.path.join(d, "cont.json"), "w"))
     subprocess.run(["python3", os.path.join(HERE, "make_continuous.py"), os.path.join(d, "cont.json")], check=True)
     final = os.path.join(outdir, plan["name"] + ".mp4")
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", cont["out"], "-c:v", "libx264", "-preset", "medium", "-crf", "24",
-                    "-maxrate", "4M", "-bufsize", "8M", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k",
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", cont["out"], "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+                    "-maxrate", "8M", "-bufsize", "16M", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k",
                     "-movflags", "+faststart", final], check=True)
 caption = plan.get("caption") or (" ".join(plan["title"].split()) + " #callofduty #warzone #mrhype420 #codclips #gaming")
 open(os.path.join(outdir, plan["name"] + ".txt"), "w").write(caption + "\n")   # TikTok caption, read by the poster

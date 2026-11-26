@@ -76,8 +76,8 @@ def personality(plan, outdir):
         json.dump(spec, open(os.path.join(d, "spec.json"), "w"))
         run("python3", os.path.join(HERE, "render_clip.py"), os.path.join(d, "spec.json"))
         out = os.path.join(outdir, plan["name"] + ".mp4")
-        run("ffmpeg", "-v", "error", "-y", "-i", spec["out"], "-c:v", "libx264", "-preset", "medium", "-crf", "22",
-            "-maxrate", "5M", "-bufsize", "10M", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
+        run("ffmpeg", "-v", "error", "-y", "-i", spec["out"], "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+            "-maxrate", "8M", "-bufsize", "16M", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
             "-movflags", "+faststart", out)
     cap = plan.get("caption") or (" ".join(plan["title"].split()) + " #callofduty #warzone #mrhype420 #gaming #funny")
     open(os.path.join(outdir, plan["name"] + ".txt"), "w").write(cap + "\n")
@@ -156,8 +156,8 @@ def main(plan_path, outdir):
         json.dump(spec, open(os.path.join(d, "spec.json"), "w"))
         run("python3", os.path.join(HERE, "render_clip.py"), os.path.join(d, "spec.json"))
         out = os.path.join(outdir, plan["name"] + ".mp4")
-        run("ffmpeg", "-v", "error", "-y", "-i", spec["out"], "-c:v", "libx264", "-preset", "medium", "-crf", "22",
-            "-maxrate", "5M", "-bufsize", "10M", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
+        run("ffmpeg", "-v", "error", "-y", "-i", spec["out"], "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+            "-maxrate", "8M", "-bufsize", "16M", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
             "-movflags", "+faststart", out)
     cap = plan.get("caption") or (" ".join(plan["title"].split()) + " #callofduty #warzone #mrhype420 #codmontage #gaming")
     open(os.path.join(outdir, plan["name"] + ".txt"), "w").write(cap + "\n")
