@@ -1,5 +1,8 @@
 name: Test Drive fallback fetch
 on:
+  push:
+    branches: [clipper]
+    paths: ['.github/workflows/drive-fetch-test.yml']
   workflow_dispatch:
     inputs:
       vod: {description: "VOD id", required: true, default: "2931992210"}
@@ -23,9 +26,9 @@ jobs:
       - name: Fetch a window (Twitch, else Drive). Nothing is uploaded.
         env:
           XTR_DRIVE_AUTH: ${{ secrets.XTR_DRIVE_AUTH }}
-          VOD: ${{ inputs.vod }}
-          A: ${{ inputs.start }}
-          B: ${{ inputs.end }}
+          VOD: ${{ inputs.vod || '2931992210' }}
+          A: ${{ inputs.start || '1997' }}
+          B: ${{ inputs.end || '2005' }}
         run: |
           python clipper/twitch_fetch.py window "$VOD" "$A" "$B" /tmp/w.mp4
           ffprobe -v error -show_entries format=duration,size -of default=nw=1 /tmp/w.mp4
