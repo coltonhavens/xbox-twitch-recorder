@@ -110,6 +110,12 @@ pistoled me..."` to the plan (short, plain words, under ~6 words). It shows in y
 - Colton rated the Nov 26 samples (tip, recap, sniper replay, business talk) 4–5/10: missing other voices made
   half-conversations fall flat. Prefer self-contained lines + strong gameplay.
 
+## Old streams (Twitch deletes VODs after ~7 days) — Nov 26
+`twitch_fetch.py window` falls back to the recorder's Drive copy `Xbox Game Recordings/MrHype420-<vod>.mp4`
+(byte-range jump, ~25 s per clip) when Twitch no longer has the VOD. That fallback only works inside GitHub Actions
+(it needs XTR_DRIVE_AUTH), so: plans for expired VODs still RENDER fine, but this session can't preview/transcribe
+them. For backlog picks from expired VODs, rely on the saved transcripts + ledger notes, and keep windows generous.
+
 ## Caption colors (who is talking) — Colton, Nov 21
 Every caption word carries `spk`: `me` (Colton: white, current word yellow), `team` (teammates: blue + small
 TEAMMATE label), `enemy` (proximity chat: red + ENEMY label), `callout` (DOWN!/HEADSHOT! words we add: like `me`,
