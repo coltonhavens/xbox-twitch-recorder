@@ -32,4 +32,4 @@ jobs:
         run: |
           time python clipper/twitch_fetch.py window "$VOD" "$A" "$B" /tmp/w.mp4
           ffprobe -v error -show_entries format=duration,size -of default=nw=1 /tmp/w.mp4
-          ffmpeg -v error -i /tmp/w.mp4 -af volumedetect -f null - 2>&1 | grep -E "mean_volume" || true
+          ffmpeg -i /tmp/w.mp4 -af volumedetect -f null - 2>&1 | grep -E "mean_volume|max_volume" || true
