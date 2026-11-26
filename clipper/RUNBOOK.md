@@ -97,6 +97,16 @@ EVERY kill in the order it happened, none skipped, ~4 s each (shot → down), wi
 rendering the rest. Builder used: clipper/examples_full_game_2939971395.py. Kill times = banner OCR at 4 fps.
 Colton wants 10+ short clips cut from this game later (not done yet).
 
+## The stranger test (Colton, Nov 25) — applies to EVERY clip
+Only his voice is on the stream audio (teammates/randoms/enemies are not recorded). So:
+- **Skip moments that only work as a two-sided conversation** (he answers someone we can't hear, asks a question
+  and waits, reacts to a teammate's line). Exception: there's a cool kill in it — then it's a gameplay clip.
+- **Keep** good-looking gameplay (multi-kills, clean snipes, wins) and **his lines that make sense to a stranger who
+  wasn't on his team** — a rant, a roast, a reaction, a tip, a callout that explains itself.
+- Test before picking: "If I scrolled past this with no context, would I get it in the first 2 seconds?" If no, skip.
+- Colton rated the Nov 26 samples (tip, recap, sniper replay, business talk) 4–5/10: missing other voices made
+  half-conversations fall flat. Prefer self-contained lines + strong gameplay.
+
 ## Caption colors (who is talking) — Colton, Nov 21
 Every caption word carries `spk`: `me` (Colton: white, current word yellow), `team` (teammates: blue + small
 TEAMMATE label), `enemy` (proximity chat: red + ENEMY label), `callout` (DOWN!/HEADSHOT! words we add: like `me`,
