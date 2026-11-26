@@ -136,15 +136,40 @@ def draw_caption(img, T):
         x += d.textlength(p, font=cap_font) + 28
 
 n = int((END - START) * FPS)
+# corner meme reactions (Colton, Nov 26): small, top-left of the gameplay, gameplay keeps playing.
+# spec["memes"] = [{"t": src_seconds, "kind": "smoked"|"bro", "dur": 1.8}]
+MEME_KINDS = {"smoked": ("k6", "SMOKED", (255, 221, 0, 255), "satisfying.wav"),
+              "bro": ("k8", "BRO", (255, 90, 90, 255), "embarrassed.wav")}
+MEMES = [dict(m, dur=m.get("dur", 1.8)) for m in spec.get("memes", []) if m.get("kind") in MEME_KINDS and START <= m["t"] < END]
+meme_imgs = {k: Image.open(os.path.join(HERE, "kit", v[0] + ".png")).convert("RGBA") for k, v in MEME_KINDS.items()}
+meme_font = ImageFont.truetype(os.path.join(HERE, "fonts", "Inter-ExtraBold.otf"), 70)
+def draw_memes(img, T):
+    for m in MEMES:
+        t = T - m["t"]
+        if not (0 <= t < m["dur"]): continue
+        face, label, col, _ = MEME_KINDS[m["kind"]]
+        sc = 1.15 * min(1, t / 0.15) if t < 0.15 else 1.15 - 0.15 * min(1, (t - 0.15) / 0.1)
+        alpha = max(0.0, min(1.0, (m["dur"] - t) / 0.25))
+        sz = max(10, int(300 * sc)); a = meme_imgs[m["kind"]].resize((sz, sz))
+        if alpha < 1: a.putalpha(a.getchannel("A").point(lambda v: int(v * alpha)))
+        x0, y0 = 30, GAME_Y + 110
+        img.alpha_composite(a, (x0 + 150 - sz // 2, y0 + 150 - sz // 2))
+        d = ImageDraw.Draw(img); tw = d.textlength(label, font=meme_font)
+        d.text((x0 + 150 - tw / 2, y0 - 70), label, font=meme_font, fill=col[:3] + (int(255 * alpha),),
+               stroke_width=8, stroke_fill=(0, 0, 0, int(255 * alpha)))
+
 ff = subprocess.Popen([
     "ffmpeg", "-loglevel", "error", "-y", "-ss", str(START), "-t", str(END - START), "-i", SRC,
     "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
+    *[a for m in MEMES for a in ("-i", os.path.join(HERE, "music", MEME_KINDS[m["kind"]][3]))],
     "-filter_complex",
     f"[0:v]fps={FPS},scale=1280:720,split[a][b];"
     f"[a]scale=-2:{H},crop={W}:{H},gblur=sigma=30,eq=brightness=-0.15[bg];"
     f"[b]crop=720:720:280:0,scale={W}:{W}:flags=lanczos,unsharp=5:5:0.8:3:3:0.0[fg];"
-    f"[bg][fg]overlay=0:{GAME_Y}[base];[base][1:v]overlay=0:0:format=auto[v]",
-    "-map", "[v]", "-map", "0:a", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
+    f"[bg][fg]overlay=0:{GAME_Y}[base];[base][1:v]overlay=0:0:format=auto[v]"
+    + "".join(f";[{i + 2}:a]aresample=48000,adelay={int((m['t'] - START) * 1000)}|{int((m['t'] - START) * 1000)},volume=0.8[m{i}]" for i, m in enumerate(MEMES))
+    + (f";[0:a]aresample=48000[g];[g]" + "".join(f"[m{i}]" for i in range(len(MEMES))) + f"amix=inputs={len(MEMES) + 1}:normalize=0:duration=first[aout]" if MEMES else ""),
+    "-map", "[v]", "-map", "[aout]" if MEMES else "0:a", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
     "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-shortest", OUT], stdin=subprocess.PIPE)
 for f in range(n):
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -156,6 +181,7 @@ for f in range(n):
     d.text((W - 245 - d.textlength("MrHype420", font=name_font) / 2, GAME_Y + 1080 + 105), "MrHype420",
            font=name_font, fill=(57, 255, 20, 255), stroke_width=5, stroke_fill=(0, 0, 0, 255))
     draw_caption(layer, START + f / FPS)
+    draw_memes(layer, START + f / FPS)
     ff.stdin.write(layer.tobytes())
 ff.stdin.close(); ff.wait()
 print("done", n, "frames ->", OUT)

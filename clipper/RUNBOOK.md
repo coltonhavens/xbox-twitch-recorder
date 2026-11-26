@@ -122,13 +122,13 @@ Every kill/shot cut: start at least **1 s before the FIRST bullet** (not before 
 (crop 960,600 → 110x40, read at 6 fps). Never cut mid-recoil or on the banner frame. Full-game videos: ~4–5 s per kill.
 Montages: same lead-in; fewer kills is better than jerky kills.
 
-## Meme reactions (testing, Nov 26)
-On a headshot / clean one-shot: freeze the last frame, his smug cartoon (kit/k6) pops in with "SO CLEAN" + a chime
-(music/satisfying.wav). On a clear miss (sniper fires, mag count drops, no down within 2 s): blank-stare cartoon
-(kit/k8) with "...BRUH" + sad trombone (music/embarrassed.wav), ~1.5–1.8 s each. Original faces and sounds only (no
-copyrighted meme clips or songs — business TikTok). Use between clips in kill streaks, not on every kill.
-Builder: clipper/examples_meme_insert.sh. NOT in the nightly run until Colton approves the test.
-
+## Meme reactions (testing v2, Nov 26 — corner style)
+Gameplay keeps playing in the center; the meme pops up SMALL in the top-left of the gameplay for ~1.8 s:
+- hit (headshot / clean one-shot down): smoking cartoon (kit/k6) + "SMOKED" + chime (music/satisfying.wav)
+- clear miss (sniper fires, mag count drops, no down within 2 s): blank-stare cartoon (kit/k8) + "BRO" + sad trombone
+  (music/embarrassed.wav)
+Add to a plan/spec as `"memes": [{"t": <source seconds>, "kind": "smoked"|"bro"}]` (render_clip draws them and mixes
+the sound). Use in kill streaks, not on every kill. NOT in the nightly run until Colton approves.
 ## Caption colors (who is talking) — Colton, Nov 21
 Every caption word carries `spk`: `me` (Colton: white, current word yellow), `team` (teammates: blue + small
 TEAMMATE label), `enemy` (proximity chat: red + ENEMY label), `callout` (DOWN!/HEADSHOT! words we add: like `me`,
