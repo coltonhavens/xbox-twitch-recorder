@@ -470,6 +470,21 @@
      7549.0,
      7565.0,
      "little_juke_finisher"
+    ],
+    [
+     1301.0,
+     1317.6,
+     "two_downs_two_sit_downs"
+    ],
+    [
+     1108.0,
+     1138.2,
+     "trash_talk_then_missed_easy_shots"
+    ],
+    [
+     1044.0,
+     1086.0,
+     "zip_line_team_wipe"
     ]
    ],
    "note": "Nov 24-25 night stream (3h52m) Warzone Resurgence with randoms Drewjackson70 / unknown96db / packers6912 (later Panda, Richard). Nightly run 2026-11-25. TIMING: Twitch muted fragments 6486-6666 (18 x 10s); the Audio_Only fetch decoded them to nothing, so transcripts/2939971395.json was shifted +180s for every line at/after wav 6486 (cross-correlated video vs wav: offset exactly 180s). The VAD base.en timestamps also drift late in the stream (water-tower line was ~180s later still at ~12620) \u2014 always confirm with a medium.en window. 20-kill VICTORY game ends ~1603 (his personal best). Banner downs: 1011, 1047, 1066, 1080, 1115, 1239, 1304, 1310, 1383.4 GETEMJEL (clipped), 1406, 1439, 1449, 1480, 1487, 1543, 1558, 2075, 2092, 2198, 2304, 2507, 3450, 4114, 4471, 4538, 5184, 5930, 5952, 5964, 5984, 6012, 6909, 6942, 7061, 7221, 7590, 7725, 7883, 7908, 7971/7974 (double), 8203, 8260, 8523, 8594, 8835, 9114, 9138, 9180, 9782, 9816, 10574, 10826, 10852, 11062, 11085, 11461, 11848, 11948, 12013, 12054, 12191, 12207 ('DOUBLED'?), 12588, 12641.5+12647.1 (double, clipped), 12899, 12929, 13454, 13556. headshot_scan not finished on this VOD (too slow on this box) \u2014 scan these for the headshot pool next run. Unused talk (wav times, add 180 after 6486 and check): 199 'getting groceries for your grandma?' roast; 1141-1165 grenade through the window 'he says I'm clear'; 2514-2554 'how do you go from 20 kills to 5, where's my consistency'; 3183 'didn't get a single kill that game'; 7364-7380 'did you see the little juke I did'; 9765-9990 talk about the AI clipper/TikTok (non-gaming); 10917 'clip it, the last two minutes'. 2026-11-26: checked 1120-1172 grenade-through-window (he dies, teammate story; skipped); 11040-11105 VICTORY + 'clip it the last two minutes' (he's downed at ~11067 and a teammate seems to finish the win; who got the last kills unclear, skipped for now); 5980-5987 'Hey Ninja Turtle, what's up? Where's April?' roast after a down ~5984 (medium.en confirms the line; couldn't confirm the turtle skin on a frame, good candidate if checked closer)."

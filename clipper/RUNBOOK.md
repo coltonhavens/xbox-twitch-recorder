@@ -203,3 +203,9 @@ For each clip: title, the one-sentence meaning, stream + timestamp, length. Plus
 - Gameplay clips: include his reaction after the kill (let it play), with captions.
 - Montages: a real-fight sound bite at least every 3 kills (more is better), plus silent kills only in between those.
 - Still apply the stranger test: the line must make sense to someone who doesn't know him and wasn't in the party.
+
+## THE GOAL of every edit (Colton Nov 26, after seeing the v2 clips)
+"This type of editing is just better. Makes me feel like I'm watching the stream or shows what it's like playing the game with me, which is what we want."
+- Edit like a viewer is sitting next to him: real time, his voice, unbroken runs, no music, no flashy effects.
+- When in doubt, cut less, not more. Approved examples: 2026-11-27_two_downs_two_sit_downs, 2026-11-27_trash_talk_then_missed_easy_shots, 2026-11-27_zip_line_team_wipe, the no-music SNIPER MONTAGE.
+- Stream quality: blocky scope shots are in the source (720p ~2.8 Mbps). Colton was told to raise the Xbox stream to 1080p / up to 6000 kbps; check a new stream's bitrate with ffprobe and report if it is still low.

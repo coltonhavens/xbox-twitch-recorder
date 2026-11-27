@@ -1,0 +1,105 @@
+{
+ "vod": "2939971395",
+ "start": 1301.0,
+ "end": 1317.6,
+ "title": "Two downs.\nTwo SIT DOWNS.",
+ "type": "gameplay",
+ "meaning": "He snipes two guys back to back and tells each one to sit down, then gets shot from somewhere else.",
+ "setup": "Sniping in the warehouse...",
+ "words": [
+  {
+   "w": "Sit",
+   "s": 1305.26,
+   "e": 1305.36,
+   "spk": "me"
+  },
+  {
+   "w": "down.",
+   "s": 1305.36,
+   "e": 1305.76,
+   "spk": "me"
+  },
+  {
+   "w": "Sit",
+   "s": 1312.38,
+   "e": 1312.52,
+   "spk": "me"
+  },
+  {
+   "w": "down.",
+   "s": 1312.52,
+   "e": 1313.02,
+   "spk": "me"
+  },
+  {
+   "w": "I'm",
+   "s": 1314.38,
+   "e": 1314.82,
+   "spk": "me"
+  },
+  {
+   "w": "getting",
+   "s": 1314.82,
+   "e": 1314.88,
+   "spk": "me"
+  },
+  {
+   "w": "shot",
+   "s": 1314.88,
+   "e": 1315.1,
+   "spk": "me"
+  },
+  {
+   "w": "from",
+   "s": 1315.1,
+   "e": 1315.3,
+   "spk": "me"
+  },
+  {
+   "w": "somewhere",
+   "s": 1315.3,
+   "e": 1315.48,
+   "spk": "me"
+  },
+  {
+   "w": "else,",
+   "s": 1315.48,
+   "e": 1315.7,
+   "spk": "me"
+  },
+  {
+   "w": "bro.",
+   "s": 1316.06,
+   "e": 1316.08,
+   "spk": "me"
+  }
+ ],
+ "moods": [
+  [
+   1301,
+   1305,
+   "calm"
+  ],
+  [
+   1305,
+   1308,
+   "rage"
+  ],
+  [
+   1308,
+   1312,
+   "calm"
+  ],
+  [
+   1312,
+   1314,
+   "rage"
+  ],
+  [
+   1314,
+   1317.6,
+   "shocked"
+  ]
+ ],
+ "name": "2026-11-27_two_downs_two_sit_downs"
+}
