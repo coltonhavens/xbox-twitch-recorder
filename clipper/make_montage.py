@@ -83,24 +83,85 @@ def personality(plan, outdir):
     open(os.path.join(outdir, plan["name"] + ".txt"), "w").write(cap + "\n")
     print("personality montage", out, f"{L:.1f}s", "cuts at", cuts)
 
+def no_music(plan, outdir):
+    """Colton Nov 26: sniper/kill montages with NO music. Each kill plays in real time from ~2.4 s before the down
+    (the shot) to ~2 s after it, with the game audio. Kills close together in the same fight play as ONE unbroken
+    piece. A kill can carry his own words ("words": [[w, vod_s, vod_e], ...] + a longer "post") so the montage gets a
+    real-fight sound bite (pattern interrupt) about every 3 kills. Plan: {"music": false, "kills": [{"vod", "hit",
+    "label", "pre"?, "post"?, "words"?}, ...]}"""
+    ks = plan["kills"]
+    pieces = []                                   # [vod, a, b, [kills]]
+    for k in ks:
+        a = k["hit"] - k.get("pre", 2.4); b = k["hit"] + k.get("post", 2.0)
+        if pieces and pieces[-1][0] == k["vod"] and a <= pieces[-1][2] + 6.0:   # same fight: never cut between hits
+            pieces[-1][2] = max(pieces[-1][2], b); pieces[-1][3].append(k)
+        else:
+            pieces.append([k["vod"], a, b, [k]])
+    with tempfile.TemporaryDirectory() as d:
+        parts, words, moods, downs, cum = [], [], [], [], 0.0
+        for i, (vod, a, b, kk) in enumerate(pieces):
+            win = os.path.join(d, f"w{i}.mp4")
+            run("python3", os.path.join(HERE, "twitch_fetch.py"), "window", str(vod), str(a - 1.0), str(b + 1.0), win)
+            for k in kk:                                # snap each down to the kill banner, like the beat montage
+                if not k.get("words") and not k.get("refined"):
+                    h0 = k["hit"]; k["hit"] = refine(win, a - 1.0, h0); print(f"down {vod} {h0} -> {k['hit']}", flush=True)
+            f = os.path.join(d, f"p{i}.mp4")
+            run("ffmpeg", "-v", "error", "-y", "-ss", "1.0", "-t", f"{b - a:.3f}", "-i", win,
+                "-vf", "scale=1280:720,fps=30,setsar=1", "-af", "aresample=48000", "-ac", "2",
+                "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-c:a", "aac", "-b:a", "192k", f)
+            parts.append(f)
+            for k in kk:
+                t = round(cum + k["hit"] - a, 2); downs.append(t)
+                words.append({"w": k.get("label", "DOWN!"), "s": t, "e": round(t + 0.8, 2), "spk": "callout"})
+                moods.append([t, round(t + 1.5, 2), "shocked"])
+                kw = [(w, cum + ws - a, cum + we - a) for w, ws, we in k.get("words", []) if a <= ws < b]
+                words += [{"w": w, "s": round(ws, 2), "e": round(we, 2), "spk": "me"} for w, ws, we in kw
+                          if not (t - 0.1 <= ws <= t + 0.8)]
+                if kw: moods.append([round(kw[0][1], 2), round(kw[-1][2] + 0.3, 2), "laugh"])
+            cum += b - a
+        L = cum
+        lst = os.path.join(d, "list.txt"); open(lst, "w").write("".join(f"file '{p}'\n" for p in parts))
+        raw = os.path.join(d, "raw.mp4")
+        run("ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", raw)
+        words.sort(key=lambda w: w["s"])
+        moods = sorted(moods) + [[0, L, "calm"]]
+        spec = {"src": raw, "start": 0, "end": round(L, 2), "title": plan["title"], "words": words,
+                "moods": moods, "out": os.path.join(d, "full.mp4")}
+        if plan.get("setup"): spec["setup"] = plan["setup"]
+        json.dump(spec, open(os.path.join(d, "spec.json"), "w"))
+        run("python3", os.path.join(HERE, "render_clip.py"), os.path.join(d, "spec.json"))
+        out = os.path.join(outdir, plan["name"] + ".mp4")
+        run("ffmpeg", "-v", "error", "-y", "-i", spec["out"], "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+            "-maxrate", "8M", "-bufsize", "16M", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
+            "-movflags", "+faststart", out)
+    cap = plan.get("caption") or (" ".join(plan["title"].split()) + " #callofduty #warzone #mrhype420 #codmontage #gaming")
+    open(os.path.join(outdir, plan["name"] + ".txt"), "w").write(cap + "\n")
+    print("montage (no music)", out, f"{L:.1f}s", "downs at", downs)
+
 def main(plan_path, outdir):
     plan = json.load(open(plan_path)); os.makedirs(outdir, exist_ok=True)
     if plan.get("style") == "personality":
         return personality(plan, outdir)
+    if plan.get("music") is False:
+        return no_music(plan, outdir)
     tr = json.load(open(os.path.join(HERE, "music", "tracks.json")))[plan["track"]]
     P = 60.0 / tr["bpm"]
-    step = P * max(3, tr.get("beats_per_kill", 2))   # time between downs (>= 3 beats so each kill can breathe)
-    pre = min(2.0, step - 0.35)                     # ~1 s before the first bullet (down shows ~1 s after the shot)
+    step = P * max(5, tr.get("beats_per_kill", 2))   # time between downs: >= 5 beats (~4 s at 75 bpm), Colton Nov 26: 2.4 s still too fast
+    pre = min(2.4, step - 1.5)                      # ~1.5 s before the first bullet, ~1.6 s held after the down
     kills = []                                      # (vod, down_t, label, last_of_fight, slowmo)
     for seg in plan["segments"]:
         labs = seg.get("labels") or ["DOWN!"] * len(seg["hits"])
         slow = set(seg.get("slowmo", []))           # indexes of hits shown in slow motion (team wipes)
         for j, (h, lab) in enumerate(zip(seg["hits"], labs)):
             kills.append((seg["vod"], h, lab, len(seg["hits"]) > 1 and j == len(seg["hits"]) - 1, j in slow))
+    # sound bites (Colton Nov 26): after every 3rd kill drop in one of his lines in real time, music ducked under it.
+    # plan "lines": [{"after": 3, "vod": ..., "start": VOD s, "end": VOD s, "words": [[word, VOD s, VOD e], ...]}]
+    lines = {ln["after"]: ln for ln in plan.get("lines", [])}
     intro = 2 * P                                   # "go... go..." before the first down
     n = len(kills)
     with tempfile.TemporaryDirectory() as d:
         parts, downs, cum = [], [], 0.0
+        talk, twords = [], []                         # sound-bite spans (output s) and their caption words
         for i, (vod, h, lab, last, slowmo) in enumerate(kills):
             gap = step + (P if last else 0)          # time to the next down (extra beat after a finished fight)
             if slowmo: gap = 4 * P                   # team wipe: slow motion over a whole bar, then back to speed
@@ -123,6 +184,21 @@ def main(plan_path, outdir):
                     "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-c:a", "aac", "-b:a", "192k", f)
                 parts.append(f)
             downs.append((round(cum + (h - a), 3), lab)); cum += (h - a) + post
+            ln = lines.get(i + 1)
+            if ln and i < n - 1:
+                lw0 = ln["start"] - 1.0
+                lwin = os.path.join(d, f"l{i}.mp4")
+                run("python3", os.path.join(HERE, "twitch_fetch.py"), "window", str(ln["vod"]), str(lw0), str(ln["end"] + 2.0), lwin)
+                ldur = math.ceil((ln["end"] - ln["start"] + 0.5) / P) * P     # whole beats so later downs stay on the beat
+                f = os.path.join(d, f"l{i}.mp4.cut.mp4")
+                run("ffmpeg", "-v", "error", "-y", "-ss", f"{ln['start'] - 0.25 - lw0:.3f}", "-t", f"{ldur:.3f}", "-i", lwin,
+                    "-vf", "scale=1280:720,fps=30,setsar=1", "-af", "aresample=48000", "-ac", "2",
+                    "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-c:a", "aac", "-b:a", "192k", f)
+                parts.append(f)
+                base = cum - (ln["start"] - 0.25)
+                talk.append((round(cum, 3), round(cum + ldur, 3)))
+                twords += [{"w": w, "s": round(base + ws, 2), "e": round(base + we, 2), "spk": "me"} for w, ws, we in ln["words"]]
+                cum += ldur
         L = cum
         lst = os.path.join(d, "list.txt"); open(lst, "w").write("".join(f"file '{p}'\n" for p in parts))
         raw = os.path.join(d, "raw.mp4")
@@ -133,6 +209,8 @@ def main(plan_path, outdir):
         while b0 < max(hits[0], tr.get("start_after", 0)): b0 += P
         mstart = b0 - hits[0]
         duck = "*".join(f"(1-0.85*between(t,{h - 0.22:.3f},{h:.3f}))" for h in hits)    # silence right before each down
+        duck += "".join(f"*(1-0.8*between(t,{a0:.3f},{a1:.3f}))" for a0, a1 in talk)  # music low while he talks
+        gvol = "0.6" + "".join(f"+0.9*between(t,{a0:.3f},{a1:.3f})" for a0, a1 in talk)
         z = "0"   # zoom punch OFF (Nov 26): blurred the shot moment; boom + final flash stay
         flash = f"between(t,{final},{final + 0.07})"
         boom_chain = f"[2:a]asplit={len(hits)}" + "".join(f"[b{i}]" for i in range(len(hits))) + ";" + ";".join(
@@ -143,16 +221,17 @@ def main(plan_path, outdir):
             "-i", os.path.join(HERE, "music", "boom.wav"), "-filter_complex",
             f"[0:v]scale=w='trunc(1280*(1+{z})/2)*2':h='trunc(720*(1+{z})/2)*2':eval=frame,"
             f"crop=1280:720:(iw-1280)/2:(ih-720)/2,eq=brightness='0.35*{flash}':eval=frame,setsar=1[v];"
-            f"[0:a]volume=0.6[g];"
+            f"[0:a]volume='{gvol}':eval=frame[g];"
             f"[1:a]aresample=48000,volume='0.85*{duck}':eval=frame,afade=t=out:st={max(0, L - 0.6):.2f}:d=0.6[m];"
             f"{boom_chain};"
             f"[g][m]" + "".join(f"[d{i}]" for i in range(len(hits))) +
             f"amix=inputs={2 + len(hits)}:normalize=0:duration=first,alimiter=limit=0.95[a]",
             "-map", "[v]", "-map", "[a]", "-t", f"{L:.3f}", "-c:v", "libx264", "-preset", "veryfast", "-crf", "18",
             "-c:a", "aac", "-b:a", "192k", mont)
-        words = [{"w": lab, "s": h, "e": round(h + 0.8, 2), "spk": "callout"} for h, lab in downs]
+        words = sorted([{"w": lab, "s": h, "e": round(h + 0.8, 2), "spk": "callout"} for h, lab in downs] + twords,
+                       key=lambda w: w["s"])
         spec = {"src": mont, "start": 0, "end": round(L, 2), "title": plan["title"], "words": words,
-                "moods": [[0, hits[0], "calm"], [hits[0], L, "shocked"]], "out": os.path.join(d, "full.mp4")}
+                "moods": [[a0, a1, "laugh"] for a0, a1 in talk] + [[0, hits[0], "calm"], [hits[0], L, "shocked"]], "out": os.path.join(d, "full.mp4")}
         json.dump(spec, open(os.path.join(d, "spec.json"), "w"))
         run("python3", os.path.join(HERE, "render_clip.py"), os.path.join(d, "spec.json"))
         out = os.path.join(outdir, plan["name"] + ".mp4")

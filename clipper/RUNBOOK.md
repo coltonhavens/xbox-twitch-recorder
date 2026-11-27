@@ -187,3 +187,10 @@ If GitHub access isn't available in the session, stop and report it — don't tr
 
 ## 7. Report (SendUserMessage)
 For each clip: title, the one-sentence meaning, stream + timestamp, length. Plus the Drive folder.
+
+## Kill montages v2 (Colton, Nov 26 night) — overrides the beat-synced montage rules above
+- **No music.** Game audio only (`"music": false` plan, `make_montage.py no_music`). No zoom punch.
+- Each shot plays in **real time**: ~2.4 s before the down (you see the shot), ~2 s after.
+- **Never cut inside a run.** If he hits several shots in a row in one fight (plates breaking, a down, then another down), play the whole run as ONE unbroken piece. A run like that is worth more than separate scene-to-scene kills, so build montages around runs first. Hits within ~6 s of each other are merged automatically; for longer runs set the kill's "post" to cover it.
+- **Sound bite about every 3 kills,** and it must come from a real fight on the montage's topic: him reacting to his own shot or talking trash to the enemy he just hit (e.g. "That's right... Clip that shot, dude"). Never lobby/pre-game talk, never a line about something else. Put it on that kill with "words" + a longer "post" so it plays straight through.
+- Rough length 20-35 s.
