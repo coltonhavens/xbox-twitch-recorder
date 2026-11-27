@@ -195,3 +195,11 @@ For each clip: title, the one-sentence meaning, stream + timestamp, length. Plus
 - **Sound bite about every 3 kills,** and it must come from a real fight on the montage's topic: him reacting to his own shot or talking trash to the enemy he just hit (e.g. "That's right... Clip that shot, dude"). Never lobby/pre-game talk, never a line about something else. Put it on that kill with "words" + a longer "post" so it plays straight through.
 - Rough length 20-35 s.
 - **Headline must match what's in the video (Colton Nov 26).** If the kills come from different games, the headline says it's a montage ("SNIPER MONTAGE", "HEADSHOT MONTAGE", "TRIPLE KILL MONTAGE"). Never a headline like "Five shots, FIVE DOWNS" that makes a viewer expect one game; save that kind for an unbroken run from ONE game.
+
+## Personality in EVERY clip (Colton Nov 26 — top rule, overrides any older "2 of 5" rule)
+"I'm not really that good. Personality is what makes me stand out."
+- Every clip and every montage must have Colton's own voice in it: reacting to his shot, talking trash to the enemy, hyping, roasting himself, a funny line. A silent kill, however clean, is never a clip by itself.
+- Pick moments by personality first, skill second. A messy fight with a great line beats a clean kill with no talking.
+- Gameplay clips: include his reaction after the kill (let it play), with captions.
+- Montages: a real-fight sound bite at least every 3 kills (more is better), plus silent kills only in between those.
+- Still apply the stranger test: the line must make sense to someone who doesn't know him and wasn't in the party.
