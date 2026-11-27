@@ -12,7 +12,7 @@ Colton's rules (Nov 21):
 - Cut straight from one shot to the next shot. Each cut = the shot and the down, nothing else
   (no reloads, no walking, no dead air). Every hit is a confirmed down, no misses.
 - Slow, spacious beat. Every down lands ON a beat and gets its own "drop": the music cuts out for a
-  split second before the down, then an 808 hit + zoom punch slam in on the down.
+  split second before the down, then an 808 hit on the down (no zoom: it blurred the shot).
 - The last kill of each fight (the TRIPLE) gets an extra beat to breathe; the final kill also flashes.
 usage: make_montage.py PLAN.json OUTDIR"""
 import json, math, os, subprocess, sys, tempfile
@@ -56,7 +56,7 @@ def personality(plan, outdir):
         raw = os.path.join(d, "raw.mp4")
         run("ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", raw)
         hits = cuts[1:] or [0.0]
-        z = "+".join(f"if(gte(t,{h}),{0.18 if h == final else 0.08}*exp(-(t-{h})*7),0)" for h in hits)
+        z = "0"   # zoom punch OFF (Nov 26): scaling the 720p gameplay up on the down made the shot blurry; boom sound stays
         boom = "".join(f"[b{i}]" for i in range(len(hits)))
         chain = f"[2:a]asplit={len(hits)}{boom};" + ";".join(
             f"[b{i}]adelay={int(h * 1000)}|{int(h * 1000)},volume={0.9 if h == final else 0.45}[d{i}]" for i, h in enumerate(hits))
@@ -133,7 +133,7 @@ def main(plan_path, outdir):
         while b0 < max(hits[0], tr.get("start_after", 0)): b0 += P
         mstart = b0 - hits[0]
         duck = "*".join(f"(1-0.85*between(t,{h - 0.22:.3f},{h:.3f}))" for h in hits)    # silence right before each down
-        z = "+".join(f"if(gte(t,{h}),{0.22 if h == final else 0.13}*exp(-(t-{h})*7),0)" for h in hits)
+        z = "0"   # zoom punch OFF (Nov 26): blurred the shot moment; boom + final flash stay
         flash = f"between(t,{final},{final + 0.07})"
         boom_chain = f"[2:a]asplit={len(hits)}" + "".join(f"[b{i}]" for i in range(len(hits))) + ";" + ";".join(
             f"[b{i}]adelay={int(h * 1000)}|{int(h * 1000)},volume={1.0 if h == final else 0.8}[d{i}]"

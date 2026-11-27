@@ -159,7 +159,7 @@ Write one plan with `"type": "montage"` (format at the top of `make_montage.py`)
 - **Team wipes in slow motion:** put the wipe's index in `"slowmo"`; it plays 0.4x over a whole bar, then the next
   headshot snaps back to full speed.
 - **Music:** slow, spacious half-time track (`trap_slow_1`). Every down lands on a beat with its own drop (music cuts
-  out right before, 808 hit + zoom punch on the down). `phonk_1` is too fast for this. Only cleared, commercial-use
+  out right before, 808 hit on the down; NO zoom punch (it blurred the shot, Colton Nov 26)). `phonk_1` is too fast for this. Only cleared, commercial-use
   tracks in `music/` (the TikTok account is a business account: no popular copyrighted songs).
 - Keep a pool: add every confirmed sniper headshot / wipe to `ledger.json` → `"headshots"` so later montages have
   material. Don't reuse a headshot in two montages within 2 weeks.
