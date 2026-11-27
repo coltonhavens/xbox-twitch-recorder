@@ -218,3 +218,8 @@ For each clip: title, the one-sentence meaning, stream + timestamp, length. Plus
 - **How many:** at most 2 reposts a night; they count toward the 5 daily clips (so 3 new + 2 reposts). Oldest/lowest first.
 - **Track tries** in ledger.json under `"reposts": {"<orig name>": {"tries": N, "last": "YYYY-MM-DD", "likes": [..]}}` (the original post is try 1). Stop at 5 tries, or as soon as any version gets 5+ likes.
 - Reposts are the one exception to "never re-clip a moment".
+
+## Stay 3-4 days ahead (Colton Nov 26)
+"Schedule days in advance so if my computer is off one day we still have videos going out."
+- The Mac poster now schedules every finished clip it finds (not just 6 a day) into the next free slots, up to 4 days ahead. A day with the Mac off still posts from that queue.
+- To fill the queue: each night check GHL (get-posts, type scheduled, @mrhype4208, next 4 days). If fewer than 20 posts are scheduled, make up to 8 clips that night instead of 5 (still max 2 reposts, still every rule above; never pad with weak clips; the 3.9 h stream 2939971395 and other backlog streams still have plenty of unclipped moments).
