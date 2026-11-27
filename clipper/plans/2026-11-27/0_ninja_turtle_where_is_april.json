@@ -1,0 +1,108 @@
+{
+ "vod": "2939971395",
+ "start": 5977.5,
+ "end": 5991.5,
+ "title": "Hey Ninja Turtle...\nwhere's APRIL?",
+ "setup": "a real Ninja Turtle skin...",
+ "meaning": "He breaks a Ninja Turtle skin's armor, downs him and roasts him: 'Hey Ninja Turtle, what's up? Where's April?'",
+ "type": "gameplay",
+ "fix": {
+  "April": "April?",
+  "up": "up?",
+  "enough": "enough..."
+ },
+ "words": [
+  {
+   "w": "I",
+   "s": 5980.2,
+   "e": 5980.68,
+   "spk": "me"
+  },
+  {
+   "w": "broke",
+   "s": 5980.68,
+   "e": 5980.92,
+   "spk": "me"
+  },
+  {
+   "w": "him",
+   "s": 5980.92,
+   "e": 5981.14,
+   "spk": "me"
+  },
+  {
+   "w": "but",
+   "s": 5981.14,
+   "e": 5981.32,
+   "spk": "me"
+  },
+  {
+   "w": "not",
+   "s": 5981.32,
+   "e": 5981.5,
+   "spk": "me"
+  },
+  {
+   "w": "enough",
+   "s": 5981.5,
+   "e": 5982.32,
+   "spk": "me"
+  },
+  {
+   "w": "Hey",
+   "s": 5984.6,
+   "e": 5985.1,
+   "spk": "me"
+  },
+  {
+   "w": "ninja",
+   "s": 5985.14,
+   "e": 5985.34,
+   "spk": "me"
+  },
+  {
+   "w": "turtle",
+   "s": 5985.34,
+   "e": 5985.66,
+   "spk": "me"
+  },
+  {
+   "w": "what's",
+   "s": 5985.66,
+   "e": 5986.44,
+   "spk": "me"
+  },
+  {
+   "w": "up",
+   "s": 5986.44,
+   "e": 5986.58,
+   "spk": "me"
+  },
+  {
+   "w": "where's",
+   "s": 5986.58,
+   "e": 5986.8,
+   "spk": "me"
+  },
+  {
+   "w": "April",
+   "s": 5986.8,
+   "e": 5987.06,
+   "spk": "me"
+  }
+ ],
+ "moods": [
+  [
+   5977.5,
+   5984,
+   "rage"
+  ],
+  [
+   5984,
+   5991.5,
+   "laugh"
+  ]
+ ],
+ "caption": "Hey Ninja Turtle, where's April? #callofduty #warzone #mrhype420 #codclips #gaming",
+ "name": "2026-11-27_ninja_turtle_where_is_april"
+}

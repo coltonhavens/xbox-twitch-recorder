@@ -1,0 +1,150 @@
+{
+ "vod": "2939971395",
+ "start": 12049.0,
+ "end": 12071.5,
+ "title": "Landed on the roof\nlike JOHN WICK",
+ "meaning": "He parachutes onto a roof, downs the enemy there ('John Wick, baby'), gets killed seconds later and says it doesn't count because he was already hurt.",
+ "type": "gameplay",
+ "fix": {
+  "wick": "Wick!",
+  "john": "John",
+  "count": "count,",
+  "hurt": "hurt.",
+  "i": "I",
+  "baby": "baby,"
+ },
+ "words": [
+  {
+   "w": "john",
+   "s": 12054.2,
+   "e": 12054.78,
+   "spk": "me"
+  },
+  {
+   "w": "wick",
+   "s": 12054.78,
+   "e": 12055.06,
+   "spk": "me"
+  },
+  {
+   "w": "baby",
+   "s": 12055.06,
+   "e": 12055.36,
+   "spk": "me"
+  },
+  {
+   "w": "john",
+   "s": 12055.36,
+   "e": 12055.74,
+   "spk": "me"
+  },
+  {
+   "w": "wick",
+   "s": 12055.74,
+   "e": 12059.86,
+   "spk": "me"
+  },
+  {
+   "w": "that",
+   "s": 12066.41,
+   "e": 12066.7,
+   "spk": "me"
+  },
+  {
+   "w": "doesn't",
+   "s": 12066.7,
+   "e": 12066.9,
+   "spk": "me"
+  },
+  {
+   "w": "count",
+   "s": 12066.9,
+   "e": 12067.2,
+   "spk": "me"
+  },
+  {
+   "w": "that",
+   "s": 12067.2,
+   "e": 12068.06,
+   "spk": "me"
+  },
+  {
+   "w": "doesn't",
+   "s": 12068.06,
+   "e": 12068.24,
+   "spk": "me"
+  },
+  {
+   "w": "count",
+   "s": 12068.24,
+   "e": 12068.42,
+   "spk": "me"
+  },
+  {
+   "w": "for",
+   "s": 12068.42,
+   "e": 12068.58,
+   "spk": "me"
+  },
+  {
+   "w": "you",
+   "s": 12068.58,
+   "e": 12068.72,
+   "spk": "me"
+  },
+  {
+   "w": "because",
+   "s": 12068.72,
+   "e": 12068.94,
+   "spk": "me"
+  },
+  {
+   "w": "i",
+   "s": 12068.94,
+   "e": 12069.42,
+   "spk": "me"
+  },
+  {
+   "w": "was",
+   "s": 12069.42,
+   "e": 12069.54,
+   "spk": "me"
+  },
+  {
+   "w": "already",
+   "s": 12069.54,
+   "e": 12069.74,
+   "spk": "me"
+  },
+  {
+   "w": "hurt",
+   "s": 12069.74,
+   "e": 12070.03,
+   "spk": "me"
+  }
+ ],
+ "moods": [
+  [
+   12049,
+   12053,
+   "calm"
+  ],
+  [
+   12053,
+   12061,
+   "laugh"
+  ],
+  [
+   12061,
+   12066,
+   "shocked"
+  ],
+  [
+   12066,
+   12071.5,
+   "rage"
+  ]
+ ],
+ "caption": "John Wick for 8 seconds. That one doesn't count #callofduty #warzone #mrhype420 #codclips #gaming",
+ "name": "2026-11-27_john_wick_doesnt_count"
+}
