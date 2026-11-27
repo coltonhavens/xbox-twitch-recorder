@@ -209,3 +209,12 @@ For each clip: title, the one-sentence meaning, stream + timestamp, length. Plus
 - Edit like a viewer is sitting next to him: real time, his voice, unbroken runs, no music, no flashy effects.
 - When in doubt, cut less, not more. Approved examples: 2026-11-27_two_downs_two_sit_downs, 2026-11-27_trash_talk_then_missed_easy_shots, 2026-11-27_zip_line_team_wipe, the no-music SNIPER MONTAGE.
 - Stream quality: blocky scope shots are in the source (720p ~2.8 Mbps). Colton was told to raise the Xbox stream to 1080p / up to 6000 kbps; check a new stream's bitrate with ffprobe and report if it is still low.
+
+## Second chances: repost low-view clips up to 5 times (Colton Nov 26)
+"With them getting 4 or 6 views we don't know if it can get views." Every clip gets up to 5 tries to reach ~200 views.
+- **Who qualifies:** a @mrhype4208 post that has been live 48 h+ and has fewer than 5 likes (GHL gives no per-video views; under 5 likes is the stand-in for under ~200 views). Skip the old-account weekly repeats.
+- **How to find them:** GHL `social-media-posting_get-posts` (location 3GWBlKHTxotVFwehqNhh, TikTok account 6afa6587056a1e58e0327c12_3GWBlKHTxotVFwehqNhh_00083BtNWTFcRuTnAYcyj9g3Bcb26fW4Brs_business, type published, last 10 days), read `insights.like`. Match a post to its plan by the media file name (`2026-11-24-throwing-knife-then-headshot.mp4` = plan `2026-11-24_throwing_knife_then_headshot`), stripping any `_r2`..`_r5` suffix.
+- **Never repost the identical file** (TikTok shows duplicates to almost nobody). Each try is a fresh cut from the same plan: copy the plan to `clipper/plans/<today>/r_<orig>_r<N>.json` with `"name": "<orig>_r<N>"` and change at least: a new headline (different words/angle), a new opening (start 1-3 s later so the first second is the action or his line, or add/change the setup line), and a new caption. Keep every other rule (his voice, real time, breathing room).
+- **How many:** at most 2 reposts a night; they count toward the 5 daily clips (so 3 new + 2 reposts). Oldest/lowest first.
+- **Track tries** in ledger.json under `"reposts": {"<orig name>": {"tries": N, "last": "YYYY-MM-DD", "likes": [..]}}` (the original post is try 1). Stop at 5 tries, or as soon as any version gets 5+ likes.
+- Reposts are the one exception to "never re-clip a moment".
