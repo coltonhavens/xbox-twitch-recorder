@@ -1,0 +1,141 @@
+{
+ "vod": "2939356877",
+ "start": 2996.0,
+ "end": 3020.0,
+ "title": "Two snipes, two downs.\n\"Those boys was BOTS\"",
+ "meaning": "He snipes two enemies down ten seconds apart, then roasts them: are we even playing real people, those boys was bots.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "DOWN!",
+   "s": 3001.0,
+   "e": 3001.9,
+   "spk": "callout"
+  },
+  {
+   "w": "DOWN!",
+   "s": 3011.0,
+   "e": 3011.9,
+   "spk": "callout"
+  },
+  {
+   "w": "damn",
+   "s": 3014.52,
+   "e": 3014.96,
+   "spk": "me"
+  },
+  {
+   "w": "are",
+   "s": 3014.96,
+   "e": 3015.4,
+   "spk": "me"
+  },
+  {
+   "w": "we",
+   "s": 3015.4,
+   "e": 3015.62,
+   "spk": "me"
+  },
+  {
+   "w": "are",
+   "s": 3015.62,
+   "e": 3015.8,
+   "spk": "me"
+  },
+  {
+   "w": "we",
+   "s": 3015.8,
+   "e": 3015.94,
+   "spk": "me"
+  },
+  {
+   "w": "playing",
+   "s": 3015.94,
+   "e": 3016.16,
+   "spk": "me"
+  },
+  {
+   "w": "against",
+   "s": 3016.16,
+   "e": 3016.44,
+   "spk": "me"
+  },
+  {
+   "w": "real",
+   "s": 3016.44,
+   "e": 3016.66,
+   "spk": "me"
+  },
+  {
+   "w": "people",
+   "s": 3016.66,
+   "e": 3016.92,
+   "spk": "me"
+  },
+  {
+   "w": "because",
+   "s": 3016.92,
+   "e": 3017.14,
+   "spk": "me"
+  },
+  {
+   "w": "those",
+   "s": 3017.14,
+   "e": 3017.32,
+   "spk": "me"
+  },
+  {
+   "w": "bullets",
+   "s": 3017.32,
+   "e": 3017.58,
+   "spk": "me"
+  },
+  {
+   "w": "was",
+   "s": 3017.58,
+   "e": 3018.1,
+   "spk": "me"
+  },
+  {
+   "w": "bots",
+   "s": 3018.1,
+   "e": 3018.74,
+   "spk": "me"
+  },
+  {
+   "w": "bro",
+   "s": 3018.74,
+   "e": 3019.12,
+   "spk": "me"
+  },
+  {
+   "w": "here",
+   "s": 3019.12,
+   "e": 3019.88,
+   "spk": "me"
+  }
+ ],
+ "fix": {
+  "bullets": "boys",
+  "bro": "bro."
+ },
+ "moods": [
+  [
+   2996,
+   3000.5,
+   "calm"
+  ],
+  [
+   3000.5,
+   3014,
+   "shocked"
+  ],
+  [
+   3014,
+   3020,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-28_those_boys_was_bots",
+ "caption": "Two snipes and he thinks they were BOTS #callofduty #warzone #mrhype420 #codclips #gaming"
+}

@@ -1,0 +1,163 @@
+{
+ "vod": "2939971395",
+ "start": 10572.0,
+ "end": 10600.0,
+ "title": "This sniper is SO WEAK\n(why can't I drop anybody?)",
+ "meaning": "He keeps landing sniper shots that don't down anyone and rants about how slow and weak the sniper is.",
+ "type": "gameplay",
+ "setup": "hitting shots, nobody going down...",
+ "words": [
+  {
+   "w": "God",
+   "s": 10574.86,
+   "e": 10575.76,
+   "spk": "me"
+  },
+  {
+   "w": "I",
+   "s": 10575.76,
+   "e": 10576.66,
+   "spk": "me"
+  },
+  {
+   "w": "hate",
+   "s": 10576.66,
+   "e": 10576.78,
+   "spk": "me"
+  },
+  {
+   "w": "this",
+   "s": 10576.78,
+   "e": 10577.02,
+   "spk": "me"
+  },
+  {
+   "w": "fucking",
+   "s": 10577.02,
+   "e": 10577.3,
+   "spk": "me"
+  },
+  {
+   "w": "sniper",
+   "s": 10577.3,
+   "e": 10578.16,
+   "spk": "me"
+  },
+  {
+   "w": "this",
+   "s": 10586.21,
+   "e": 10586.66,
+   "spk": "me"
+  },
+  {
+   "w": "sniper",
+   "s": 10586.66,
+   "e": 10586.92,
+   "spk": "me"
+  },
+  {
+   "w": "is",
+   "s": 10586.92,
+   "e": 10587.2,
+   "spk": "me"
+  },
+  {
+   "w": "so",
+   "s": 10587.2,
+   "e": 10587.34,
+   "spk": "me"
+  },
+  {
+   "w": "slow",
+   "s": 10587.34,
+   "e": 10588.06,
+   "spk": "me"
+  },
+  {
+   "w": "Why",
+   "s": 10593.68,
+   "e": 10594.24,
+   "spk": "me"
+  },
+  {
+   "w": "make",
+   "s": 10594.24,
+   "e": 10594.5,
+   "spk": "me"
+  },
+  {
+   "w": "it",
+   "s": 10594.5,
+   "e": 10594.64,
+   "spk": "me"
+  },
+  {
+   "w": "so",
+   "s": 10594.64,
+   "e": 10594.86,
+   "spk": "me"
+  },
+  {
+   "w": "weak?",
+   "s": 10594.86,
+   "e": 10595.22,
+   "spk": "me"
+  },
+  {
+   "w": "Why",
+   "s": 10597.78,
+   "e": 10597.84,
+   "spk": "me"
+  },
+  {
+   "w": "can't",
+   "s": 10597.84,
+   "e": 10598.16,
+   "spk": "me"
+  },
+  {
+   "w": "I",
+   "s": 10598.16,
+   "e": 10598.22,
+   "spk": "me"
+  },
+  {
+   "w": "just",
+   "s": 10598.22,
+   "e": 10598.4,
+   "spk": "me"
+  },
+  {
+   "w": "drop",
+   "s": 10598.4,
+   "e": 10598.68,
+   "spk": "me"
+  },
+  {
+   "w": "somebody?",
+   "s": 10598.68,
+   "e": 10599.16,
+   "spk": "me"
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   10572,
+   10586,
+   "rage"
+  ],
+  [
+   10586,
+   10593,
+   "sad"
+  ],
+  [
+   10593,
+   10600,
+   "rage"
+  ]
+ ],
+ "name": "2026-11-28_this_sniper_is_so_weak",
+ "caption": "Why can't I just drop somebody?? #callofduty #warzone #mrhype420 #codclips #gaming"
+}

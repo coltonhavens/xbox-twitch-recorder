@@ -1,0 +1,198 @@
+{
+ "vod": "2936703038",
+ "start": 624.5,
+ "end": 641.0,
+ "title": "Shot him in the back?\nWHO CARES",
+ "meaning": "He downs an enemy on the roof and trash talks him: who cares where I shoot you, you dead.",
+ "type": "gameplay",
+ "words": [
+  {
+   "w": "It's",
+   "s": 626.9,
+   "e": 627.34,
+   "spk": "me"
+  },
+  {
+   "w": "not",
+   "s": 627.34,
+   "e": 627.46,
+   "spk": "me"
+  },
+  {
+   "w": "nice",
+   "s": 627.46,
+   "e": 627.68,
+   "spk": "me"
+  },
+  {
+   "w": "to",
+   "s": 627.68,
+   "e": 627.86,
+   "spk": "me"
+  },
+  {
+   "w": "shoot",
+   "s": 627.86,
+   "e": 628.04,
+   "spk": "me"
+  },
+  {
+   "w": "something",
+   "s": 628.04,
+   "e": 628.2,
+   "spk": "me"
+  },
+  {
+   "w": "in",
+   "s": 628.2,
+   "e": 628.42,
+   "spk": "me"
+  },
+  {
+   "w": "the",
+   "s": 628.42,
+   "e": 628.44,
+   "spk": "me"
+  },
+  {
+   "w": "back,",
+   "s": 628.44,
+   "e": 628.54,
+   "spk": "me"
+  },
+  {
+   "w": "you",
+   "s": 628.54,
+   "e": 628.7,
+   "spk": "me"
+  },
+  {
+   "w": "know?",
+   "s": 628.7,
+   "e": 628.94,
+   "spk": "me"
+  },
+  {
+   "w": "DOWN!",
+   "s": 631.0,
+   "e": 631.9,
+   "spk": "callout"
+  },
+  {
+   "w": "Who",
+   "s": 632.82,
+   "e": 633.26,
+   "spk": "me"
+  },
+  {
+   "w": "cares",
+   "s": 633.26,
+   "e": 633.44,
+   "spk": "me"
+  },
+  {
+   "w": "where",
+   "s": 633.44,
+   "e": 633.78,
+   "spk": "me"
+  },
+  {
+   "w": "I",
+   "s": 633.78,
+   "e": 633.94,
+   "spk": "me"
+  },
+  {
+   "w": "shoot",
+   "s": 633.94,
+   "e": 635.0,
+   "spk": "me"
+  },
+  {
+   "w": "you",
+   "s": 635.0,
+   "e": 635.98,
+   "spk": "me"
+  },
+  {
+   "w": "bitch?",
+   "s": 635.98,
+   "e": 636.24,
+   "spk": "me"
+  },
+  {
+   "w": "Who",
+   "s": 637.38,
+   "e": 637.38,
+   "spk": "me"
+  },
+  {
+   "w": "cares",
+   "s": 637.38,
+   "e": 637.66,
+   "spk": "me"
+  },
+  {
+   "w": "where",
+   "s": 637.66,
+   "e": 637.96,
+   "spk": "me"
+  },
+  {
+   "w": "I",
+   "s": 637.96,
+   "e": 638.16,
+   "spk": "me"
+  },
+  {
+   "w": "shoot",
+   "s": 638.16,
+   "e": 638.34,
+   "spk": "me"
+  },
+  {
+   "w": "you",
+   "s": 638.34,
+   "e": 638.5,
+   "spk": "me"
+  },
+  {
+   "w": "bitch?",
+   "s": 638.5,
+   "e": 638.76,
+   "spk": "me"
+  },
+  {
+   "w": "You",
+   "s": 639.54,
+   "e": 639.64,
+   "spk": "me"
+  },
+  {
+   "w": "dead.",
+   "s": 639.64,
+   "e": 640.2,
+   "spk": "me"
+  }
+ ],
+ "fix": {},
+ "moods": [
+  [
+   624.5,
+   630.5,
+   "calm"
+  ],
+  [
+   630.5,
+   633,
+   "shocked"
+  ],
+  [
+   633,
+   641,
+   "laugh"
+  ]
+ ],
+ "name": "2026-11-28_who_cares_where_i_shoot_you",
+ "caption": "Who cares where I shoot you. You dead #callofduty #warzone #mrhype420 #codclips #gaming"
+}
